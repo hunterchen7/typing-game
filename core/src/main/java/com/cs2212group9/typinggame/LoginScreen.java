@@ -3,23 +3,21 @@ package com.cs2212group9.typinggame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class LoginScreen implements Screen {
 
     final TypingGame game;
     OrthographicCamera camera;
-    private TextField usernameField;
-    private TextField passwordField;
-    private Button loginButton;
-    private Button registerButton;
-    private Stage stage;
+    private final Stage stage;
     private Table table;
-    private Viewport viewport;
+    private final Viewport viewport;
     private Skin skin;
 
 
@@ -61,21 +59,22 @@ public class LoginScreen implements Screen {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.top();
-        mainTable.padTop(250);
 
-        usernameField = addTextFieldRow(mainTable, "Username:", "user");
+        Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
+        mainTable.add(logo).colspan(2);
         mainTable.row();
 
-        mainTable.padTop(10);
+        TextField usernameField = addTextFieldRow(mainTable, "Username:", "user");
+        mainTable.row();
 
-        passwordField = addTextFieldRow(mainTable, "Password:", "asd123");
+        mainTable.padTop(100);
 
-        loginButton = new TextButton("login", skin);
-        loginButton.setPosition(600, 200);
+        TextField passwordField = addTextFieldRow(mainTable, "Password:", "asd123");
 
-        registerButton = new TextButton("register", skin);
-        registerButton.setPosition(600, 100);
-        registerButton.setSize(200, 50);
+        Button loginButton = new TextButton("login", skin);
+        mainTable.row().padTop(10);
+
+        Button registerButton = new TextButton("register", skin);
 
         mainTable.row();
         mainTable.row().padTop(10);
@@ -83,6 +82,37 @@ public class LoginScreen implements Screen {
         mainTable.row();
         mainTable.row().padTop(5);
         mainTable.add(registerButton).width(200).colspan(2);
+
+        loginButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            // log in logic
+            // check if username and password match
+            // if so, go to main menu
+            // else display "username or password did not match any records"
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            // TODO: check if username and password match
+            if (!username.isEmpty() || !password.isEmpty()) {
+                game.setScreen(new MainMenuScreen(game));
+                dispose();
+            } else {
+                // display "username or password did not match any records"
+            }
+
+        }));
+
+        registerButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            // register logic
+            // check if in database,
+            // if not, add to database
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            // TODO: check if username/pw already exists
+            if (!username.isEmpty() || !password.isEmpty()) {
+                // add to database
+            } else {
+                // display "username or password already exists"
+            }
+        }));
 
         stage.addActor(mainTable);
     }
@@ -92,8 +122,9 @@ public class LoginScreen implements Screen {
         final Label label = new Label(labelText, skin);
         final TextField text = new TextField(defaultValue, skin);
 
-        table.add(label).width(100);
+        table.add(label).width(70);
         table.add(text).width(250);
+        table.row().padTop(5);
 
         return text;
     }
