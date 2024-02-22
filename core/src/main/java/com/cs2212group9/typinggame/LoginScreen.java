@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -16,7 +15,6 @@ public class LoginScreen implements Screen {
     final TypingGame game;
     OrthographicCamera camera;
     private final Stage stage;
-    private Table table;
     private final Viewport viewport;
     private Skin skin;
 
@@ -53,36 +51,34 @@ public class LoginScreen implements Screen {
     }
 
     @Override
+    // TODO: don't hard code positions, make dynamic
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Table mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.top();
+        Table table = new Table();
+        table.setFillParent(true);
+        table.top();
+        table.padTop(350);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
-        mainTable.add(logo).colspan(2);
-        mainTable.row();
+        logo.setPosition(280, 500);
+        stage.addActor(logo);
+        // place logo at the top of the screen
 
-        TextField usernameField = addTextFieldRow(mainTable, "Username:", "user");
-        mainTable.row();
-
-        mainTable.padTop(100);
-
-        TextField passwordField = addTextFieldRow(mainTable, "Password:", "asd123");
+        TextField usernameField = addTextFieldRow(table, "Username:", "user");
+        TextField passwordField = addTextFieldRow(table, "Password:", "asd123");
 
         Button loginButton = new TextButton("login", skin);
-        mainTable.row().padTop(10);
-
         Button registerButton = new TextButton("register", skin);
 
-        mainTable.row();
-        mainTable.row().padTop(10);
-        mainTable.add(loginButton).width(200).colspan(2);
-        mainTable.row();
-        mainTable.row().padTop(5);
-        mainTable.add(registerButton).width(200).colspan(2);
+        table.row();
+        table.row().padTop(10);
+        table.add(loginButton).width(200).colspan(2);
+        table.row();
+        table.row().padTop(5);
+        table.add(registerButton).width(200).colspan(2);
 
+        // login button onclick
         loginButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // log in logic
             // check if username and password match
@@ -100,6 +96,7 @@ public class LoginScreen implements Screen {
 
         }));
 
+        // register button onclick
         registerButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // register logic
             // check if in database,
@@ -114,7 +111,7 @@ public class LoginScreen implements Screen {
             }
         }));
 
-        stage.addActor(mainTable);
+        stage.addActor(table);
     }
 
     private TextField addTextFieldRow(final Table table, String labelText, String defaultValue) {
