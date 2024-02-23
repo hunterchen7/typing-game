@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.utils.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class MainMenuScreen implements Screen {
@@ -19,7 +20,10 @@ public class MainMenuScreen implements Screen {
     private final Viewport viewport;
     private Skin skin;
 
-    public MainMenuScreen(final TypingGame gam) {
+    private DBHelper D;
+
+    public MainMenuScreen(final TypingGame gam, DBHelper db) {
+        D = db;
         game = gam;
 
         camera = new OrthographicCamera();
@@ -84,22 +88,36 @@ public class MainMenuScreen implements Screen {
         table.add(optionsButton).width(300);
         table.row().padTop(10);
 
+        Button logoutButton = new TextButton("Logout", skin);
+        table.add(logoutButton).width(300);
+        table.row().padTop(10);
+
         Button quitButton = new TextButton("Quit", skin);
         table.add(quitButton).width(300);
         table.row().padTop(10);
 
         playButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameScreen(game, D));
             dispose();
         }));
 
         levelsButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new LevelsScreen(game));
+            game.setScreen(new LevelsScreen(game, D));
             dispose();
         }));
 
         optionsButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             game.setScreen(new OptionsScreen(game));
+            dispose();
+        }));
+
+        /*highScoresButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            game.setScreen(new HighScoresScreen(game));
+            dispose();
+        }));*/
+
+        logoutButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            game.setScreen(new LoginScreen(game, D));
             dispose();
         }));
 

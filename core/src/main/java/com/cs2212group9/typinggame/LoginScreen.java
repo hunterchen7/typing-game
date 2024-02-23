@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.utils.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
+import com.cs2212group9.typinggame.utils.UserAuthenticator;
 
 public class LoginScreen implements Screen {
 
@@ -17,10 +19,12 @@ public class LoginScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
+    private final DBHelper D;
 
 
-    public LoginScreen(final TypingGame gam) {
+    public LoginScreen(final TypingGame gam, DBHelper db) {
         game = gam;
+        D = db;
 
         camera = new OrthographicCamera();
 
@@ -87,8 +91,10 @@ public class LoginScreen implements Screen {
             String username = usernameField.getText();
             String password = passwordField.getText();
             // TODO: check if username and password match
-            if (!username.isEmpty() || !password.isEmpty()) {
-                game.setScreen(new MainMenuScreen(game));
+
+            UserAuthenticator user = new UserAuthenticator(D, username, password);
+            if (user.authenticate()) {
+                game.setScreen(new MainMenuScreen(game, D));
                 dispose();
             } else {
                 // display "username or password did not match any records"
@@ -97,15 +103,20 @@ public class LoginScreen implements Screen {
         }));
 
         // register button onclick
+        // TODO: make it go to a registration screen
         registerButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // register logic
             // check if in database,
             // if not, add to database
             String username = usernameField.getText();
             String password = passwordField.getText();
-            // TODO: check if username/pw already exists
-            if (!username.isEmpty() || !password.isEmpty()) {
-                // add to database
+            UserAuthenticator user = new UserAuthenticator(D, username, password);
+
+            if (user.register()) {
+                // pop up to say registerd successfully
+                // go to main menu
+                game.setScreen(new MainMenuScreen(game, D));
+                dispose();
             } else {
                 // display "username or password already exists"
             }

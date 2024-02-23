@@ -3,6 +3,7 @@ package com.cs2212group9.typinggame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.cs2212group9.typinggame.utils.DBHelper;
 
 public class TypingGame extends Game {
 
@@ -10,10 +11,13 @@ public class TypingGame extends Game {
     BitmapFont font;
 
     public void create() {
+        DBHelper dbHelper = new DBHelper();
+        dbHelper.createNewTable();
+
         batch = new SpriteBatch();
         // Use LibGDX's default Arial font.
         font = new BitmapFont();
-        this.setScreen(new LoginScreen(this));
+        this.setScreen(new LoginScreen(this, dbHelper));
     }
 
     public void render() {

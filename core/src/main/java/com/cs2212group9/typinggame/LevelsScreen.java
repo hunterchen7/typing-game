@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.utils.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class LevelsScreen implements Screen {
@@ -17,9 +18,11 @@ public class LevelsScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
+    private DBHelper D;
 
 
-    public LevelsScreen(final TypingGame gam) {
+    public LevelsScreen(final TypingGame gam, DBHelper db) {
+        D = db;
         game = gam;
 
         camera = new OrthographicCamera();
@@ -64,7 +67,7 @@ public class LevelsScreen implements Screen {
         for (int i = 1; i <= 10; i++) { // placeholder levels
             TextButton levelButton = new TextButton("Level " + i, skin);
             levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, D));
                 dispose();
             }));
             table.add(levelButton).width(200).pad(5);
