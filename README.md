@@ -35,9 +35,7 @@ Note that most tasks that are not specific to a single project can be run with `
 For example, `core:clean` removes `build` folder only from the `core` project.
 
 ## Running in IntelliJ
-Run/Debug `Lwjgl3Launcher.java` 
-
-test commit
+Run/Debug `Lwjgl3Launcher.java`
 
 ## Todo
 - [ ] Log in screen
