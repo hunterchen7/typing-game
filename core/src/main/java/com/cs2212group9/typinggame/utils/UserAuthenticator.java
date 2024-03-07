@@ -55,6 +55,7 @@ public class UserAuthenticator {
             } catch (NoSuchAlgorithmException e) {
                 // TODO: handle this
                 e.printStackTrace();
+                return false;
             }
         }
         return true;

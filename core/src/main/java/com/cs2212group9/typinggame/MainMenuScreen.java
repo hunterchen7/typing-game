@@ -18,9 +18,9 @@ public class MainMenuScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private Skin skin;
+    private final Skin skin;
 
-    private DBHelper D;
+    private final DBHelper D;
 
     public MainMenuScreen(final TypingGame gam, DBHelper db) {
         D = db;
