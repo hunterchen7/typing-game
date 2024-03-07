@@ -1,0 +1,7 @@
+clone:
+  depth: full
+pipelines:
+  default:
+    - step:
+        script:
+          - git push --mirror git@github.com:hunterchen7/typing-game.git
