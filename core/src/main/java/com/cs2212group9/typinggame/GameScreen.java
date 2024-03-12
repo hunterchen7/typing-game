@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.cs2212group9.typinggame.utils.DBHelper;
+import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class GameScreen implements Screen {
@@ -37,11 +37,9 @@ public class GameScreen implements Screen {
     int dropsGathered;
     Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private Stage stage;
-    private DBHelper D;
 
-    public GameScreen(final TypingGame gam, DBHelper db) {
+    public GameScreen(final TypingGame gam) {
         this.game = gam;
-        D = db;
 
         // load the images for the droplet and the bucket
         wordImage = new Texture(Gdx.files.internal("sprites/blue_smile.png"));
@@ -197,7 +195,7 @@ public class GameScreen implements Screen {
         }));
 
         returnButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new MainMenuScreen(game, D));
+            game.setScreen(new MainMenuScreen(game));
             dispose();
         }));
 
