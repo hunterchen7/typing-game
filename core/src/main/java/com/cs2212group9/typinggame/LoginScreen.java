@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cs2212group9.typinggame.utils.DBHelper;
+import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.UserAuthenticator;
 
@@ -19,12 +19,10 @@ public class LoginScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
-    private final DBHelper D;
 
 
-    public LoginScreen(final TypingGame gam, DBHelper db) {
+    public LoginScreen(final TypingGame gam) {
         game = gam;
-        D = db;
 
         camera = new OrthographicCamera();
 
@@ -92,9 +90,9 @@ public class LoginScreen implements Screen {
             String password = passwordField.getText();
             // TODO: check if username and password match
 
-            UserAuthenticator user = new UserAuthenticator(D, username, password);
+            UserAuthenticator user = new UserAuthenticator(username, password);
             if (user.authenticate()) {
-                game.setScreen(new MainMenuScreen(game, D));
+                game.setScreen(new MainMenuScreen(game));
                 dispose();
             } else {
                 // display "username or password did not match any records"
@@ -110,12 +108,12 @@ public class LoginScreen implements Screen {
             // if not, add to database
             String username = usernameField.getText();
             String password = passwordField.getText();
-            UserAuthenticator user = new UserAuthenticator(D, username, password);
+            UserAuthenticator user = new UserAuthenticator(username, password);
 
             if (user.register()) {
-                // pop up to say registerd successfully
+                // pop up to say registered successfully
                 // go to main menu
-                game.setScreen(new MainMenuScreen(game, D));
+                game.setScreen(new MainMenuScreen(game));
                 dispose();
             } else {
                 // display "username or password already exists"

@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cs2212group9.typinggame.utils.DBHelper;
+import com.cs2212group9.typinggame.db.DBHelper;
+import com.cs2212group9.typinggame.db.Level;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class MainMenuScreen implements Screen {
@@ -19,11 +19,11 @@ public class MainMenuScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin;
+    private Level nextLevel;
 
-    private final DBHelper D;
+    public MainMenuScreen(final TypingGame gam) {
 
-    public MainMenuScreen(final TypingGame gam, DBHelper db) {
-        D = db;
+
         game = gam;
 
         camera = new OrthographicCamera();
@@ -97,12 +97,12 @@ public class MainMenuScreen implements Screen {
         table.row().padTop(10);
 
         playButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new GameScreen(game, D));
+            game.setScreen(new GameScreen(game));
             dispose();
         }));
 
         levelsButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new LevelsScreen(game, D));
+            game.setScreen(new LevelsScreen(game));
             dispose();
         }));
 
@@ -117,7 +117,7 @@ public class MainMenuScreen implements Screen {
         }));*/
 
         logoutButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new LoginScreen(game, D));
+            game.setScreen(new LoginScreen(game));
             dispose();
         }));
 

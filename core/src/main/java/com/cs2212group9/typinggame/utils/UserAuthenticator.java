@@ -1,25 +1,27 @@
 package com.cs2212group9.typinggame.utils;
 
+import com.cs2212group9.typinggame.db.User;
 import org.bouncycastle.util.encoders.Hex;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Connection;
+
 
 public class UserAuthenticator {
     private String username;
     private String password;
-    private DBHelper db;
 
     private final int pepperBytes = 2;
 
-    public UserAuthenticator(DBHelper db, String username, String password) {
+    public UserAuthenticator(String username, String password) {
         this.username = username;
         this.password = password;
-        this.db = db;
     }
 
+    // check if password matches
     // requires a separate function because it will be hashed
     private boolean passwordMatches(String entered, String stored) throws NoSuchAlgorithmException {
         for (int i = 0; i < Math.pow(2, 8 * pepperBytes); i++) { // 2^(n * 8), loops through all possible peppers
@@ -39,24 +41,24 @@ public class UserAuthenticator {
 
     // checks user/pw pair against DB
     public boolean authenticate() throws NoSuchAlgorithmException {
-        return this.db.userExists(this.username)
-            && passwordMatches(this.password, this.db.getUserPasswordHashed(this.username));
+        return User.userExists(this.username)
+            && passwordMatches(this.password, User.getUserPasswordHashed(this.username));
     }
 
     // adds user to DB, checks if already exists first
-    // use enum?
     public boolean register() {
         // check if in DB
-        if (this.db.userExists(this.username)) {
+        if (User.userExists(this.username)) {
             return false;
         } else {
+            String hashedPassword;
             try {
-                this.db.addUser(this.username, pepperAndHash(this.password));
+                hashedPassword = pepperAndHash(this.password);
             } catch (NoSuchAlgorithmException e) {
-                // TODO: handle this
-                e.printStackTrace();
+                // don't need to handle this, we can assume this error never gets thrown
                 return false;
             }
+            User.addUser(this.username, hashedPassword);
         }
         return true;
     }
