@@ -1,23 +1,24 @@
 package com.cs2212group9.typinggame.utils;
 
+import com.cs2212group9.typinggame.db.User;
 import org.bouncycastle.util.encoders.Hex;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Connection;
+
 
 public class UserAuthenticator {
     private String username;
     private String password;
-    private DBHelper db;
 
     private final int pepperBytes = 2;
 
-    public UserAuthenticator(DBHelper db, String username, String password) {
+    public UserAuthenticator(String username, String password) {
         this.username = username;
         this.password = password;
-        this.db = db;
     }
 
     // requires a separate function because it will be hashed
@@ -39,19 +40,19 @@ public class UserAuthenticator {
 
     // checks user/pw pair against DB
     public boolean authenticate() throws NoSuchAlgorithmException {
-        return this.db.userExists(this.username)
-            && passwordMatches(this.password, this.db.getUserPasswordHashed(this.username));
+        return User.userExists(this.username)
+            && passwordMatches(this.password, User.getUserPasswordHashed(this.username));
     }
 
     // adds user to DB, checks if already exists first
     // use enum?
     public boolean register() {
         // check if in DB
-        if (this.db.userExists(this.username)) {
+        if (User.userExists(this.username)) {
             return false;
         } else {
             try {
-                this.db.addUser(this.username, pepperAndHash(this.password));
+                User.addUser(this.username, pepperAndHash(this.password));
             } catch (NoSuchAlgorithmException e) {
                 // TODO: handle this
                 e.printStackTrace();
