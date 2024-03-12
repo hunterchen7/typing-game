@@ -21,6 +21,7 @@ public class UserAuthenticator {
         this.password = password;
     }
 
+    // check if password matches
     // requires a separate function because it will be hashed
     private boolean passwordMatches(String entered, String stored) throws NoSuchAlgorithmException {
         for (int i = 0; i < Math.pow(2, 8 * pepperBytes); i++) { // 2^(n * 8), loops through all possible peppers
@@ -45,19 +46,19 @@ public class UserAuthenticator {
     }
 
     // adds user to DB, checks if already exists first
-    // use enum?
     public boolean register() {
         // check if in DB
         if (User.userExists(this.username)) {
             return false;
         } else {
+            String hashedPassword;
             try {
-                User.addUser(this.username, pepperAndHash(this.password));
+                hashedPassword = pepperAndHash(this.password);
             } catch (NoSuchAlgorithmException e) {
-                // TODO: handle this
-                e.printStackTrace();
+                // don't need to handle this, we can assume this error never gets thrown
                 return false;
             }
+            User.addUser(this.username, hashedPassword);
         }
         return true;
     }

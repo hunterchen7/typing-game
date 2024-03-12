@@ -111,7 +111,7 @@ public class LoginScreen implements Screen {
             UserAuthenticator user = new UserAuthenticator(username, password);
 
             if (user.register()) {
-                // pop up to say registerd successfully
+                // pop up to say registered successfully
                 // go to main menu
                 game.setScreen(new MainMenuScreen(game));
                 dispose();

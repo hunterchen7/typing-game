@@ -23,9 +23,9 @@ public class User {
     }
 
     // adds a user to the database
-    public static boolean addUser(String username, String password) {
+    public static void addUser(String username, String password) {
         if (userExists(username)) {
-            return false;
+            return;
         }
 
         String sql = // default difficulty modifier is 0, date created is now
@@ -38,11 +38,9 @@ public class User {
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             pstmt.executeUpdate();
-            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return false;
     }
 
     // returns hashed password
@@ -55,7 +53,6 @@ public class User {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return password;
     }
 }
