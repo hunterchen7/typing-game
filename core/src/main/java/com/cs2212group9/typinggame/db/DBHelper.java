@@ -31,7 +31,9 @@ public class DBHelper {
                     username TEXT PRIMARY KEY,
                     password TEXT,
                     date_created DATETIME,
-                    difficulty_modifier INTEGER
+                    difficulty_modifier INTEGER,
+                    is_admin BOOLEAN,
+                    instant_death BOOLEAN
                 );
             """,
             // words as csv??

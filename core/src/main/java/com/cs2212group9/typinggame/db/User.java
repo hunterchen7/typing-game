@@ -19,7 +19,7 @@ public class User {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("user: " + user);
+        System.out.println("username: " + user + " exists");
 
         return user != null;
     }
@@ -32,8 +32,8 @@ public class User {
 
         String sql = // default difficulty modifier is 0, date created is now
             """
-                INSERT INTO users (username, password, date_created, difficulty_modifier)
-                VALUES (?, ?, datetime('now'), 0);
+                INSERT INTO users (username, password, date_created, difficulty_modifier, is_admin, instant_death)
+                VALUES (?, ?, datetime('now'), 0, FALSE, FALSE);
             """;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

@@ -1,7 +1,4 @@
-import bisect
 import sqlite3
-
-con = sqlite3.connect('typinggame.db')
 
 toprow = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'}
 homerow = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'}
@@ -36,7 +33,7 @@ all_words = []
 for word in sorted(words1000, key=len):
     word = word.strip()
     rows = contains_rows(word)
-    
+
     # insert into list
     if rows == 'h':
         homerow_words.append(word)
@@ -60,38 +57,37 @@ print(all_words[:-10])
 
 # level ranges increase in word length
 # level 1 - 2: home short
-# level 3 - 6: top short
-# level 7 - 9: home + bottom
+# level 3: home + bottom
+# level 6 - 9: top short
 # level 10 - 14: home + top
 # level 15 - 20: all
-# level 21 - 30: all but top 10000 words
+# level 21 - 30: all but using top 10000 words
 
 levels = {}
-# list comprehension is super slow but this is a script and it doesn't matter, and it makes it more readable
+# list comprehension for readability, not for performance
 levels[1] = [i for i in homerow_words if len(i) <= 3]
 levels[2] = [i for i in homerow_words if len(i) > 1 and len(i) <= 4]
 
-levels[3] = [i for i in toprow_words if len(i) <= 3]
-levels[4] = [i for i in toprow_words if len(i) > 1 and len(i) <= 4 and len(set(i)) <= 3] # no double letters
-levels[5] = [i for i in toprow_words if len(i) > 1 and len(i) <= 4]
-levels[6] = [i for i in toprow_words if len(i) > 1 and len(i) <= 5]
+levels[3] = [i for i in homebottom_words if len(i) > 1 and len(i) <= 4]
 
-levels[7] = [i for i in homebottom_words if len(i) > 1 and len(i) <= 4 and len(set(i)) <= 3]
-levels[8] = [i for i in homebottom_words if len(i) > 1 and len(i) <= 4]
-levels[9] = [i for i in homebottom_words if len(i) > 1 and len(i) <= 5]
+levels[4] = [i for i in toprow_words if len(i) <= 4] # can include 'I'
+levels[5] = [i for i in toprow_words if len(i) > 2 and len(i) <= 5]
+levels[6] = [i for i in toprow_words if len(i) > 2 and len(i) <= 6]
+levels[7] = [i for i in toprow_words if len(i) > 2 and len(i) <= 7]
 
-levels[10] = [i for i in hometop_words if len(i) > 1 and len(i) <= 4 and len(set(i)) <= 3]
-levels[11] = [i for i in hometop_words if len(i) > 1 and len(i) <= 4]
-levels[12] = [i for i in hometop_words if len(i) > 2 and len(i) <= 5 and len(set(i)) <= 3]
-levels[13] = [i for i in hometop_words if len(i) > 2 and len(i) <= 5 and len(set(i)) <= 4]
-levels[14] = [i for i in hometop_words if len(i) > 2 and len(i) <= 5]
+levels[8] = [i for i in hometop_words if len(i) > 2 and len(i) <= 5]
+levels[10] = [i for i in hometop_words if len(i) > 2 and len(i) <= 6]
+levels[11] = [i for i in hometop_words if len(i) > 2 and len(i) <= 7]
+levels[12] = [i for i in hometop_words if len(i) > 3 and len(i) <= 7]
+levels[13] = [i for i in hometop_words if len(i) > 3 and len(i) <= 8]
+levels[14] = [i for i in hometop_words if len(i) > 2 and len(i) <= 9]
 
-levels[15] = [i for i in all_words if len(i) > 2 and len(i) <= 6 and len(set(i)) <= 5]
-levels[16] = [i for i in all_words if len(i) > 2 and len(i) <= 6]
-levels[17] = [i for i in all_words if len(i) > 2 and len(i) <= 7 and len(set(i)) <= 6]
-levels[18] = [i for i in all_words if len(i) > 2 and len(i) <= 7]
-levels[19] = [i for i in all_words if len(i) > 3 and len(i) <= 8]
-levels[20] = [i for i in all_words if len(i) > 4 and len(i) <= 10]
+levels[15] = [i for i in all_words if len(i) > 2 and len(i) <= 8 and len(set(i)) <= 5]
+levels[16] = [i for i in all_words if len(i) > 2 and len(i) <= 9]
+levels[17] = [i for i in all_words if len(i) > 2 and len(i) <= 9 and len(set(i)) <= 6]
+levels[18] = [i for i in all_words if len(i) > 2 and len(i) <= 10]
+levels[19] = [i for i in all_words if len(i) > 3 and len(i) <= 10]
+levels[20] = [i for i in all_words if len(i) > 4 and len(i) <= 11]
 
 f = open('10000words.txt', 'r')
 words10000 = sorted([w.strip() for w in f.readlines()], key=len)
@@ -106,4 +102,14 @@ levels[28] = [i for i in words10000 if len(i) > 8 and len(i) <= 15]
 levels[29] = [i for i in words10000 if len(i) > 9 and len(i) <= 16]
 levels[30] = [i for i in words10000 if len(i) > 10]
 
-# not sure what to do with these now that they're generated
+for level in levels:
+    print(level, len(levels[level]))
+
+con = sqlite3.connect('../../typinggame.db')
+con.execute('CREATE TABLE IF NOT EXISTS levels (level_id INTEGER PRIMARY KEY, words TEXT, difficulty INTEGER, waves INTEGER)')
+
+for level, words in levels.items():
+    con.execute('INSERT INTO levels (level_id, words, difficulty, waves) VALUES (?, ?, ?, ?)', (level, ','.join(words), 1, level * 10))
+
+con.commit()
+con.close()
