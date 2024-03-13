@@ -11,9 +11,6 @@ public class TypingGame extends Game {
     BitmapFont font;
 
     public void create() {
-        DBHelper dbHelper = new DBHelper();
-        dbHelper.createNewTable();
-
         batch = new SpriteBatch();
         // Use LibGDX's default Arial font.
         font = new BitmapFont();

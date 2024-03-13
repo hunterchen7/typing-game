@@ -19,6 +19,8 @@ public class User {
             System.out.println(e.getMessage());
         }
 
+        System.out.println("user: " + user);
+
         return user != null;
     }
 
