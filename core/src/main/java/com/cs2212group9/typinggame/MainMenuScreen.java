@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.db.Level;
+import com.cs2212group9.typinggame.db.User;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class MainMenuScreen implements Screen {
@@ -19,7 +20,7 @@ public class MainMenuScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin;
-    private Level nextLevel;
+    private int nextLevel;
 
     public MainMenuScreen(final TypingGame gam) {
         game = gam;
@@ -96,7 +97,7 @@ public class MainMenuScreen implements Screen {
 
         playButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // should be last level
-            game.setScreen(new GameScreen(game, 1));
+            game.setScreen(new GameScreen(game, this.nextLevel));
             dispose();
         }));
 

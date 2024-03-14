@@ -7,6 +7,11 @@ import java.security.NoSuchAlgorithmException;
 
 // from https://github.com/szsascha/libgdx-multiplayer-authentication-flow
 public class InputListenerFactory {
+    /**
+     * Create a ClickListener with a consumer
+     * @param consumer - the consumer to be called when the event is triggered
+     * @return the ClickListener
+     */
     public static ClickListener createClickListener(TriConsumer<InputEvent, Float, Float> consumer) {
         return new ClickListener() {
             @Override

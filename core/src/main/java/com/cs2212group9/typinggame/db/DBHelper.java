@@ -18,11 +18,14 @@ public class DBHelper {
         createNewTable();
     }
 
+    /** The connection to the database */
     public static Connection getConnection() {
         return conn;
     }
 
-    // creates new tables if they don't already exist
+    /**
+     * Create users, levels, and scores tables if they don't exist
+     */
     public static void createNewTable() {
         String[] commands = {
             // considering making a "user id" primary key so that people can have the same usernames

@@ -18,7 +18,7 @@ public class LevelsScreen implements Screen {
     private final Viewport viewport;
     private Skin skin;
     private Level levelDb;
-    private int lastLevel = 1;
+    private int selectedLevel = 1;
 
 
     public LevelsScreen(final TypingGame gam) {
@@ -37,7 +37,7 @@ public class LevelsScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
-    public LevelsScreen(final TypingGame gam, int lastLevel) {
+    public LevelsScreen(final TypingGame gam, int selectedLevel) {
         game = gam;
         levelDb = new Level();
 
@@ -51,7 +51,7 @@ public class LevelsScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-        this.lastLevel = lastLevel;
+        this.selectedLevel = selectedLevel;
     }
 
     @Override

@@ -6,15 +6,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class User {
+    /** The connection to the database */
     static Connection conn = DBHelper.getConnection();
-    private static String username;
 
-    public User(String username) {
-        User.username = username;
-    }
-
-    // checks if a user exists
-    public static boolean userExists() {
+    /**
+     * @param username - the username of the user
+     * @return true if the user exists, false otherwise
+     */
+    public static boolean userExists(String username) {
         String sql = "SELECT username FROM users WHERE username = '" + username + "';";
         String user = null;
 
@@ -30,8 +29,13 @@ public class User {
     }
 
     // adds a user to the database
+    /**
+     * @param username - the username of the user
+     * @param password - the hashed password of the user
+     */
     public static void addUser(String username, String password) {
-        if (userExists()) {
+        if (userExists(username)) {
+            System.out.println("User already exists");
             return;
         }
 
@@ -50,7 +54,10 @@ public class User {
         }
     }
 
-    // returns hashed password
+    /**
+     * @param username - the username of the user
+     * @return the hashed password of the user
+     */
     public static String getUserPasswordHashed(String username) {
         String sql = "SELECT password FROM users WHERE username = '" + username + "';";
         String password = null;
@@ -61,5 +68,22 @@ public class User {
             System.out.println(e.getMessage());
         }
         return password;
+    }
+
+    /**
+     * @param username - the username of the user
+     * @return the next unlocked level of the user
+     */
+    public static int getNextLevel(String username) {
+        String sql = "SELECT level FROM scores WHERE user = '" + username + "' ORDER BY date_played DESC LIMIT 1;";
+        int level = 1;
+
+        try (Statement stmt = conn.createStatement()) {
+            level = stmt.executeQuery(sql).getInt("level");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return level;
     }
 }
