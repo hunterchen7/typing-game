@@ -95,7 +95,8 @@ public class MainMenuScreen implements Screen {
         table.row().padTop(10);
 
         playButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new GameScreen(game));
+            // should be last level
+            game.setScreen(new GameScreen(game, 1));
             dispose();
         }));
 

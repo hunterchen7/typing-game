@@ -11,8 +11,9 @@ import java.sql.Connection;
 
 
 public class UserAuthenticator {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
+    private final User user;
 
     // number of bytes in pepper
     private final int pepperBytes = 2;
@@ -20,6 +21,7 @@ public class UserAuthenticator {
     public UserAuthenticator(String username, String password) {
         this.username = username;
         this.password = password;
+        this.user = new User(username);
     }
 
     // check if password matches
@@ -42,14 +44,14 @@ public class UserAuthenticator {
 
     // checks user/pw pair against DB
     public boolean authenticate() throws NoSuchAlgorithmException {
-        return User.userExists(this.username)
+        return User.userExists()
             && passwordMatches(this.password, User.getUserPasswordHashed(this.username));
     }
 
     // adds user to DB, checks if already exists first
     public boolean register() {
         // check if in DB
-        if (User.userExists(this.username)) {
+        if (User.userExists()) {
             return false;
         } else {
             String hashedPassword;

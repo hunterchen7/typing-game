@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.db.Level;
 
@@ -19,6 +18,7 @@ public class LevelsScreen implements Screen {
     private final Viewport viewport;
     private Skin skin;
     private Level levelDb;
+    private int lastLevel = 1;
 
 
     public LevelsScreen(final TypingGame gam) {
@@ -35,6 +35,23 @@ public class LevelsScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    }
+
+    public LevelsScreen(final TypingGame gam, int lastLevel) {
+        game = gam;
+        levelDb = new Level();
+
+        camera = new OrthographicCamera();
+
+        viewport = new FitViewport(1200, 800, camera);
+        viewport.apply();
+
+        camera.position.set(1200, 800, 0);
+        camera.update();
+
+        stage = new Stage();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.lastLevel = lastLevel;
     }
 
     @Override
@@ -66,13 +83,16 @@ public class LevelsScreen implements Screen {
         int levelCount = levelDb.levelCount();
         System.out.println("Level count: " + levelCount);
 
-        for (int i = 1; i <= levelCount; i++) { // placeholder levels
-            TextButton levelButton = new TextButton("Level " + i, skin);
-            levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-                game.setScreen(new GameScreen(game));
-                dispose();
-            }));
-            table.add(levelButton).width(200).pad(5);
+        for (int i = 1; i <= levelCount / 3; i++) { // placeholder levels
+            for (int j = 1; j <= 3; j++) {
+                int level = i * j;
+                TextButton levelButton = new TextButton("Level " + level, skin);
+                levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+                    game.setScreen(new GameScreen(game, level));
+                    dispose();
+                }));
+                table.add(levelButton).width(200).pad(5);
+            }
             table.row();
         }
 

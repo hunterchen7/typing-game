@@ -5,11 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public interface User {
-    Connection conn = DBHelper.getConnection();
+public class User {
+    static Connection conn = DBHelper.getConnection();
+    private static String username;
+
+    public User(String username) {
+        User.username = username;
+    }
 
     // checks if a user exists
-    static boolean userExists(String username) {
+    public static boolean userExists() {
         String sql = "SELECT username FROM users WHERE username = '" + username + "';";
         String user = null;
 
@@ -25,8 +30,8 @@ public interface User {
     }
 
     // adds a user to the database
-    static void addUser(String username, String password) {
-        if (userExists(username)) {
+    public static void addUser(String username, String password) {
+        if (userExists()) {
             return;
         }
 
@@ -46,7 +51,7 @@ public interface User {
     }
 
     // returns hashed password
-    static String getUserPasswordHashed(String username) {
+    public static String getUserPasswordHashed(String username) {
         String sql = "SELECT password FROM users WHERE username = '" + username + "';";
         String password = null;
 

@@ -23,7 +23,7 @@ public class Level {
     }
 
     // returns the words of a level
-    public String[] getLevelWords(int level) {
+    public static String[] getLevelWords(int level) {
         String sql = "SELECT words FROM levels WHERE level_id = " + level + ";";
         String words = null;
 
@@ -52,7 +52,7 @@ public class Level {
     }
 
     // returns the number of waves of a level
-    public int getLevelWaves(int level) {
+    public static int getLevelWaves(int level) {
         String sql = "SELECT waves FROM levels WHERE level_id = " + level + ";";
         int waves = 0;
 

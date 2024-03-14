@@ -1,5 +1,6 @@
 package com.cs2212group9.typinggame;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBHelper;
+import com.cs2212group9.typinggame.db.Level;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class GameScreen implements Screen {
@@ -37,8 +39,10 @@ public class GameScreen implements Screen {
     int dropsGathered;
     Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private Stage stage;
+    private String[] wordPool;
+    private int waves;
 
-    public GameScreen(final TypingGame gam) {
+    public GameScreen(final TypingGame gam, final int levelId) {
         this.game = gam;
 
         // load the images for the droplet and the bucket
@@ -68,7 +72,12 @@ public class GameScreen implements Screen {
 
         stage = new Stage();
 
+        this.wordPool = Level.getLevelWords(levelId);
+        this.waves = Level.getLevelWaves(levelId);
 
+        System.out.println("Word pool for level " + levelId + " (" + wordPool.length + " words): " + Arrays.toString(wordPool));
+
+        System.out.println("Waves: " + waves);
     }
 
     private void spawnRaindrop() {
