@@ -88,7 +88,6 @@ public class LoginScreen implements Screen {
             // else display "username or password did not match any records"
             String username = usernameField.getText();
             String password = passwordField.getText();
-            // TODO: check if username and password match
 
             UserAuthenticator user = new UserAuthenticator(username, password);
             if (user.authenticate()) {

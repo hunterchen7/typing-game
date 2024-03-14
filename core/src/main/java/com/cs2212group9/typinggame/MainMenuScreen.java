@@ -22,8 +22,6 @@ public class MainMenuScreen implements Screen {
     private Level nextLevel;
 
     public MainMenuScreen(final TypingGame gam) {
-
-
         game = gam;
 
         camera = new OrthographicCamera();

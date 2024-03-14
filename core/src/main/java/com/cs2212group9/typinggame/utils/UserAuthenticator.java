@@ -14,6 +14,7 @@ public class UserAuthenticator {
     private String username;
     private String password;
 
+    // number of bytes in pepper
     private final int pepperBytes = 2;
 
     public UserAuthenticator(String username, String password) {
@@ -24,16 +25,16 @@ public class UserAuthenticator {
     // check if password matches
     // requires a separate function because it will be hashed
     private boolean passwordMatches(String entered, String stored) throws NoSuchAlgorithmException {
+        byte[] hashedPassword = hashBytesToBytes(entered.getBytes(StandardCharsets.UTF_8));
         for (int i = 0; i < Math.pow(2, 8 * pepperBytes); i++) { // 2^(n * 8), loops through all possible peppers
             // all strings of byte values
             byte[] pepper = new byte[pepperBytes];
-            for (int j = 0; j < pepperBytes; j++) { // yay bit math
+            for (int j = 0; j < pepperBytes; j++) { // for each byte
                 pepper[j] = (byte) ((i >> (8 * j)) & 0xFF); // shift and mask
             }
-            byte[] combined = combineArrays(entered.getBytes(StandardCharsets.UTF_8), pepper);
-            if (hashBytes(combined).equals(stored)) {
-                // System.out.println("combined: " + new String(combined));
-                return true;
+            byte[] combined = combineArrays(hashedPassword, pepper);
+            if (hashBytesToString(combined).equals(stored)) {
+                return true; // match found
             }
         }
         return false; // no match found for all possible peppers
@@ -63,16 +64,19 @@ public class UserAuthenticator {
         return true;
     }
 
+    // hash password, add pepper, hash again
     private String pepperAndHash(String password) throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
 
         byte[] pepper = new byte[pepperBytes];
         random.nextBytes(pepper);
 
-        byte[] combined = combineArrays(password.getBytes(StandardCharsets.UTF_16), pepper);
+        byte[] hashedPassword = hashBytesToBytes(password.getBytes(StandardCharsets.UTF_8));
+
+        byte[] combined = combineArrays(hashedPassword, pepper);
         // System.out.println("combined: " + new String(combined));
 
-        return hashBytes(combined);
+        return hashBytesToString(combined);
     }
 
     private byte[] combineArrays(byte[] first, byte[] second) {
@@ -82,14 +86,18 @@ public class UserAuthenticator {
         return combined;
     }
 
-    private String hashBytes(byte[] bytes) throws NoSuchAlgorithmException {
+    private String hashBytesToString(byte[] bytes) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         final byte[] hashbytes = digest.digest(bytes);
-        return new String(Hex.encode(hashbytes));
+        return bytesToString(hashbytes);
     }
 
-    private String hashPassword(String password) throws NoSuchAlgorithmException {
-        return hashBytes(password.getBytes(StandardCharsets.UTF_16));
+    private String bytesToString(byte[] bytes) {
+        return new String(Hex.encode(bytes));
     }
 
+    private byte[] hashBytesToBytes(byte[] bytes) throws NoSuchAlgorithmException {
+        final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+        return digest.digest(bytes);
+    }
 }

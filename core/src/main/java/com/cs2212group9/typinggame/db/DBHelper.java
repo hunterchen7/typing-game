@@ -14,6 +14,8 @@ public class DBHelper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        createNewTable();
     }
 
     public static Connection getConnection() {
@@ -21,7 +23,7 @@ public class DBHelper {
     }
 
     // creates new tables if they don't already exist
-    public void createNewTable() {
+    public static void createNewTable() {
         String[] commands = {
             // considering making a "user id" primary key so that people can have the same usernames
             """
@@ -29,7 +31,9 @@ public class DBHelper {
                     username TEXT PRIMARY KEY,
                     password TEXT,
                     date_created DATETIME,
-                    difficulty_modifier INTEGER
+                    difficulty_modifier INTEGER,
+                    is_admin BOOLEAN,
+                    instant_death BOOLEAN
                 );
             """,
             // words as csv??
