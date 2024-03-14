@@ -15,6 +15,10 @@ public class OptionsScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
+
+    /** Constructor for the OptionsScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     */
     public OptionsScreen(final TypingGame gam) {
         game = gam;
 

@@ -20,7 +20,9 @@ public class LoginScreen implements Screen {
     private final Viewport viewport;
     private Skin skin;
 
-
+    /** Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     */
     public LoginScreen(final TypingGame gam) {
         game = gam;
 
@@ -52,6 +54,10 @@ public class LoginScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Show the login screen, set up the stage and add actors.
+     * add buttons and text fields for username and password
+     */
     @Override
     // TODO: don't hard code positions, make dynamic
     public void show() {

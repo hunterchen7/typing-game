@@ -10,6 +10,9 @@ public class TypingGame extends Game {
     SpriteBatch batch;
     BitmapFont font;
 
+    /**
+     * Create the game by initializing a login screen
+     */
     public void create() {
         batch = new SpriteBatch();
         // Use LibGDX's default Arial font.
@@ -17,10 +20,16 @@ public class TypingGame extends Game {
         this.setScreen(new LoginScreen(this));
     }
 
+    /**
+     * Render the game
+     */
     public void render() {
         super.render(); // important!
     }
 
+    /**
+     * Remember to clean up after yourself, don't leave everything for the gc :^)
+     */
     public void dispose() {
         batch.dispose();
         font.dispose();

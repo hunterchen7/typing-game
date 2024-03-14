@@ -20,7 +20,10 @@ public class LevelsScreen implements Screen {
     private Level levelDb;
     private int selectedLevel = 1;
 
-
+    /**
+     * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     */
     public LevelsScreen(final TypingGame gam) {
         game = gam;
         levelDb = new Level();
@@ -37,6 +40,11 @@ public class LevelsScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
+    /**
+     * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     * @param selectedLevel - the default level to be played
+     */
     public LevelsScreen(final TypingGame gam, int selectedLevel) {
         game = gam;
         levelDb = new Level();
@@ -70,6 +78,9 @@ public class LevelsScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Show the levels screen, generates button levels among other things
+     */
     @Override
     // TODO: don't hard code positions, make dynamic
     public void show() {

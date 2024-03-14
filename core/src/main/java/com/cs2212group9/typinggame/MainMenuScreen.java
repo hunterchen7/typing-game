@@ -22,6 +22,10 @@ public class MainMenuScreen implements Screen {
     private final Skin skin;
     private int nextLevel;
 
+    /**
+     * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     */
     public MainMenuScreen(final TypingGame gam) {
         game = gam;
 
@@ -58,6 +62,10 @@ public class MainMenuScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Show the main menu screen, set up the stage and add actors.
+     * add buttons for play, levels, high scores, options, logout, and quit
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
