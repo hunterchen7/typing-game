@@ -9,6 +9,19 @@ import java.sql.Statement;
 public class Level {
     static Connection conn = DBHelper.getConnection();
 
+    public int levelCount() {
+        String sql = "SELECT COUNT(*) FROM levels;";
+        int count = 0;
+
+        try (Statement stmt = conn.createStatement()) {
+            count = stmt.executeQuery(sql).getInt(1);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return count;
+    }
+
     // returns the words of a level
     public String[] getLevelWords(int level) {
         String sql = "SELECT words FROM levels WHERE level_id = " + level + ";";
