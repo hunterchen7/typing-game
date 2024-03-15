@@ -14,14 +14,19 @@ public class DBHelper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        createNewTable();
     }
 
+    /** The connection to the database */
     public static Connection getConnection() {
         return conn;
     }
 
-    // creates new tables if they don't already exist
-    public void createNewTable() {
+    /**
+     * Create users, levels, and scores tables if they don't exist
+     */
+    public static void createNewTable() {
         String[] commands = {
             // considering making a "user id" primary key so that people can have the same usernames
             """
@@ -29,7 +34,9 @@ public class DBHelper {
                     username TEXT PRIMARY KEY,
                     password TEXT,
                     date_created DATETIME,
-                    difficulty_modifier INTEGER
+                    difficulty_modifier INTEGER,
+                    is_admin BOOLEAN,
+                    instant_death BOOLEAN
                 );
             """,
             // words as csv??

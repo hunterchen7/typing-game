@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.db.Level;
+import com.cs2212group9.typinggame.db.User;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class MainMenuScreen implements Screen {
@@ -19,11 +20,13 @@ public class MainMenuScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin;
-    private Level nextLevel;
+    private int nextLevel;
 
+    /**
+     * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     */
     public MainMenuScreen(final TypingGame gam) {
-
-
         game = gam;
 
         camera = new OrthographicCamera();
@@ -59,6 +62,10 @@ public class MainMenuScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Show the main menu screen, set up the stage and add actors.
+     * add buttons for play, levels, high scores, options, logout, and quit
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -97,7 +104,8 @@ public class MainMenuScreen implements Screen {
         table.row().padTop(10);
 
         playButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new GameScreen(game));
+            // should be last level
+            game.setScreen(new GameScreen(game, this.nextLevel));
             dispose();
         }));
 

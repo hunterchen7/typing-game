@@ -37,6 +37,8 @@ For example, `core:clean` removes `build` folder only from the `core` project.
 ## Running in IntelliJ
 Run/Debug `Lwjgl3Launcher.java`
 
+another test commit
+
 ## Todo
 - [ ] Log in screen
   - [X] UI

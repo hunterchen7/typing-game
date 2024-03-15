@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
+import com.cs2212group9.typinggame.db.Level;
 
 public class LevelsScreen implements Screen {
 
@@ -17,10 +17,16 @@ public class LevelsScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
+    private Level levelDb;
+    private int selectedLevel = 1;
 
-
+    /**
+     * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     */
     public LevelsScreen(final TypingGame gam) {
         game = gam;
+        levelDb = new Level();
 
         camera = new OrthographicCamera();
 
@@ -32,6 +38,28 @@ public class LevelsScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    }
+
+    /**
+     * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
+     * @param gam - the game object
+     * @param selectedLevel - the default level to be played
+     */
+    public LevelsScreen(final TypingGame gam, int selectedLevel) {
+        game = gam;
+        levelDb = new Level();
+
+        camera = new OrthographicCamera();
+
+        viewport = new FitViewport(1200, 800, camera);
+        viewport.apply();
+
+        camera.position.set(1200, 800, 0);
+        camera.update();
+
+        stage = new Stage();
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.selectedLevel = selectedLevel;
     }
 
     @Override
@@ -50,6 +78,9 @@ public class LevelsScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Show the levels screen, generates button levels among other things
+     */
     @Override
     // TODO: don't hard code positions, make dynamic
     public void show() {
@@ -60,14 +91,19 @@ public class LevelsScreen implements Screen {
         table.top();
         table.padTop(200);
 
-        // TODO: replace with level data from DB
-        for (int i = 1; i <= 10; i++) { // placeholder levels
-            TextButton levelButton = new TextButton("Level " + i, skin);
-            levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-                game.setScreen(new GameScreen(game));
-                dispose();
-            }));
-            table.add(levelButton).width(200).pad(5);
+        int levelCount = levelDb.levelCount();
+        System.out.println("Level count: " + levelCount);
+
+        for (int i = 1; i <= levelCount / 3; i++) { // placeholder levels
+            for (int j = 1; j <= 3; j++) {
+                int level = i * j;
+                TextButton levelButton = new TextButton("Level " + level, skin);
+                levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+                    game.setScreen(new GameScreen(game, level));
+                    dispose();
+                }));
+                table.add(levelButton).width(200).pad(5);
+            }
             table.row();
         }
 
