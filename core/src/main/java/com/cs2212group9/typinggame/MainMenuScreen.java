@@ -8,9 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cs2212group9.typinggame.db.DBHelper;
-import com.cs2212group9.typinggame.db.Level;
-import com.cs2212group9.typinggame.db.User;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class MainMenuScreen implements Screen {
@@ -39,6 +36,8 @@ public class MainMenuScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+
+        this.nextLevel = 1;
     }
 
     @Override

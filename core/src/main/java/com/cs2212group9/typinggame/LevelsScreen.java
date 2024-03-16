@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
-import com.cs2212group9.typinggame.db.Level;
+import com.cs2212group9.typinggame.db.DBLevel;
 
 public class LevelsScreen implements Screen {
 
@@ -17,7 +17,7 @@ public class LevelsScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
-    private Level levelDb;
+    private DBLevel levelDb;
     private int selectedLevel = 1;
 
     /**
@@ -26,7 +26,7 @@ public class LevelsScreen implements Screen {
      */
     public LevelsScreen(final TypingGame gam) {
         game = gam;
-        levelDb = new Level();
+        levelDb = new DBLevel();
 
         camera = new OrthographicCamera();
 
@@ -47,7 +47,7 @@ public class LevelsScreen implements Screen {
      */
     public LevelsScreen(final TypingGame gam, int selectedLevel) {
         game = gam;
-        levelDb = new Level();
+        levelDb = new DBLevel();
 
         camera = new OrthographicCamera();
 
@@ -92,12 +92,12 @@ public class LevelsScreen implements Screen {
         table.padTop(200);
 
         int levelCount = levelDb.levelCount();
-        System.out.println("Level count: " + levelCount);
+        System.out.println("DBLevel count: " + levelCount);
 
         for (int i = 1; i <= levelCount / 3; i++) { // placeholder levels
             for (int j = 1; j <= 3; j++) {
                 int level = i * j;
-                TextButton levelButton = new TextButton("Level " + level, skin);
+                TextButton levelButton = new TextButton("DBLevel " + level, skin);
                 levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                     game.setScreen(new GameScreen(game, level));
                     dispose();

@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 // class for retrieving level data
 // this class does not require setters, level data should be preset
-public class Level {
+public class DBLevel {
     static Connection conn = DBHelper.getConnection();
 
     /** @return the total number of levels */

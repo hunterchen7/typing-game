@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class User {
+public class DBUser {
     /** The connection to the database */
     static Connection conn = DBHelper.getConnection();
 
@@ -35,7 +35,7 @@ public class User {
      */
     public static void addUser(String username, String password) {
         if (userExists(username)) {
-            System.out.println("User already exists");
+            System.out.println("DBUser already exists");
             return;
         }
 
