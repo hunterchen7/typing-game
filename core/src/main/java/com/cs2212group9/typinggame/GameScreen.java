@@ -20,8 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.cs2212group9.typinggame.db.DBHelper;
-import com.cs2212group9.typinggame.db.Level;
+import com.cs2212group9.typinggame.db.DBLevel;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class GameScreen implements Screen {
@@ -77,8 +76,8 @@ public class GameScreen implements Screen {
 
         stage = new Stage();
 
-        this.wordPool = Level.getLevelWords(levelId);
-        this.waves = Level.getLevelWaves(levelId);
+        this.wordPool = DBLevel.getLevelWords(levelId);
+        this.waves = DBLevel.getLevelWaves(levelId);
 
         System.out.println("Word pool for level " + levelId + " (" + wordPool.length + " words): " + Arrays.toString(wordPool));
 

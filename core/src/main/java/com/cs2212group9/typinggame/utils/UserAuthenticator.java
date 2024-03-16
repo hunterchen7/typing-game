@@ -1,13 +1,12 @@
 package com.cs2212group9.typinggame.utils;
 
-import com.cs2212group9.typinggame.db.User;
+import com.cs2212group9.typinggame.db.DBUser;
 import org.bouncycastle.util.encoders.Hex;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Connection;
 
 
 public class UserAuthenticator {
@@ -52,8 +51,8 @@ public class UserAuthenticator {
      * @return true if the user exists and the password matches, false otherwise
      */
     public boolean authenticate() throws NoSuchAlgorithmException {
-        return User.userExists(this.username)
-            && passwordMatches(this.password, User.getUserPasswordHashed(this.username));
+        return DBUser.userExists(this.username)
+            && passwordMatches(this.password, DBUser.getUserPasswordHashed(this.username));
     }
 
     // adds user to DB, checks if already exists first
@@ -63,7 +62,7 @@ public class UserAuthenticator {
      */
     public boolean register() {
         // check if in DB
-        if (User.userExists(this.username)) {
+        if (DBUser.userExists(this.username)) {
             return false;
         } else {
             String hashedPassword;
@@ -73,7 +72,7 @@ public class UserAuthenticator {
                 // don't need to handle this, we can assume this error never gets thrown
                 return false;
             }
-            User.addUser(this.username, hashedPassword);
+            DBUser.addUser(this.username, hashedPassword);
         }
         return true;
     }
