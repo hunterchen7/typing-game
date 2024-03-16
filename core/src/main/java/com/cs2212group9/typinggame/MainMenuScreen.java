@@ -39,6 +39,8 @@ public class MainMenuScreen implements Screen {
 
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+
+        this.nextLevel = 1;
     }
 
     @Override
