@@ -94,10 +94,10 @@ public class LevelsScreen implements Screen {
         int levelCount = levelDb.levelCount();
         System.out.println("DBLevel count: " + levelCount);
 
-        for (int i = 1; i <= levelCount / 3; i++) { // placeholder levels
+        for (int i = 0; i < levelCount / 3; i++) { // placeholder levels
             for (int j = 1; j <= 3; j++) {
-                int level = i * j;
-                TextButton levelButton = new TextButton("DBLevel " + level, skin);
+                int level = i * 3 + j;
+                TextButton levelButton = new TextButton("Level " + level, skin);
                 levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                     game.setScreen(new GameScreen(game, level));
                     dispose();

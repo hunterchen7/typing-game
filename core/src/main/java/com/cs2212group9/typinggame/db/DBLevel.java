@@ -1,5 +1,7 @@
 package com.cs2212group9.typinggame.db;
 
+import com.badlogic.gdx.utils.Array;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,7 +32,8 @@ public class DBLevel {
      * @param level - the level to get the words from
      * @return an array of words that belongs to a level
      */
-    public static String[] getLevelWords(int level) {
+    public static Array<String> getLevelWords(int level) {
+        System.out.println("getting words for level " + level);
         String sql = "SELECT words FROM levels WHERE level_id = " + level + ";";
         String words = null;
 
@@ -41,7 +44,13 @@ public class DBLevel {
         }
 
         assert words != null;
-        return words.split(",");
+        Array<String> wordPool = new Array<>(words.split(","));
+        int waves = getLevelWaves(level);
+        Array<String> wordList = new Array<>();
+        for (int i = 0; i < waves; i++) {
+            wordList.add(wordPool.random());
+        }
+        return wordList;
     }
 
     // returns the difficulty of a level
