@@ -86,6 +86,7 @@ public class GameScreen implements Screen {
      * spawns a word
      */
     private void spawnWord() {
+        if (waves == 0) return;
         waves -= 1;
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(128, 800 - 128);
@@ -97,58 +98,9 @@ public class GameScreen implements Screen {
     }
 
     private boolean state = true;
-    private String selectedWord = ""; // The word currently being typed/spelled
-    private boolean wordSelected = false; // Flag to indicate if a word is currently selected
-
-    /*
-    private void checkWordSelection() {
-        // If no word is selected and the typed character corresponds to a word
-        if (!wordSelected && currentTypedWord.length() == 1) {
-            for (String word : wordsList) {
-                if (word.toUpperCase().startsWith(currentTypedWord.toUpperCase())) {
-                    selectedWord = word;
-                    wordSelected = true;
-                    break;
-                }
-            }
-        }
-    }
-
-
-    private void moveBucketToWord() {
-        if (!wordSelected) return;
-
-        for (int i = 0; i < wordsList.size; i++) {
-            if (wordsList.get(i).equalsIgnoreCase(selectedWord)) {
-                Rectangle wordRect = words.get(i);
-                bucket.x = wordRect.x + (wordRect.width - bucket.width) / 2; // Center the bucket under the word
-                return;
-            }
-        }
-    }
-
-    private void moveBucketToWordStartingWith(char startingChar) {
-        for (int i = 0; i < wordsList.size; i++) {
-            if (wordsList.get(i).toLowerCase().startsWith(String.valueOf(startingChar))) {
-                Rectangle wordRectangle = words.get(i);
-                bucket.x = wordRectangle.x + wordRectangle.width / 2 - bucket.width / 2; // Center the bucket under the word
-                currentTypedWord = wordsList.get(i); // Set the current word being typed
-                return; // Exit once the first match is found
-            }
-        }
-        // If no word starts with the typed letter, do not move the bucket
-    }
-
-    // Call this method in your render method to remove words that are off the screen or have been completed/misspelled
-    private void removeWord(int index) {
-        if (index >= 0 && index < wordsList.size) {
-            wordsList.removeIndex(index);
-            words.removeIndex(index);
-        }
-    }
-    */
 
     private void handleInput() {
+
         if (state) {
             if (indexOfWordToType == -1) return; // If no word is being typed, don't process input
 
@@ -173,6 +125,8 @@ public class GameScreen implements Screen {
                             indexOfWordToType = -1; // Reset index to find new bottom-most word
                         }
                     } // If the key pressed doesn't match the next character, do nothing
+
+
                     break; // Process only one key per frame
                 }
             }
@@ -241,6 +195,11 @@ public class GameScreen implements Screen {
 
             for (int i = 0; i < words.size; i++) {
                 Rectangle wordRectangle = words.get(i);
+                if (wordsList.isEmpty()) {
+                    // TODO: handle game over (win or loss)
+                    System.out.println("Game over.");
+                    break;
+                }
                 String wordText = wordsList.get(i);
 
                 // Determine the marked and unmarked parts of the current word to type

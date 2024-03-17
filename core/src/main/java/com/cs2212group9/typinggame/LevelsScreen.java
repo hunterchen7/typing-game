@@ -2,6 +2,7 @@ package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,6 +20,8 @@ public class LevelsScreen implements Screen {
     private Skin skin;
     private DBLevel levelDb;
     private int selectedLevel = 1;
+    // from https://opengameart.org/content/woodland-fantasy
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/WoodlandFantasy.mp3"));
 
     /**
      * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins

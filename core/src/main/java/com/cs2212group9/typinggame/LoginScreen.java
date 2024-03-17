@@ -2,6 +2,7 @@ package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -19,6 +20,7 @@ public class LoginScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private Skin skin;
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
 
     /** Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
      * @param gam - the game object
@@ -61,6 +63,7 @@ public class LoginScreen implements Screen {
     @Override
     // TODO: don't hard code positions, make dynamic
     public void show() {
+        music.play();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -154,5 +157,7 @@ public class LoginScreen implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
+        stage.dispose();
     }
 }

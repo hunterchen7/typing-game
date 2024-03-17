@@ -2,6 +2,7 @@ package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,6 +17,8 @@ public class MainMenuScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
+    // from https://opengameart.org/content/menu-music
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/awesomeness.wav"));
     private final Skin skin;
     private int nextLevel;
 
@@ -42,6 +45,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
         stage.act();
@@ -67,6 +71,7 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void show() {
+        music.play();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -150,6 +155,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
         stage.clear();
     }
 }
