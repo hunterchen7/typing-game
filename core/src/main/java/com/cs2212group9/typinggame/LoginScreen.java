@@ -63,7 +63,6 @@ public class LoginScreen implements Screen {
     @Override
     // TODO: don't hard code positions, make dynamic
     public void show() {
-        music.play();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();

@@ -25,12 +25,11 @@ import com.cs2212group9.typinggame.utils.InputListenerFactory;
 public class GameScreen implements Screen {
     final TypingGame game;
     Texture wordImage;
-    Texture bucketImage;
     Sound dropSound;
     Sound explodeSound;
+    Sound otherExplodeSound;
     Music rainMusic;
     OrthographicCamera camera;
-    Rectangle bucket;
     Array<Rectangle> words;
     long lastDropTime;
     Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
@@ -49,15 +48,12 @@ public class GameScreen implements Screen {
     public GameScreen(final TypingGame gam, final int levelId) {
         this.game = gam;
 
-        // load the images for the droplet and the bucket
-        wordImage = new Texture(Gdx.files.internal("sprites/blue_smile.png"));
-        bucketImage = new Texture(Gdx.files.internal("sprites/fire_in_the_hole.png"));
-
         // load the sound effects and music
         dropSound = Gdx.audio.newSound(Gdx.files.internal("audio/forceField_000.ogg"));
         // vine boom sound
         explodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/vine-boom.mp3"));
         // from https://opengameart.org/content/rpg-battle-theme-the-last-encounter-0
+        otherExplodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/explosionCrunch_000.ogg"));
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/rpg-loop.wav"));
         rainMusic.setLooping(true);
 
@@ -65,13 +61,6 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
-        // create a Rectangle to logically represent the bucket
-        bucket = new Rectangle();
-        bucket.x = (float) 800 / 2 - (float) 64 / 2; // center the bucket horizontally
-        bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
-        // the bottom screen edge
-        bucket.width = 64;
-        bucket.height = 64;
 
         // create the words array and spawn the first raindrop
         words = new Array<Rectangle>();
@@ -117,7 +106,7 @@ public class GameScreen implements Screen {
                         currentTypedWord += typedChar;
                         if (currentTypedWord.equalsIgnoreCase(wordToType)) {
                             // Word completed
-                            explodeSound.play();
+                            // explodeSound.play();
                             score++;
                             words.removeIndex(indexOfWordToType);
                             wordsList.removeIndex(indexOfWordToType);
@@ -125,7 +114,6 @@ public class GameScreen implements Screen {
                             indexOfWordToType = -1; // Reset index to find new bottom-most word
                         }
                     } // If the key pressed doesn't match the next character, do nothing
-
 
                     break; // Process only one key per frame
                 }
@@ -142,26 +130,6 @@ public class GameScreen implements Screen {
             pause();
         }
     }
-
-    /*
-    private void checkWordCompletion() {
-        if (wordSelected && currentTypedWord.equalsIgnoreCase(selectedWord)) {
-            score++; // Increment score for word completion
-            int index = wordsList.indexOf(selectedWord, false);
-            wordsList.removeIndex(index); // Remove the completed word
-            words.removeIndex(index); // Also remove the corresponding Rectangle
-            currentTypedWord = ""; // Reset typed word for the next target
-            selectedWord = ""; // Reset selected word
-            wordSelected = false; // No word is currently selected
-        } else if (wordSelected && !selectedWord.startsWith(currentTypedWord)) {
-            // If the user has started typing a word and types a wrong letter,
-            // reset the typed word and deselect the current word
-            currentTypedWord = "";
-            selectedWord = "";
-            wordSelected = false;
-        }
-    }
-    */
 
     private void updateWordToTypeIndex() {
         // Reset index
@@ -191,7 +159,6 @@ public class GameScreen implements Screen {
 
             game.font.draw(game.batch, "Words Typed: " + score, 0, 480);
             game.font.draw(game.batch, "Words Remaining: " + this.waves, 0, 460);
-            game.batch.draw(bucketImage, bucket.x, bucket.y);
 
             for (int i = 0; i < words.size; i++) {
                 Rectangle wordRectangle = words.get(i);
@@ -215,7 +182,7 @@ public class GameScreen implements Screen {
                 GlyphLayout unmarkedLayout = new GlyphLayout(game.font, unmarkedLetters);
 
                 // Draw the marked part of the word
-                game.font.setColor(1, 1, 0, 1); // Yellow for marked letters
+                game.font.setColor(0, 1, 0, 1); // green for marked letters
                 game.font.draw(game.batch, markedLetters,
                     wordRectangle.x + (wordRectangle.width - (markedLayout.width + unmarkedLayout.width)) / 2,
                     wordRectangle.y + wordRectangle.height / 2);
@@ -236,7 +203,8 @@ public class GameScreen implements Screen {
                 Rectangle wordRectangle = iter.next();
                 int index = words.indexOf(wordRectangle, true);
                 wordRectangle.y -= 75 * Gdx.graphics.getDeltaTime();
-                if (wordRectangle.y + 64 < 0) {
+                if (wordRectangle.y < 64) {
+                    otherExplodeSound.play();
                     iter.remove();
                     wordsList.removeIndex(index); // Remove the corresponding word text
                     if (indexOfWordToType == index) {
@@ -269,7 +237,7 @@ public class GameScreen implements Screen {
     public void show() {
         // start the playback of the background music
         // when the screen is shown
-        rainMusic.play();
+        // rainMusic.play();
     }
 
     /**
@@ -320,7 +288,7 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
         state = true;
-        rainMusic.play();
+        // rainMusic.play();
 
     }
 
@@ -329,8 +297,6 @@ public class GameScreen implements Screen {
      */
     @Override
     public void dispose() {
-        wordImage.dispose();
-        bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
     }
