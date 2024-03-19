@@ -77,6 +77,7 @@ public class GameScreen implements Screen {
     private void spawnWord() {
         if (waves == 0) return;
         waves -= 1;
+        // Evelyn this is where rectangles are created (might not need this)
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(128, 800 - 128);
         raindrop.y = 480;
@@ -192,6 +193,8 @@ public class GameScreen implements Screen {
                 game.font.draw(game.batch, unmarkedLetters,
                     wordRectangle.x + (wordRectangle.width - (markedLayout.width + unmarkedLayout.width)) / 2 + markedLayout.width,
                     wordRectangle.y + wordRectangle.height / 2);
+
+                // TODO: hey Evelyn this is where words get rendered, put image somewhere here
             }
             game.batch.end();
 
