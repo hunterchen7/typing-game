@@ -10,7 +10,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.db.DBLevel;
-
+/**
+ * This class is mainly responsible for the levelselection interface of the game.
+ * @author Group 9 members
+ */
 public class LevelsScreen implements Screen {
 
     final TypingGame game;
