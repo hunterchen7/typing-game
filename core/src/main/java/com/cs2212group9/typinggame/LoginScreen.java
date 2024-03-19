@@ -12,7 +12,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.UserAuthenticator;
-
+/**
+ * This class is mainly responsible for the login interface of the game.
+ * @author Group 9 members
+ */
 public class LoginScreen implements Screen {
 
     final TypingGame game;
