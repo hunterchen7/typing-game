@@ -160,3 +160,5 @@ public class LoginScreen implements Screen {
         stage.dispose();
     }
 }
+//When you enter the correct password and account to log in, it should not show that the user already exists
+
