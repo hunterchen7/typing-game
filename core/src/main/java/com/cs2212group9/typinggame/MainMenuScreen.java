@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -56,6 +57,11 @@ public class MainMenuScreen implements Screen {
             dispose();
         }
          */
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     @Override

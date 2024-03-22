@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -47,6 +48,12 @@ public class LoginScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new LoginScreen(game));
+        }
     }
 
     @Override

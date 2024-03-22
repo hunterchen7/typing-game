@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -41,6 +42,12 @@ public class OptionsScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new OptionsScreen(game));
+        }
     }
 
     @Override
@@ -67,7 +74,8 @@ public class OptionsScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.clear();
+        stage.dispose();
     }
 
     @Override

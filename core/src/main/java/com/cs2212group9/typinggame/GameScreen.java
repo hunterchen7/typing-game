@@ -2,6 +2,7 @@ package com.cs2212group9.typinggame;
 
 import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -39,6 +40,7 @@ public class GameScreen implements Screen {
     private String currentTypedWord = "";
     private int score = 0;
     private int indexOfWordToType = -1; // Index of the word that the player is currently typing
+    private int levelId; // used for hot reloading, not yet implemented
 
     /**
      * Constructor for the GameScreen, initializes game related objects & factories, sets up camera and initial positions
@@ -46,6 +48,7 @@ public class GameScreen implements Screen {
      * @param levelId - the level to be played
      */
     public GameScreen(final TypingGame gam, final int levelId) {
+        this.levelId = levelId;
         this.game = gam;
 
         // load the sound effects and music
@@ -300,6 +303,7 @@ public class GameScreen implements Screen {
      */
     @Override
     public void dispose() {
+        stage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
     }
