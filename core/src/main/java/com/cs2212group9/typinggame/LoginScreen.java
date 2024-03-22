@@ -13,7 +13,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.db.DBHelper;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.UserAuthenticator;
-
+/**
+ * This class is mainly responsible for the login interface of the game.
+ * @author Group 9 members
+ */
 public class LoginScreen implements Screen {
 
     final TypingGame game;
@@ -84,7 +87,7 @@ public class LoginScreen implements Screen {
 
         TextField usernameField = addTextFieldRow(table, "Username:", "user");
         TextField passwordField = addTextFieldRow(table, "Password:", "asd123");
-
+		//======!!!======The password entered by the user needs to be displayed as * to prevent the password from being peeped.
         Button loginButton = new TextButton("login", skin);
         Button registerButton = new TextButton("register", skin);
 
@@ -101,6 +104,7 @@ public class LoginScreen implements Screen {
             // check if username and password match
             // if so, go to main menu
             // else display "username or password did not match any records"
+          	//======!!!======When the account and password do not match, the information does not seem to be prompted correctly.
             String username = usernameField.getText();
             String password = passwordField.getText();
 
@@ -116,6 +120,7 @@ public class LoginScreen implements Screen {
 
         // register button onclick
         // TODO: make it go to a registration screen
+      	//======!!!======The Enter key can also be equivalent to clicking the currently selected button
         registerButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // register logic
             // check if in database,
@@ -167,3 +172,5 @@ public class LoginScreen implements Screen {
         stage.dispose();
     }
 }
+//======!!!======When you enter the correct password and account to log in, it should not show that the user already exists
+

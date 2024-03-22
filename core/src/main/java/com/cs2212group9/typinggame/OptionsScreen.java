@@ -9,7 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
+/**
+ * This class is mainly used to set various parameters of the game according to user needs.
+ * @author Group 9 members
+ */
 public class OptionsScreen implements Screen {
     final TypingGame game;
     OrthographicCamera camera;

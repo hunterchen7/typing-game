@@ -11,7 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
-
+/**
+ * This class is mainly responsible for the main menu interface of the game.
+ * @author Group 9 members
+ */
 public class MainMenuScreen implements Screen {
 
     final TypingGame game;
