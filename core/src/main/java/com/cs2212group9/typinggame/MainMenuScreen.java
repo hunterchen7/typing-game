@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,7 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
-
+/**
+ * This class is mainly responsible for the main menu interface of the game.
+ * @author Group 9 members
+ */
 public class MainMenuScreen implements Screen {
 
     final TypingGame game;
@@ -56,6 +60,11 @@ public class MainMenuScreen implements Screen {
             dispose();
         }
          */
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new MainMenuScreen(game));
+        }
     }
 
     @Override
