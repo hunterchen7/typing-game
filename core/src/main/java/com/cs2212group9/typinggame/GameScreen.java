@@ -260,7 +260,7 @@ public class GameScreen implements Screen {
                 gameOver = true;
                 gameEndTime = TimeUtils.millis();
             } else {
-                if (TimeUtils.timeSinceMillis(lastDropTime) > 2000) {
+                if (TimeUtils.timeSinceMillis(lastDropTime) > 2000 || words.isEmpty()) {
                     spawnWord();
                 }
             }
