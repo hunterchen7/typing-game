@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,7 +21,7 @@ public class LevelsScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private Skin skin;
+    private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private DBLevel levelDb;
     private int selectedLevel = 1;
     // from https://opengameart.org/content/woodland-fantasy
@@ -43,7 +44,6 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
     /**
@@ -64,7 +64,6 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         this.selectedLevel = selectedLevel;
     }
 
@@ -75,6 +74,12 @@ public class LevelsScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new LevelsScreen(game));
+        }
     }
 
     @Override
@@ -130,5 +135,8 @@ public class LevelsScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        skin.dispose();
+        music.dispose();
     }
 }
