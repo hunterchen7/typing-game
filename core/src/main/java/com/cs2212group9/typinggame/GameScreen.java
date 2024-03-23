@@ -101,6 +101,7 @@ public class GameScreen implements Screen {
     private void handleInput() {
         // Toggle pause and resume with ESC key
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            System.out.println("escape pressed");
             if (state) {
                 pause();
             } else {
@@ -201,6 +202,8 @@ public class GameScreen implements Screen {
             return; // Skip the rest of the render method
         }
 
+        handleInput();
+
         if (state) {
             ScreenUtils.clear(0, 0, 0, 1);
             camera.update();
@@ -240,7 +243,7 @@ public class GameScreen implements Screen {
 
             game.batch.end();
 
-            handleInput();
+
 
             Iterator<Rectangle> iter = words.iterator();
             while (iter.hasNext()) {
