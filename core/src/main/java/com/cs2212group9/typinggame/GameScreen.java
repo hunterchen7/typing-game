@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
     private int score = 0;
     private int indexOfWordToType = -1;
     private long gameStartTime, gameEndTime;
+    private long pauseStartTime;
     private boolean gameOver = false;
 
     /**
@@ -89,7 +90,8 @@ public class GameScreen implements Screen {
         words.add(raindrop);
         lastDropTime = TimeUtils.millis(); // Record the time of the last spawn
     }
-    private boolean state = true;
+
+    private boolean state = true; // When state is true, the game is active, otherwise the game is paused
 
     /**
      * Handles player input for typing letters and controlling the game (e.g., pausing).
@@ -97,8 +99,17 @@ public class GameScreen implements Screen {
      * It also toggles the game's pause state when the ESC key is pressed.
      */
     private void handleInput() {
+        // Toggle pause and resume with ESC key
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            if (state) {
+                pause();
+            } else {
+                resume(); // Call a method that specifically handles resuming the game
+            }
+        }
+
         if (state && indexOfWordToType >= 0 && indexOfWordToType < wordsList.size) {
-            // handle typed letters
+            // handle typed letters and backspace only if the game is not paused
             for (int i = Keys.A; i <= Keys.Z; i++) {
                 if (Gdx.input.isKeyJustPressed(i)) {
                     char typedChar = (char) ('a' + i - Keys.A);
@@ -127,18 +138,10 @@ public class GameScreen implements Screen {
                     break; // Process only one key per frame
                 }
             }
+
             // handle backspace
             if (Gdx.input.isKeyJustPressed(Keys.BACKSPACE) && !currentTypedWord.isEmpty()) {
                 currentTypedWord = currentTypedWord.substring(0, currentTypedWord.length() - 1);
-            }
-        }
-
-        // Toggle pause and resume with ESC key
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            if (state) {
-                pause();
-            } else {
-                resume();
             }
         }
     }
@@ -314,6 +317,7 @@ public class GameScreen implements Screen {
         if (!state || gameOver) return; // Avoid pausing if already paused or if the game is over
 
         state = false;
+        pauseStartTime = TimeUtils.millis(); // Capture the time at which the game is paused
         rainMusic.pause();
 
         if (stage == null) stage = new Stage();
@@ -357,8 +361,19 @@ public class GameScreen implements Screen {
      */
     @Override
     public void resume() {
+        if (state) return; // Avoid resuming if already running
+
+        long pauseDuration = TimeUtils.millis() - pauseStartTime; // Calculate how long the game was paused
+        gameStartTime += pauseDuration; // Adjust the game start time by the pause duration
+
         // Ensure the game state is set to running
         state = true;
+
+        // Clear pause UI and resume game
+        if (stage != null) {
+            stage.clear(); // Clear any pause-specific UI elements
+            Gdx.input.setInputProcessor(null); // Reset input processor or set it as needed for your game
+        }
 
         // Check if music and sound effects are initialized, otherwise, initialize them
         if (rainMusic == null) {
