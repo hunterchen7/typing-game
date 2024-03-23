@@ -1,7 +1,9 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -9,16 +11,21 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.db.DBLevel;
-
+/**
+ * This class is mainly responsible for the levelselection interface of the game.
+ * @author Group 9 members
+ */
 public class LevelsScreen implements Screen {
 
     final TypingGame game;
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private Skin skin;
+    private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private DBLevel levelDb;
     private int selectedLevel = 1;
+    // from https://opengameart.org/content/woodland-fantasy
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/WoodlandFantasy.mp3"));
 
     /**
      * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
@@ -37,7 +44,6 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
     /**
@@ -58,7 +64,6 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
         this.selectedLevel = selectedLevel;
     }
 
@@ -69,6 +74,12 @@ public class LevelsScreen implements Screen {
 
         stage.act();
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new LevelsScreen(game));
+        }
     }
 
     @Override
@@ -94,10 +105,10 @@ public class LevelsScreen implements Screen {
         int levelCount = levelDb.levelCount();
         System.out.println("DBLevel count: " + levelCount);
 
-        for (int i = 1; i <= levelCount / 3; i++) { // placeholder levels
+        for (int i = 0; i < levelCount / 3; i++) { // placeholder levels
             for (int j = 1; j <= 3; j++) {
-                int level = i * j;
-                TextButton levelButton = new TextButton("DBLevel " + level, skin);
+                int level = i * 3 + j;
+                TextButton levelButton = new TextButton("Level " + level, skin);
                 levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                     game.setScreen(new GameScreen(game, level));
                     dispose();
@@ -124,5 +135,8 @@ public class LevelsScreen implements Screen {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        skin.dispose();
+        music.dispose();
     }
 }

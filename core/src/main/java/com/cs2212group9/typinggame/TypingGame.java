@@ -4,7 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.cs2212group9.typinggame.db.DBHelper;
-
+/**
+ * This class is responsible for starting and shutting down the game.
+ * @author Group 9 members
+ */
 public class TypingGame extends Game {
 
     SpriteBatch batch;
