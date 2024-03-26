@@ -7,6 +7,7 @@ import com.cs2212group9.typinggame.db.DBHelper;
 /**
  * This class is responsible for starting and shutting down the game.
  * @author Group 9 members
+ * @version 1.0
  */
 public class TypingGame extends Game {
 
