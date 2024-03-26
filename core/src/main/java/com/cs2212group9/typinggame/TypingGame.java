@@ -10,8 +10,9 @@ import com.cs2212group9.typinggame.db.DBHelper;
  * @version 1.0
  */
 public class TypingGame extends Game {
-
+    /** Rendering 2D images */
     SpriteBatch batch;
+    /** Rendering font */
     BitmapFont font;
 
     /**
@@ -32,7 +33,7 @@ public class TypingGame extends Game {
     }
 
     /**
-     * Remember to clean up after yourself, don't leave everything for the gc :^)
+     * close the window
      */
     public void dispose() {
         batch.dispose();
