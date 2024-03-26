@@ -12,6 +12,8 @@ dependencies {
   implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.77'
   // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
   implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'
+  // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+  implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.12'
   api "com.badlogicgames.ashley:ashley:$ashleyVersion"
   api "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
