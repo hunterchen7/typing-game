@@ -66,7 +66,11 @@ public class GameScreen implements Screen {
         // Initialize words array and load words for the current level
         words = new Array<Rectangle>();
         waves = DBLevel.getLevelWaves(levelId);
-        wordsList = DBLevel.getLevelWords(levelId);
+        Array<String> wordsPool = DBLevel.getLevelWords(levelId);
+        wordsList = new Array<>();
+        for (int i = 0; i < waves; i++) {
+            wordsList.add(wordsPool.random());
+        }
         spawnWord();
 
         // Initialize the stage for UI elements

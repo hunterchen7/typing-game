@@ -1,5 +1,7 @@
 package com.cs2212group9.typinggame.db;
 
+import org.junit.jupiter.api.Test;
+
 import java.sql.*;
 
 public class DBHelper {

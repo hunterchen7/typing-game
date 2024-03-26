@@ -2,6 +2,7 @@ package com.cs2212group9.typinggame.utils;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -25,5 +26,4 @@ public class InputListenerFactory {
             }
         };
     }
-
 }
