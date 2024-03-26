@@ -1,6 +1,9 @@
-package com.cs2212group9.typinggame.db;
+package com.cs2212group9.typinggame.db.tests;
 
 
+import com.cs2212group9.typinggame.db.DBHelper;
+import com.cs2212group9.typinggame.db.DBLevel;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +49,7 @@ public class TestDBLevel {
 
     @Test
     public void TestLevelCount() {
-        assertEquals(2, DBLevel.levelCount());
+        Assertions.assertEquals(2, DBLevel.levelCount());
     }
 
 

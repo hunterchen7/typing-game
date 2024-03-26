@@ -1,6 +1,7 @@
-package com.cs2212group9.typinggame.utils;
+package com.cs2212group9.typinggame.utils.tests;
 
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

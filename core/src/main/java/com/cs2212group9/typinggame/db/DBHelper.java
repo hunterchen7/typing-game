@@ -72,15 +72,4 @@ public class DBHelper {
             System.out.println(e.getMessage());
         }
     }
-
-    @Test
-    public void testCreateNewTable() {
-        createNewTable();
-    }
-
-    @Test
-    public void testGetConnection() {
-        Connection conn = getConnection();
-        assert conn != null;
-    }
 }
