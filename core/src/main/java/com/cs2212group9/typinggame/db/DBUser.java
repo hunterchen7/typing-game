@@ -79,11 +79,29 @@ public class DBUser {
         int level = 1;
 
         try (Statement stmt = conn.createStatement()) {
-            level = stmt.executeQuery(sql).getInt("level");
+            level = Math.max(stmt.executeQuery(sql).getInt("level"), level);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
         return level;
+    }
+
+    /**
+     * return if a user is an admin
+     * @param username - the username of the user
+     * @return true if the user is an admin, false otherwise
+     */
+    public static boolean isAdmin(String username) {
+        String sql = "SELECT is_admin FROM users WHERE username = '" + username + "';";
+        boolean isAdmin = false;
+
+        try (Statement stmt = conn.createStatement()) {
+            isAdmin = stmt.executeQuery(sql).getBoolean("is_admin");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return isAdmin;
     }
 }

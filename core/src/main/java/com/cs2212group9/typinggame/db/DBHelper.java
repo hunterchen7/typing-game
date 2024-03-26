@@ -1,5 +1,7 @@
 package com.cs2212group9.typinggame.db;
 
+import org.junit.jupiter.api.Test;
+
 import java.sql.*;
 
 public class DBHelper {
@@ -69,5 +71,16 @@ public class DBHelper {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Test
+    public void testCreateNewTable() {
+        createNewTable();
+    }
+
+    @Test
+    public void testGetConnection() {
+        Connection conn = getConnection();
+        assert conn != null;
     }
 }

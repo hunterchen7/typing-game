@@ -1,7 +1,8 @@
 package com.cs2212group9.typinggame.db;
 
 import com.badlogic.gdx.utils.Array;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,12 +13,13 @@ public class DBLevel {
     static Connection conn = DBHelper.getConnection();
 
     /** @return the total number of levels */
-    public int levelCount() {
+    public static int levelCount() {
         String sql = "SELECT COUNT(*) FROM levels;";
         int count = 0;
 
         try (Statement stmt = conn.createStatement()) {
             count = stmt.executeQuery(sql).getInt(1);
+            System.out.println("count: " + count);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -45,12 +47,13 @@ public class DBLevel {
 
         assert words != null;
         Array<String> wordPool = new Array<>(words.split(","));
-        int waves = getLevelWaves(level);
+        return wordPool;
+        /*int waves = getLevelWaves(level);
         Array<String> wordList = new Array<>();
         for (int i = 0; i < waves; i++) {
             wordList.add(wordPool.random());
         }
-        return wordList;
+        return wordList;*/
     }
 
     // returns the difficulty of a level
