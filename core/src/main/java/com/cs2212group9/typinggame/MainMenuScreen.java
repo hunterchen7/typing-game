@@ -169,18 +169,30 @@ public class MainMenuScreen implements Screen {
         stage.addActor(table);
     }
 
+    /**
+     * Method called when hiding the game interface
+     */  
     @Override
     public void hide() {
     }
 
+    /**
+     * Method called when the game is paused.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Method called when resuming the game
+     */ 
     @Override
     public void resume() {
     }
-
+  
+    /**
+     * Methods to clean up resources and release memory
+     */
     @Override
     public void dispose() {
         music.dispose();
