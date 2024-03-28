@@ -28,6 +28,7 @@ public class LoginScreen implements Screen {
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
+    private boolean usernameReset = false;
 
     /** Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
      * @param gam - the game object
@@ -100,7 +101,19 @@ public class LoginScreen implements Screen {
         passwordField.setSize(200, 50);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
-		//======!!!======The password entered by the user needs to be displayed as * to prevent the password from being peeped.
+
+        // clear default text on click
+        usernameField.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!usernameReset) {
+                    usernameField.setText("");
+                    usernameReset = true;
+                }
+                super.clicked(event, x, y);
+            }
+        });
+
         Button loginButton = new TextButton("login", skin);
         Button registerButton = new TextButton("register", skin);
 
@@ -117,7 +130,6 @@ public class LoginScreen implements Screen {
             // check if username and password match
             // if so, go to main menu
             // else display "username or password did not match any records"
-          	//======!!!======When the account and password do not match, the information does not seem to be prompted correctly.
             String username = usernameField.getText();
             String password = passwordField.getText();
 
@@ -129,7 +141,7 @@ public class LoginScreen implements Screen {
                 dispose();
             } else {
                 System.out.println("failed to authenticate user: " + username);
-                errorLabel.setText("Username or password did not match any records");
+                errorLabel.setText("username or password is incorrect");
             }
 
         }));
@@ -147,7 +159,10 @@ public class LoginScreen implements Screen {
 
             if (username.isBlank()) {
                 errorLabel.setText("Username cannot be blank");
+            } else if (username.length() > 20) {
+                errorLabel.setText("Username cannot be longer than 20 characters");
             } else if (user.register()) {
+                this.game.setUsername(username);
                 // pop up to say registered successfully
                 // go to main menu
                 game.setScreen(new MainMenuScreen(game));
@@ -167,15 +182,6 @@ public class LoginScreen implements Screen {
     private TextField addTextFieldRow(final Table table, String labelText, String defaultValue, int labelWidth) {
         final Label label = new Label(labelText, skin);
         final TextField text = new TextField(defaultValue, skin);
-
-        // clear default text on click
-        text.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                text.setText("");
-            }
-        });
 
         table.add(label).width(labelWidth);
         table.add(text).width(250);

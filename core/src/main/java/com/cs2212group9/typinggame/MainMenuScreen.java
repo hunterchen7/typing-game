@@ -141,10 +141,10 @@ public class MainMenuScreen implements Screen {
             dispose();
         }));
 
-        /*highScoresButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            game.setScreen(new HighScoresScreen(game));
+        highScoresButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            game.setScreen(new ScoresScreen(game));
             dispose();
-        }));*/
+        }));
 
         logoutButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             game.setScreen(new LoginScreen(game));

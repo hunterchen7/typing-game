@@ -2,7 +2,7 @@ package com.cs2212group9.typinggame.db;
 
 import com.badlogic.gdx.utils.Array;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,7 +14,7 @@ public class DBLevel {
     static Connection conn = DBHelper.getConnection();
 
     /** @return the total number of levels */
-    public static int levelCount() {
+    public static int getLevelCount() {
         String sql = "SELECT COUNT(*) FROM levels;";
         int count = 0;
 

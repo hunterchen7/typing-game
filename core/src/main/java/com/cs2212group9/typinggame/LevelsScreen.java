@@ -2,7 +2,6 @@ package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,7 +23,6 @@ public class LevelsScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-    private int selectedLevel = 1;
     // from https://opengameart.org/content/woodland-fantasy
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/WoodlandFantasy.mp3"));
 
@@ -44,26 +42,6 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-    }
-
-    /**
-     * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
-     * @param gam - the game object
-     * @param selectedLevel - the default level to be played
-     */
-    public LevelsScreen(final TypingGame gam, int selectedLevel) {
-        game = gam;
-
-        camera = new OrthographicCamera();
-
-        viewport = new FitViewport(1200, 800, camera);
-        viewport.apply();
-
-        camera.position.set(1200, 800, 0);
-        camera.update();
-
-        stage = new Stage();
-        this.selectedLevel = selectedLevel;
     }
 
     @Override
@@ -101,7 +79,7 @@ public class LevelsScreen implements Screen {
         table.top();
         table.padTop(200);
 
-        int levelCount = DBLevel.levelCount();
+        int levelCount = DBLevel.getLevelCount();
         System.out.println("DBLevel count: " + levelCount);
 
         String username = this.game.getUsername();
@@ -133,6 +111,15 @@ public class LevelsScreen implements Screen {
         }
 
         stage.addActor(table);
+
+        TextButton returnButton = new TextButton("Return to Main Menu", skin);
+        returnButton.setPosition(5, 5);
+        returnButton.setWidth(200);
+        returnButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            dispose();
+            game.setScreen(new MainMenuScreen(game));
+        }));
+        stage.addActor(returnButton);
     }
 
     @Override

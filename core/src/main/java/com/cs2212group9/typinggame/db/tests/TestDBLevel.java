@@ -50,7 +50,7 @@ public class TestDBLevel {
 
     @Test
     public void TestLevelCount() {
-        Assertions.assertEquals(2, DBLevel.levelCount());
+        Assertions.assertEquals(2, DBLevel.getLevelCount());
     }
 
 

@@ -189,18 +189,21 @@ public class GameScreen implements Screen {
         String gameOverText;
         String nextLevel = "";
         int levelMinScore = DBLevel.getMinScores().get(levelId);
-        if (score >= levelMinScore) {
+        boolean passed = score >= levelMinScore;
+        if (passed) {
             gameOverText = "Congratulations, You completed the level!";
             nextLevel = "You have unlocked level " + (levelId + 1) + "!";
         } else {
             gameOverText = "You lose! You need at least " + levelMinScore + " points to pass this level.";
         }
-        game.font.draw(game.batch, gameOverText, 320, 300);
+        game.font.draw(game.batch, gameOverText, 280, 300);
         game.font.draw(game.batch, nextLevel, 320, 275);
         game.font.draw(game.batch, "Words Typed: " + wordsTyped, 320, 250);
         game.font.draw(game.batch, "Final Score: " + score, 320, 225);
         game.font.draw(game.batch, "Time Consumed: " + totalTimeInSeconds + " seconds", 320, 200);
-        game.font.draw(game.batch, "Press Enter to return to the main menu", 320, 175);
+        game.font.draw(game.batch, "Click anywhere to return to the main menu", 280, 175);
+        game.font.draw(game.batch, "Press enter to " +
+            (passed ? " go to the next level" : "retry level"), 280, 150);
         game.batch.end();
 
         // Add the score to the database, make sure it's only added once
@@ -211,9 +214,14 @@ public class GameScreen implements Screen {
             scoreSet = true;
         }
 
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) {
             dispose();
             game.setScreen(new MainMenuScreen(game)); // Return to main menu
+        }
+
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+            dispose();
+            game.setScreen(new GameScreen(game, this.levelId + (passed ? 1 : 0))); // Return to main menu
         }
     }
 
