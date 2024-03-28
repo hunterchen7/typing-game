@@ -38,6 +38,7 @@ public class TestDBUser {
     @Test
     void testFetchPassword() {
         // it's NOT hashed here, but we're testing that input = output
+        DBUser.addUser("test", "test");
         assertEquals("test", DBUser.getUserPasswordHashed("test"));
     }
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 /**
  * This class is mainly responsible for the main menu interface of the game.
@@ -42,9 +43,10 @@ public class MainMenuScreen implements Screen {
         camera.update();
 
         stage = new Stage();
+        // all skins from https://github.com/czyzby/gdx-skins
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        this.nextLevel = 1;
+        this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
     }
 
     @Override
@@ -80,17 +82,24 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void show() {
-        music.play();
+        // music.play();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
         table.setFillParent(true);
         table.top();
+        table.padTop(100);
+
+        Label welcome = new Label("Welcome, " + game.getUsername(), skin);
+
+        table.add(welcome);
+        table.row().padTop(10);
+        welcome.setFontScale(3f);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
+        table.row().padTop(-25);
         table.add(logo);
         table.row();
-        table.padTop(100);
 
         Button playButton = new TextButton("Play", skin);
         table.add(playButton).width(300);

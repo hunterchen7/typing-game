@@ -23,7 +23,7 @@ public class DBUser {
             System.out.println(e.getMessage());
         }
 
-        System.out.println("username: " + user + " exists");
+        // System.out.println("username: " + user + " exists");
 
         return user != null;
     }

@@ -9,7 +9,9 @@ public class DBHelper {
 
     // init db connection, singleton
     static {
-        String url = "jdbc:sqlite:typinggame.db";
+        // tests run on core/typing-game.db and the main program runs on group9/typing-game.db
+        // tests create new items so I don't want them to interfere with each other
+        String url = "jdbc:sqlite:typing-game.db";
 
         try {
             conn = DriverManager.getConnection(url);
@@ -41,22 +43,22 @@ public class DBHelper {
                     instant_death BOOLEAN
                 );
             """,
-            // words as csv??
             """
                 CREATE TABLE IF NOT EXISTS levels (
                     level_id INTEGER PRIMARY KEY,
                     words TEXT,
                     difficulty INTEGER,
-                    waves INTEGER
+                    waves INTEGER,
+                    min_score INTEGER
                 );
             """,
-            //
             """
                 CREATE TABLE IF NOT EXISTS scores (
                     user TEXT,
                     level INTEGER,
                     score INTEGER,
                     date_played DATETIME,
+                    passed BOOLEAN,
                     FOREIGN KEY (user) REFERENCES users(username),
                     FOREIGN KEY (level) REFERENCES levels(level_id),
                     PRIMARY KEY (user, level, date_played)

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 // class for retrieving level data
 // this class does not require setters, level data should be preset
@@ -48,12 +49,6 @@ public class DBLevel {
         assert words != null;
         Array<String> wordPool = new Array<>(words.split(","));
         return wordPool;
-        /*int waves = getLevelWaves(level);
-        Array<String> wordList = new Array<>();
-        for (int i = 0; i < waves; i++) {
-            wordList.add(wordPool.random());
-        }
-        return wordList;*/
     }
 
     // returns the difficulty of a level
@@ -92,5 +87,26 @@ public class DBLevel {
         }
 
         return waves;
+    }
+
+    /**
+     * Return the minimum scores for each level as a dictionary
+     * @return the minimum score needed for levels as an integer
+     */
+    public static HashMap<Integer, Integer> getMinScores() {
+        String sql = "SELECT level_id, min_score FROM levels;";
+
+        HashMap<Integer, Integer> minScores = new HashMap<>();
+
+        try (Statement stmt = conn.createStatement()) {
+            var results = stmt.executeQuery(sql);
+            while (results.next()) {
+                minScores.put(results.getInt("level_id"), results.getInt("min_score"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return minScores;
     }
 }
