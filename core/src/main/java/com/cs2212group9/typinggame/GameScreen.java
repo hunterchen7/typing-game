@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBLevel;
 import com.cs2212group9.typinggame.db.DBScores;
@@ -46,7 +45,7 @@ public class GameScreen implements Screen {
     private boolean gameOver = false;
     private final int levelId;
     private boolean scoreSet = false;
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture;
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
