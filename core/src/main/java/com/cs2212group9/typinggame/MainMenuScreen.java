@@ -43,7 +43,8 @@ public class MainMenuScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
+        // all skins from https://github.com/czyzby/gdx-skins
+        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
     }

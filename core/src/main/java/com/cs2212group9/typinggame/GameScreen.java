@@ -249,6 +249,7 @@ public class GameScreen implements Screen {
             game.font.draw(game.batch, "Score: " + score, 0, 455);
             game.font.draw(game.batch, "Words remaining: " + wordsList.size, 0, 435);
 
+            // check which part of the word is typed and which isn't, and render accordingly
             for (Rectangle wordRectangle : words) {
                 String wordText = wordsList.get(words.indexOf(wordRectangle, true));
                 String markedLetters = "";
