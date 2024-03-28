@@ -24,9 +24,10 @@ public class MainMenuScreen implements Screen {
     private final Viewport viewport;
     // from https://opengameart.org/content/menu-music
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/awesomeness.wav"));
-    private final Skin skin;
-    private int nextLevel;
-    private Texture backgroundTexture;
+    // all skins from https://github.com/czyzby/gdx-skins
+    private final Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
+    private final int nextLevel;
+    private final Texture backgroundTexture;
 
     /**
      * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
@@ -44,8 +45,7 @@ public class MainMenuScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        // all skins from https://github.com/czyzby/gdx-skins
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+
 
         this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
         backgroundTexture = new Texture(Gdx.files.internal("background.png")); // Ensure the file path is correct
@@ -103,36 +103,36 @@ public class MainMenuScreen implements Screen {
 
         table.add(welcome);
         table.row().padTop(10);
-        welcome.setFontScale(3f);
+        welcome.setFontScale(1.5f);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
         table.row().padTop(30);
         table.add(logo);
-        table.row().padTop(100);
+        table.row().padTop(25);
 
         Button playButton = new TextButton("Play", skin);
         table.add(playButton).width(300);
-        table.row().padTop(10);
+        table.row().padTop(-15);
 
         Button levelsButton = new TextButton("Levels", skin);
         table.add(levelsButton).width(300);
-        table.row().padTop(10);
+        table.row().padTop(-15);
 
         Button highScoresButton = new TextButton("High Scores", skin);
         table.add(highScoresButton).width(300);
-        table.row().padTop(10);
+        table.row().padTop(-15);
 
         Button optionsButton = new TextButton("Options", skin);
         table.add(optionsButton).width(300);
-        table.row().padTop(10);
+        table.row().padTop(-15);
 
         Button logoutButton = new TextButton("Logout", skin);
         table.add(logoutButton).width(300);
-        table.row().padTop(10);
+        table.row().padTop(-15);
 
         Button quitButton = new TextButton("Quit", skin);
         table.add(quitButton).width(300);
-        table.row().padTop(10);
+        table.row().padTop(-15);
 
         playButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // should be last level

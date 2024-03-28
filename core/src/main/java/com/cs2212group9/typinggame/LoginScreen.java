@@ -22,7 +22,7 @@ public class LoginScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
     private boolean usernameReset = false;
     private Texture backgroundTexture;
@@ -99,7 +99,7 @@ public class LoginScreen implements Screen {
         // So I won't change it. the reason for it is when the JVM segfaults (possible with JNI), contents of memory
         // gets dumped into a file, and if the password is stored in memory as a string, it can be read from that file.
         // char arrays are usually used because they can be dumped, like in Swing.
-        TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 125);
+        TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 155);
         passwordField.setSize(250, 80);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
@@ -176,6 +176,7 @@ public class LoginScreen implements Screen {
         }));
 
         table.row().padTop(10);
+        // errorLabel.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
         table.add(errorLabel).colspan(2);
 
         stage.addActor(table);
@@ -184,6 +185,7 @@ public class LoginScreen implements Screen {
     private TextField addTextFieldRow(final Table table, String labelText, String defaultValue, int labelWidth) {
         final Label label = new Label(labelText, skin);
         final TextField text = new TextField(defaultValue, skin);
+        text.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
 
         table.add(label).width(labelWidth);
         table.add(text).width(250);
