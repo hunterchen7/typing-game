@@ -186,6 +186,7 @@ public class MainMenuScreen implements Screen {
         if (backgroundTexture != null) backgroundTexture.dispose();
 
         // Dispose other resources...
+        stage.clear();
         music.dispose();
         stage.dispose();
     }
