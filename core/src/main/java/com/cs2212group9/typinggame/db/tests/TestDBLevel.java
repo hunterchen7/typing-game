@@ -26,16 +26,17 @@ public class TestDBLevel {
                 level_id INTEGER PRIMARY KEY,
                 words TEXT,
                 difficulty INTEGER,
-                waves INTEGER
+                waves INTEGER,
+                min_score INTEGER
             );
         """;
         String sql1 = """
-            INSERT INTO levels (level_id, words, difficulty, waves)
-            VALUES (1, 'test1,test2,test3', 1, 3);
+            INSERT INTO levels (level_id, words, difficulty, waves, min_score)
+            VALUES (1, 'test1,test2,test3', 1, 3, 10);
         """;
         String sql2 = """
-            INSERT INTO levels (level_id, words, difficulty, waves)
-            VALUES (2, 'test4,test5,test6,test7', 2, 5);
+            INSERT INTO levels (level_id, words, difficulty, waves, min_score)
+            VALUES (2, 'test4,test5,test6,test7', 2, 5, 10);
         """;
         try (Statement stmt = db.createStatement()) {
             stmt.executeUpdate(drop);

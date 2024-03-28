@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 /**
  * This class is mainly responsible for the main menu interface of the game.
@@ -44,7 +45,7 @@ public class MainMenuScreen implements Screen {
         stage = new Stage();
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
-        this.nextLevel = 1;
+        this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
     }
 
     @Override
@@ -80,7 +81,7 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void show() {
-        music.play();
+        // music.play();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();

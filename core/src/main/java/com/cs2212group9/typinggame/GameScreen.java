@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBLevel;
+import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class GameScreen implements Screen {
@@ -38,10 +39,13 @@ public class GameScreen implements Screen {
     Array<String> wordsList;
     private String currentTypedWord = "";
     private int score = 0;
+    private int wordsTyped = 0;
     private int indexOfWordToType = -1;
     private long gameStartTime, gameEndTime;
     private long pauseStartTime;
     private boolean gameOver = false;
+    private final int levelId;
+    private boolean scoreSet = false;
 
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
@@ -76,6 +80,7 @@ public class GameScreen implements Screen {
         // Initialize the stage for UI elements
         stage = new Stage();
         gameStartTime = TimeUtils.millis(); // Record the start time of the game
+        this.levelId = levelId;
     }
 
     /**
@@ -127,7 +132,8 @@ public class GameScreen implements Screen {
                         currentTypedWord += typedChar;
                         if (currentTypedWord.equalsIgnoreCase(wordToType)) {
                             // Word completed
-                            score++;
+                            score += currentTypedWord.length();
+                            wordsTyped++;
                             words.removeIndex(indexOfWordToType);
                             wordsList.removeIndex(indexOfWordToType);
                             currentTypedWord = ""; // Reset the typed word
@@ -180,12 +186,33 @@ public class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         // Display "Game Over" and statistics
-        game.font.draw(game.batch, "Game Over", 350, 300);
-        game.font.draw(game.batch, "Words Typed: " + score, 350, 250);
-        game.font.draw(game.batch, "Time Consumed: " + totalTimeInSeconds + " seconds", 350, 200);
+        String gameOverText;
+        String nextLevel = "";
+        int levelMinScore = DBLevel.getMinScores().get(levelId);
+        if (score >= levelMinScore) {
+            gameOverText = "Congratulations, You completed the level!";
+            nextLevel = "You have unlocked level " + (levelId + 1) + "!";
+        } else {
+            gameOverText = "Game Over, you need at least " + levelMinScore + " points to pass this level.";
+        }
+        game.font.draw(game.batch, gameOverText, 320, 300);
+        game.font.draw(game.batch, nextLevel, 320, 275);
+        game.font.draw(game.batch, "Words Typed: " + wordsTyped, 320, 250);
+        game.font.draw(game.batch, "Final Score: " + score, 320, 225);
+        game.font.draw(game.batch, "Time Consumed: " + totalTimeInSeconds + " seconds", 320, 200);
+        game.font.draw(game.batch, "Press Enter to return to the main menu", 320, 175);
         game.batch.end();
 
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+        // Add the score to the database, make sure it's only added once
+        if (!scoreSet) {
+            // current username stored in preferences
+            String username = this.game.getUsername();
+            DBScores.addScore(username, this.levelId, score);
+            scoreSet = true;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isTouched()) {
+            dispose();
             game.setScreen(new MainMenuScreen(game)); // Return to main menu
         }
     }
@@ -218,8 +245,9 @@ public class GameScreen implements Screen {
 
             game.batch.begin();
             game.font.setColor(1, 1, 1, 1); // Set color to white for score display
-            game.font.draw(game.batch, "Words Typed: " + score, 0, 480);
-            game.font.draw(game.batch, "Words Remaining: " + wordsList.size, 0, 460);
+            game.font.draw(game.batch, "Level " + levelId, 0, 475);
+            game.font.draw(game.batch, "Score: " + score, 0, 455);
+            game.font.draw(game.batch, "Words remaining: " + wordsList.size, 0, 435);
 
             for (Rectangle wordRectangle : words) {
                 String wordText = wordsList.get(words.indexOf(wordRectangle, true));
@@ -246,8 +274,6 @@ public class GameScreen implements Screen {
             }
 
             game.batch.end();
-
-
 
             Iterator<Rectangle> iter = words.iterator();
             while (iter.hasNext()) {
@@ -296,7 +322,7 @@ public class GameScreen implements Screen {
             rainMusic.setLooping(true);
         }
         if (!rainMusic.isPlaying()) {
-            rainMusic.play();
+            // rainMusic.play();
         }
 
         // Set the input processor to handle UI interactions
@@ -410,7 +436,7 @@ public class GameScreen implements Screen {
 
         // Play music if it should be playing
         if (!rainMusic.isPlaying()) {
-            rainMusic.play();
+            // rainMusic.play();
         }
     }
 

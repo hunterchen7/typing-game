@@ -2,6 +2,7 @@ package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -110,6 +111,8 @@ public class LoginScreen implements Screen {
 
             UserAuthenticator user = new UserAuthenticator(username, password);
             if (user.authenticate()) {
+                System.out.println("authenticated user: " + username);
+                this.game.setUsername(username);
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             } else {
@@ -132,6 +135,7 @@ public class LoginScreen implements Screen {
             if (user.register()) {
                 // pop up to say registered successfully
                 // go to main menu
+
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             } else {

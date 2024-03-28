@@ -12,6 +12,15 @@ public class TypingGame extends Game {
 
     SpriteBatch batch;
     BitmapFont font;
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     /**
      * Create the game by initializing a login screen
