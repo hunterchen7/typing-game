@@ -7,8 +7,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.db.DBHelper;
@@ -24,7 +26,7 @@ public class LoginScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private Skin skin;
+    private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
 
     /** Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
@@ -42,7 +44,6 @@ public class LoginScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     }
 
     @Override
@@ -80,14 +81,25 @@ public class LoginScreen implements Screen {
         table.setFillParent(true);
         table.top();
         table.padTop(350);
+        // text to show the user that the username or password is incorrect or already exists
+        Label errorLabel = new Label("", skin);
+        errorLabel.setColor(1, 0, 0, 1);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
         logo.setPosition(280, 500);
         stage.addActor(logo);
         // place logo at the top of the screen
 
-        TextField usernameField = addTextFieldRow(table, "Username:", "user");
-        TextField passwordField = addTextFieldRow(table, "Password:", "asd123");
+        TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
+        usernameField.setSize(200, 50);
+        // this method of storing a password is actually quite unsecure, but I don't aim for this to be that secure
+        // So I won't change it. the reason for it is when the JVM segfaults (possible with JNI), contents of memory
+        // gets dumped into a file, and if the password is stored in memory as a string, it can be read from that file.
+        // char arrays are usually used because they can be dumped, like in Swing.
+        TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 125);
+        passwordField.setSize(200, 50);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
 		//======!!!======The password entered by the user needs to be displayed as * to prevent the password from being peeped.
         Button loginButton = new TextButton("login", skin);
         Button registerButton = new TextButton("register", skin);
@@ -116,7 +128,8 @@ public class LoginScreen implements Screen {
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             } else {
-                // display "username or password did not match any records"
+                System.out.println("failed to authenticate user: " + username);
+                errorLabel.setText("Username or password did not match any records");
             }
 
         }));
@@ -132,26 +145,39 @@ public class LoginScreen implements Screen {
             String password = passwordField.getText();
             UserAuthenticator user = new UserAuthenticator(username, password);
 
-            if (user.register()) {
+            if (username.isBlank()) {
+                errorLabel.setText("Username cannot be blank");
+            } else if (user.register()) {
                 // pop up to say registered successfully
                 // go to main menu
-
                 game.setScreen(new MainMenuScreen(game));
                 dispose();
             } else {
-                // display "username or password already exists"
+                System.out.println("failed to register user: " + username);
+                errorLabel.setText("Username already exists");
             }
         }));
+
+        table.row().padTop(10);
+        table.add(errorLabel).colspan(2);
 
         stage.addActor(table);
     }
 
-    private TextField addTextFieldRow(final Table table, String labelText, String defaultValue) {
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    private TextField addTextFieldRow(final Table table, String labelText, String defaultValue, int labelWidth) {
         final Label label = new Label(labelText, skin);
         final TextField text = new TextField(defaultValue, skin);
 
-        table.add(label).width(70);
+        // clear default text on click
+        text.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                text.setText("");
+            }
+        });
+
+        table.add(label).width(labelWidth);
         table.add(text).width(250);
         table.row().padTop(5);
 
@@ -176,5 +202,4 @@ public class LoginScreen implements Screen {
         stage.dispose();
     }
 }
-//======!!!======When you enter the correct password and account to log in, it should not show that the user already exists
 

@@ -43,7 +43,7 @@ public class MainMenuScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
 
         this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
     }
@@ -87,11 +87,18 @@ public class MainMenuScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         table.top();
+        table.padTop(100);
+
+        Label welcome = new Label("Welcome, " + game.getUsername(), skin);
+
+        table.add(welcome);
+        table.row().padTop(10);
+        welcome.setFontScale(3f);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
+        table.row().padTop(-25);
         table.add(logo);
         table.row();
-        table.padTop(100);
 
         Button playButton = new TextButton("Play", skin);
         table.add(playButton).width(300);
