@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,19 +22,22 @@ import com.cs2212group9.typinggame.utils.UserAuthenticator;
  * @author Group 9 members
  */
 public class LoginScreen implements Screen {
-
     final TypingGame game;
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
+    private Texture backgroundTexture;
 
-    /** Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
+    /**
+     * Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
+     *
      * @param gam - the game object
      */
+
     public LoginScreen(final TypingGame gam) {
-        game = gam;
+        this.game = gam;
 
         camera = new OrthographicCamera();
 
@@ -43,23 +47,25 @@ public class LoginScreen implements Screen {
         camera.position.set(1200, 800, 0);
         camera.update();
 
-        stage = new Stage();
+        stage = new Stage(viewport, game.batch);
+
+        backgroundTexture = new Texture(Gdx.files.internal("background.png"));
     }
 
     @Override
     public void render(float delta) {
-        // Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
-        stage.act();
-        stage.draw();
+        game.batch.begin();
+        // Draw the background texture. Adjust the positioning and sizing as needed.
+        game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
-            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-            dispose();
-            game.setScreen(new LoginScreen(game));
-        }
+        // Call stage.act() and stage.draw() after drawing the background
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -86,29 +92,29 @@ public class LoginScreen implements Screen {
         errorLabel.setColor(1, 0, 0, 1);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
-        logo.setPosition(280, 500);
+        logo.setPosition(280, 550);
         stage.addActor(logo);
         // place logo at the top of the screen
 
         TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
-        usernameField.setSize(200, 50);
+        usernameField.setSize(250, 80);
         // this method of storing a password is actually quite unsecure, but I don't aim for this to be that secure
         // So I won't change it. the reason for it is when the JVM segfaults (possible with JNI), contents of memory
         // gets dumped into a file, and if the password is stored in memory as a string, it can be read from that file.
         // char arrays are usually used because they can be dumped, like in Swing.
         TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 125);
-        passwordField.setSize(200, 50);
+        passwordField.setSize(250, 80);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
-		//======!!!======The password entered by the user needs to be displayed as * to prevent the password from being peeped.
+        //======!!!======The password entered by the user needs to be displayed as * to prevent the password from being peeped.
         Button loginButton = new TextButton("login", skin);
         Button registerButton = new TextButton("register", skin);
 
         table.row();
-        table.row().padTop(10);
+        table.row().padTop(15);
         table.add(loginButton).width(200).colspan(2);
         table.row();
-        table.row().padTop(5);
+        table.row().padTop(10);
         table.add(registerButton).width(200).colspan(2);
 
         // login button onclick
@@ -117,7 +123,7 @@ public class LoginScreen implements Screen {
             // check if username and password match
             // if so, go to main menu
             // else display "username or password did not match any records"
-          	//======!!!======When the account and password do not match, the information does not seem to be prompted correctly.
+            //======!!!======When the account and password do not match, the information does not seem to be prompted correctly.
             String username = usernameField.getText();
             String password = passwordField.getText();
 
@@ -136,7 +142,7 @@ public class LoginScreen implements Screen {
 
         // register button onclick
         // TODO: make it go to a registration screen
-      	//======!!!======The Enter key can also be equivalent to clicking the currently selected button
+        //======!!!======The Enter key can also be equivalent to clicking the currently selected button
         registerButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             // register logic
             // check if in database,
@@ -198,8 +204,9 @@ public class LoginScreen implements Screen {
 
     @Override
     public void dispose() {
-        music.dispose();
         stage.dispose();
+        music.dispose();
+        backgroundTexture.dispose(); // Dispose resources owned by this screen
     }
 }
 

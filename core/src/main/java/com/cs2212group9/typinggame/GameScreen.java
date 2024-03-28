@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
     private boolean gameOver = false;
     private final int levelId;
     private boolean scoreSet = false;
-
+    private Texture backgroundTexture;
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
@@ -81,7 +81,9 @@ public class GameScreen implements Screen {
         stage = new Stage();
         gameStartTime = TimeUtils.millis(); // Record the start time of the game
         this.levelId = levelId;
+        backgroundTexture = new Texture(Gdx.files.internal("background_game_screen.png"));
     }
+
 
     /**
      * Spawns a new word at a random position on the screen.
@@ -224,12 +226,21 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(1, 1, 1, 1); // Clear the screen
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+
+        game.batch.begin();
+        // Draw the background texture first
+        game.batch.draw(backgroundTexture, 0, 0, 800, 480);
+        game.batch.end();
         if (wordsList.size <= 0 && !gameOver) {
             gameOver = true;
             gameEndTime = TimeUtils.millis();
         }
         if (gameOver) {
             displayGameOverScreen();
+
             return; // Skip the rest of the render method
         }
 
@@ -481,5 +492,6 @@ public class GameScreen implements Screen {
             stage.dispose();
             stage = null;
         }
+        if (backgroundTexture != null) backgroundTexture.dispose();
     }
 }

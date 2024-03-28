@@ -26,6 +26,7 @@ public class MainMenuScreen implements Screen {
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/awesomeness.wav"));
     private final Skin skin;
     private int nextLevel;
+    private Texture backgroundTexture;
 
     /**
      * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
@@ -47,13 +48,19 @@ public class MainMenuScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
+        backgroundTexture = new Texture(Gdx.files.internal("background.png")); // Ensure the file path is correct
     }
 
     @Override
     public void render(float delta) {
-
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        // Draw the background texture. Adjust the positioning and sizing as needed.
+        game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.end();
+
+        // Existing rendering code for drawing stage and other UI components...
         stage.act();
         stage.draw();
 
@@ -173,7 +180,11 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        // Dispose of the background texture when no longer needed
+        if (backgroundTexture != null) backgroundTexture.dispose();
+
+        // Dispose other resources...
         music.dispose();
-        stage.clear();
+        stage.dispose();
     }
 }
