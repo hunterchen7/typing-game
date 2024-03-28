@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,7 +27,7 @@ public class LevelsScreen implements Screen {
     private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
     // from https://opengameart.org/content/woodland-fantasy
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/WoodlandFantasy.mp3"));
-
+    private Texture backgroundTexture;
     /**
      * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
      * @param gam - the game object
@@ -42,13 +44,20 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
+        backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     }
 
     @Override
     public void render(float delta) {
         // Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        // Draw the background texture to fill the screen
+        game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.end();
+
+        // Existing rendering code for the stage...
         stage.act();
         stage.draw();
 
@@ -93,8 +102,10 @@ public class LevelsScreen implements Screen {
                 TextButton levelButton = new TextButton("Level " + level, skin);
                 if (level > highestUnlockedLevel) {
                     // set color to red if not unlocked
-                    levelButton.setColor(1, 0, 0, 1);
+                    levelButton.setColor(1, 0, 0, 0.75f);
                     levelButton.setTouchable(Touchable.disabled);
+                } else {
+                    levelButton.setColor(0, 0, 1, 1);
                 }
                 levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                     if (level > highestUnlockedLevel) {
@@ -136,6 +147,8 @@ public class LevelsScreen implements Screen {
 
     @Override
     public void dispose() {
+        if (backgroundTexture != null) backgroundTexture.dispose();
+        // Dispose other resources...
         stage.dispose();
         skin.dispose();
         music.dispose();

@@ -26,6 +26,7 @@ public class MainMenuScreen implements Screen {
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/awesomeness.wav"));
     private final Skin skin;
     private int nextLevel;
+    private Texture backgroundTexture;
 
     /**
      * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
@@ -47,13 +48,19 @@ public class MainMenuScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         this.nextLevel = DBScores.highestUnlockedLevel(game.getUsername());
+        backgroundTexture = new Texture(Gdx.files.internal("background.png")); // Ensure the file path is correct
     }
 
     @Override
     public void render(float delta) {
-
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        // Draw the background texture. Adjust the positioning and sizing as needed.
+        game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.end();
+
+        // Existing rendering code for drawing stage and other UI components...
         stage.act();
         stage.draw();
 
@@ -91,15 +98,17 @@ public class MainMenuScreen implements Screen {
         table.padTop(100);
 
         Label welcome = new Label("Welcome, " + game.getUsername(), skin);
+        welcome.setColor(0, 1, 1, 1);
+        welcome.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
 
         table.add(welcome);
         table.row().padTop(10);
         welcome.setFontScale(3f);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
-        table.row().padTop(-25);
+        table.row().padTop(30);
         table.add(logo);
-        table.row();
+        table.row().padTop(100);
 
         Button playButton = new TextButton("Play", skin);
         table.add(playButton).width(300);
@@ -173,7 +182,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        music.dispose();
+        // Dispose of the background texture when no longer needed
+        if (backgroundTexture != null) backgroundTexture.dispose();
+
+        // Dispose other resources...
         stage.clear();
+        music.dispose();
+        stage.dispose();
     }
 }
