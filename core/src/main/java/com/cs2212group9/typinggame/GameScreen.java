@@ -193,7 +193,7 @@ public class GameScreen implements Screen {
             gameOverText = "Congratulations, You completed the level!";
             nextLevel = "You have unlocked level " + (levelId + 1) + "!";
         } else {
-            gameOverText = "Game Over, you need at least " + levelMinScore + " points to pass this level.";
+            gameOverText = "You lose! You need at least " + levelMinScore + " points to pass this level.";
         }
         game.font.draw(game.batch, gameOverText, 320, 300);
         game.font.draw(game.batch, nextLevel, 320, 275);

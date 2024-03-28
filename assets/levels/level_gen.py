@@ -149,7 +149,7 @@ levels[30] = [i for i in words10000 if len(i) > 12] + long_words
 for level in levels:
     print(level, len(levels[level]))
 
-con = sqlite3.connect('../../lwjgl3/typing-game.db')
+con = sqlite3.connect('../../typing-game.db')
 con.execute('DROP TABLE IF EXISTS levels')
 con.execute('CREATE TABLE IF NOT EXISTS levels (level_id INTEGER PRIMARY KEY, words TEXT, difficulty INTEGER, waves INTEGER, min_score INTEGER)')
 
@@ -158,7 +158,7 @@ con.execute('CREATE TABLE IF NOT EXISTS levels (level_id INTEGER PRIMARY KEY, wo
 # min_score is the minimum score required to unlock the next level, fairly arbitrary calculation but it should be harder to unlock higher levels
 for level, words in levels.items():
     waves = level * 5 + 5
-    con.execute('INSERT INTO levels (level_id, words, difficulty, waves, min_score) VALUES (?, ?, ?, ?, ?)', (level, ','.join(words), 1, waves, max(1, (level // 2)) * (waves // 2) + 10))
+    con.execute('INSERT INTO levels (level_id, words, difficulty, waves, min_score) VALUES (?, ?, ?, ?, ?)', (level, ','.join(words), 1, waves, max(1, (level // 3)) * waves + 10))
 
 con.commit()
 con.close()
