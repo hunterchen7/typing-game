@@ -98,15 +98,17 @@ public class MainMenuScreen implements Screen {
         table.padTop(100);
 
         Label welcome = new Label("Welcome, " + game.getUsername(), skin);
+        welcome.setColor(0, 1, 1, 1);
+        welcome.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
 
         table.add(welcome);
         table.row().padTop(10);
         welcome.setFontScale(3f);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
-        table.row().padTop(-25);
+        table.row().padTop(30);
         table.add(logo);
-        table.row();
+        table.row().padTop(100);
 
         Button playButton = new TextButton("Play", skin);
         table.add(playButton).width(300);

@@ -123,8 +123,10 @@ public class LevelsScreen implements Screen {
                 TextButton levelButton = new TextButton("Level " + level, skin);
                 if (level > highestUnlockedLevel) {
                     // set color to red if not unlocked
-                    levelButton.setColor(1, 0, 0, 1);
+                    levelButton.setColor(1, 0, 0, 0.75f);
                     levelButton.setTouchable(Touchable.disabled);
+                } else {
+                    levelButton.setColor(0, 0, 1, 1);
                 }
                 levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                     if (level > highestUnlockedLevel) {
