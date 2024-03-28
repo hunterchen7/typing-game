@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBLevel;
 import com.cs2212group9.typinggame.db.DBScores;
@@ -46,7 +45,7 @@ public class GameScreen implements Screen {
     private boolean gameOver = false;
     private final int levelId;
     private boolean scoreSet = false;
-
+    private final Texture backgroundTexture;
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
@@ -81,7 +80,9 @@ public class GameScreen implements Screen {
         stage = new Stage();
         gameStartTime = TimeUtils.millis(); // Record the start time of the game
         this.levelId = levelId;
+        backgroundTexture = new Texture(Gdx.files.internal("background_game_screen.png"));
     }
+
 
     /**
      * Spawns a new word at a random position on the screen.
@@ -181,7 +182,7 @@ public class GameScreen implements Screen {
         if (gameEndTime == 0) gameEndTime = TimeUtils.millis(); // Set end time if not already set
         long totalTimeInSeconds = (gameEndTime - gameStartTime) / 1000;
 
-        ScreenUtils.clear(0, 0, 0, 1);
+        // ScreenUtils.clear(0, 0, 0, 1);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
@@ -224,19 +225,28 @@ public class GameScreen implements Screen {
      */
     @Override
     public void render(float delta) {
+        // ScreenUtils.clear(1, 1, 1, 1); // Clear the screen
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
+
+        game.batch.begin();
+        // Draw the background texture first
+        game.batch.draw(backgroundTexture, 0, 0, 800, 480);
+        game.batch.end();
         if (wordsList.size <= 0 && !gameOver) {
             gameOver = true;
             gameEndTime = TimeUtils.millis();
         }
         if (gameOver) {
             displayGameOverScreen();
+
             return; // Skip the rest of the render method
         }
 
         handleInput();
 
         if (state) {
-            ScreenUtils.clear(0, 0, 0, 1);
+            // ScreenUtils.clear(0, 0, 0, 1);
             camera.update();
             game.batch.setProjectionMatrix(camera.combined);
 
@@ -279,7 +289,7 @@ public class GameScreen implements Screen {
             Iterator<Rectangle> iter = words.iterator();
             while (iter.hasNext()) {
                 Rectangle wordRectangle = iter.next();
-                wordRectangle.y -= 75 * Gdx.graphics.getDeltaTime();
+                wordRectangle.y -= 65 * Gdx.graphics.getDeltaTime(); // move words down
                 if (wordRectangle.y < 64) {
                     int wordIndex = words.indexOf(wordRectangle, true);
                     if (indexOfWordToType == wordIndex) {
@@ -297,7 +307,8 @@ public class GameScreen implements Screen {
                 gameOver = true;
                 gameEndTime = TimeUtils.millis();
             } else {
-                if (TimeUtils.timeSinceMillis(lastDropTime) > 2000 || words.isEmpty()) {
+                // spawn a word if 2.5 sec since last drop or no more words to type
+                if (TimeUtils.timeSinceMillis(lastDropTime) > 2500 || words.isEmpty()) {
                     spawnWord();
                 }
             }
@@ -481,5 +492,6 @@ public class GameScreen implements Screen {
             stage.dispose();
             stage = null;
         }
+        if (backgroundTexture != null) backgroundTexture.dispose();
     }
 }
