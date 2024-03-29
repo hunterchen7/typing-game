@@ -58,7 +58,7 @@ public class DBLevel {
      * @param level - the level to get the difficulty from
      * @return the difficulty of a level as an integer
      */
-    public int getLevelDifficulty(int level) {
+    public static int getLevelDifficulty(int level) {
         String sql = "SELECT difficulty FROM levels WHERE level_id = " + level + ";";
         int difficulty = 0;
 
