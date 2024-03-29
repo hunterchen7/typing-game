@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     Array<Rectangle> words;
     long lastDropTime;
-    Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
     private Stage stage;
     private int waves;
     Array<String> wordsList;
@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
         waves -= 1;
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(128, 800 - 128); // Random X within bounds
-        raindrop.y = 480; // Start at the top of the screen
+        raindrop.y = 460; // Start at the top of the screen
         raindrop.width = 64;
         raindrop.height = 64;
         words.add(raindrop);
@@ -120,6 +120,19 @@ public class GameScreen implements Screen {
         }
 
         if (state && indexOfWordToType >= 0 && indexOfWordToType < wordsList.size) {
+            // skip word if space pressed
+            if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+                words.removeIndex(indexOfWordToType);
+                wordsList.removeIndex(indexOfWordToType);
+                currentTypedWord = ""; // Reset the typed word
+                indexOfWordToType = -1; // Reset index to find new bottom-most word
+                // Check if the game is over
+                if (wordsList.size == 0) {
+                    gameOver = true;
+                    gameEndTime = TimeUtils.millis();
+                }
+            }
+
             // handle typed letters and backspace only if the game is not paused
             for (int i = Keys.A; i <= Keys.Z; i++) {
                 if (Gdx.input.isKeyJustPressed(i)) {
@@ -397,9 +410,9 @@ public class GameScreen implements Screen {
         }));
 
         // Add buttons to the stage
-        table.add(resumeButton).width(300);
+        table.add(resumeButton);
         table.row().padTop(10);
-        table.add(returnButton).width(300);
+        table.add(returnButton);
         table.row().padTop(10);
 
         stage.addActor(table);

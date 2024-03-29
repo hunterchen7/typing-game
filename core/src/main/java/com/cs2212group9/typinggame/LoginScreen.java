@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,10 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.UserAuthenticator;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
+
 /**
  * This class is mainly responsible for the login interface of the game.
  * @author Group 9 members
@@ -25,8 +31,11 @@ public class LoginScreen implements Screen {
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
     private boolean usernameReset = false;
-    private Texture backgroundTexture;
-
+    private final Texture backgroundTexture;
+    private final Label errorLabel = new Label("", skin, "over");
+    private final Table table = new Table();
+    private final TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
+    private final TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 155);
     /**
      * Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
      *
@@ -34,7 +43,7 @@ public class LoginScreen implements Screen {
      */
 
     public LoginScreen(final TypingGame gam) {
-        this.game = gam;
+        game = gam;
 
         camera = new OrthographicCamera();
 
@@ -47,6 +56,10 @@ public class LoginScreen implements Screen {
         stage = new Stage(viewport, game.batch);
 
         backgroundTexture = new Texture(Gdx.files.internal("background.png"));
+        errorLabel.setColor(1, 0, 0, 1);
+
+        // errorLabel.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
+        // errorLabel.setColor(1, 0, 0, 1);
     }
 
     @Override
@@ -61,6 +74,38 @@ public class LoginScreen implements Screen {
         // Call stage.act() and stage.draw() after drawing the background
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            dispose();
+            game.setScreen(new LoginScreen(game));
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            try {
+                tryLogin(usernameField.getText(), passwordField.getText());
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private void tryLogin(String username, String password) throws NoSuchAlgorithmException {
+        // log in logic
+        // check if username and password match
+        // if so, go to main menu
+        // else display "username or password did not match any records"
+
+        UserAuthenticator user = new UserAuthenticator(username, password);
+        if (user.authenticate()) {
+            System.out.println("authenticated user: " + username);
+            game.setUsername(username);
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
+        } else {
+            System.out.println("failed to authenticate user: " + username);
+            errorLabel.setText("username or password is incorrect");
+        }
     }
 
 
@@ -80,26 +125,22 @@ public class LoginScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Table table = new Table();
         table.setFillParent(true);
         table.top();
         table.padTop(350);
         // text to show the user that the username or password is incorrect or already exists
-        Label errorLabel = new Label("", skin);
-        errorLabel.setColor(1, 0, 0, 1);
 
         Image logo = new Image(new Texture(Gdx.files.internal("logo.png")));
         logo.setPosition(280, 550);
         stage.addActor(logo);
         // place logo at the top of the screen
 
-        TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
         usernameField.setSize(250, 80);
         // this method of storing a password is actually quite unsecure, but I don't aim for this to be that secure
         // So I won't change it. the reason for it is when the JVM segfaults (possible with JNI), contents of memory
         // gets dumped into a file, and if the password is stored in memory as a string, it can be read from that file.
         // char arrays are usually used because they can be dumped, like in Swing.
-        TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 155);
+
         passwordField.setSize(250, 80);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
@@ -122,30 +163,12 @@ public class LoginScreen implements Screen {
         table.row();
         table.row().padTop(15);
         table.add(loginButton).width(200).colspan(2);
-        table.row();
-        table.row().padTop(10);
+        table.row().padTop(-10);
         table.add(registerButton).width(200).colspan(2);
 
         // login button onclick
         loginButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            // log in logic
-            // check if username and password match
-            // if so, go to main menu
-            // else display "username or password did not match any records"
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-
-            UserAuthenticator user = new UserAuthenticator(username, password);
-            if (user.authenticate()) {
-                System.out.println("authenticated user: " + username);
-                this.game.setUsername(username);
-                game.setScreen(new MainMenuScreen(game));
-                dispose();
-            } else {
-                System.out.println("failed to authenticate user: " + username);
-                errorLabel.setText("username or password is incorrect");
-            }
-
+            tryLogin(usernameField.getText(), passwordField.getText());
         }));
 
         // register button onclick
@@ -164,7 +187,7 @@ public class LoginScreen implements Screen {
             } else if (username.length() > 20) {
                 errorLabel.setText("Username cannot be longer than 20 characters");
             } else if (user.register()) {
-                this.game.setUsername(username);
+                game.setUsername(username);
                 // pop up to say registered successfully
                 // go to main menu
                 game.setScreen(new MainMenuScreen(game));
@@ -176,6 +199,7 @@ public class LoginScreen implements Screen {
         }));
 
         table.row().padTop(10);
+
         // errorLabel.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
         table.add(errorLabel).colspan(2);
 
@@ -184,8 +208,8 @@ public class LoginScreen implements Screen {
 
     private TextField addTextFieldRow(final Table table, String labelText, String defaultValue, int labelWidth) {
         final Label label = new Label(labelText, skin);
-        final TextField text = new TextField(defaultValue, skin);
-        text.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
+        final TextField text = new TextField(defaultValue, skin, Objects.equals(labelText, "Username:") ? "login" : "password");
+        // text.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
 
         table.add(label).width(labelWidth);
         table.add(text).width(250);

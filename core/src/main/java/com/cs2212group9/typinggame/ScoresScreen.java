@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -25,8 +26,9 @@ public class ScoresScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private final Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
+    private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     private String selectedUser;
+    private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
 
     /** Constructor for the OptionsScreen, initializes camera & viewport, and sets up button skins
      * @param gam - the game object
@@ -45,10 +47,25 @@ public class ScoresScreen implements Screen {
         stage = new Stage();
     }
 
+    /**
+     * Constructor for the OptionsScreen, uses the default constructor and sets the selected user
+     * @param gam - the game object
+     * @param user - the user to display scores for
+     */
+    public ScoresScreen(final TypingGame gam, String user) {
+        this(gam);
+        selectedUser = user;
+    }
+
+
     @Override
     public void render(float delta) {
         // Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+
+        game.batch.begin();
+        game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.batch.end();
 
         stage.act();
         stage.draw();
@@ -56,7 +73,7 @@ public class ScoresScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
             && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             dispose();
-            game.setScreen(new OptionsScreen(game));
+            game.setScreen(new ScoresScreen(game, selectedUser));
         }
     }
 
@@ -130,49 +147,66 @@ public class ScoresScreen implements Screen {
             System.out.println((i) + ". -");
         }
 
+        boolean userExists = false;
+
+        // displayed only for admin to search for specific users
+        if (DBUser.isAdmin(game.getUsername())) {
+            Table searchTable = new Table(skin);
+            searchTable.setFillParent(true);
+            searchTable.top();
+            searchTable.padTop(225);
+            searchTable.add(new Label("Search for user:", skin));
+            final TextField userField = new TextField(this.selectedUser, skin);
+            final TextButton searchButton = new TextButton("Search", skin);
+            searchButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+                // this.selectedUser = userField.getText();
+                System.out.println("Selected user: " + this.selectedUser);
+                dispose();
+                // load new screen with selected user
+                game.setScreen(new ScoresScreen(game, userField.getText()));
+            }));
+            userField.setWidth(340);
+            searchTable.add(userField);
+            searchTable.add(searchButton).row();
+            // display total score for selected user
+            if (this.selectedUser != null && !this.selectedUser.isBlank()) {
+                System.out.println("Selected user: " + this.selectedUser);
+                if (DBUser.userExists(this.selectedUser)) {
+                    userExists = true;
+                }
+                String score = userExists ?
+                    "Total score for " + this.selectedUser + ":" + DBScores.getUserTotalScore(this.selectedUser)
+                    : "User not found";
+                searchTable.add(new Label(score, skin)).colspan(3);
+            }
+            stage.addActor(searchTable);
+        }
+
         // display top scores for each level
         Table levelTable = new Table(skin);
         levelTable.setFillParent(true);
         levelTable.top();
-        levelTable.padTop(300);
+        levelTable.padTop(325);
         for (int i = 0; i < DBLevel.getLevelCount() / 3; i++) {
             for (int j = 1; j <= 3; j++) {
                 int level = i * 3 + j;
-                ScoreEntry topScore = DBScores.getTopLevelScore(level);
-                Label levelLabel = new Label("Level " + level + ": " + (topScore != null ? topScore : "none"), skin);
+                String topScore;
+                // display top score for selected user if it exists
+                if (this.selectedUser != null && !this.selectedUser.isBlank()) {
+                    if (!userExists) continue; // skip if user does not exist
+                    ScoreEntry topLevelScore = DBScores.getUserTopLevelScore(this.selectedUser, level);
+                    topScore = topLevelScore != null ? topLevelScore.getScore() + ", played " + DBScores.getUserLevelPlays(selectedUser, level) + " times" : "No scores yet";
+                } else {
+                    ScoreEntry topLevelScore = DBScores.getTopLevelScore(level);
+                    topScore = topLevelScore != null ? topLevelScore.toString() : "No scores yet";
+                }
+                Label levelLabel = new Label("Level " + level + ": " + topScore, skin);
                 levelTable.add(levelLabel);
             }
             levelTable.row().padTop(10).padLeft(10).padRight(10);
         }
         stage.addActor(levelTable);
-
-        Table searchTable = new Table(skin);
-        searchTable.setFillParent(true);
-        searchTable.top();
-        searchTable.padTop(225);
-        if (DBUser.isAdmin(game.getUsername())) {
-            searchTable.add(new Label("Search for user:", skin));
-            final TextField userField = new TextField("", skin);
-            final TextButton searchButton = new TextButton("Search", skin);
-            searchButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-                this.selectedUser = userField.getText();
-                System.out.println("Selected user: " + this.selectedUser);
-            }));
-            userField.setWidth(340);
-            searchTable.add(userField);
-            searchTable.add(searchButton).row();
-        }
-        stage.addActor(searchTable);
-
-        // display total score for selected user
-        if (this.selectedUser != null) {
-            System.out.println("Selected user: " + this.selectedUser);
-            totalScoreTable.add(new Label("Total score for " + this.selectedUser + ":"
-                + DBScores.getUserTotalScore(this.game.getUsername()), skin)).row();
-        }
-
         stage.addActor(totalScoreTable);
-
 
 
         TextButton returnButton = new TextButton("Return to Main Menu", skin);

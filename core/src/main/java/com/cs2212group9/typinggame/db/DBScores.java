@@ -206,4 +206,32 @@ public class DBScores {
         }
         return score;
     }
+
+    /**
+     * Returns the number of times a user has played a level
+     * @param username - the username of the user
+     * @param level - the level to get the number of plays from
+     * @return an integer that represents the number of times a user has played a level
+     */
+    public static int getUserLevelPlays(String username, int level) {
+        int plays = 0;
+        String sql = """
+                    SELECT COUNT(*) AS plays
+                    FROM scores
+                    WHERE user = ? AND level = ?;
+                    """;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setInt(2, level);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    plays = rs.getInt("plays");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return plays;
+    }
 }

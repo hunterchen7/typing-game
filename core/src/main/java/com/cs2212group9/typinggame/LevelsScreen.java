@@ -24,10 +24,10 @@ public class LevelsScreen implements Screen {
     OrthographicCamera camera;
     private final Stage stage;
     private final Viewport viewport;
-    private final Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     // from https://opengameart.org/content/woodland-fantasy
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/WoodlandFantasy.mp3"));
-    private Texture backgroundTexture;
+    private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     /**
      * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
      * @param gam - the game object
@@ -44,7 +44,6 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     }
 
     @Override
@@ -86,7 +85,10 @@ public class LevelsScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         table.top();
-        table.padTop(200);
+
+        table.add(new Label("Select a Level", skin)).colspan(3);
+        table.padTop(100);
+        table.row();
 
         int levelCount = DBLevel.getLevelCount();
         System.out.println("DBLevel count: " + levelCount);
@@ -102,10 +104,10 @@ public class LevelsScreen implements Screen {
                 TextButton levelButton = new TextButton("Level " + level, skin);
                 if (level > highestUnlockedLevel) {
                     // set color to red if not unlocked
-                    levelButton.setColor(1, 0, 0, 0.75f);
+                    levelButton.setColor(0, 0, 0, 0.75f);
                     levelButton.setTouchable(Touchable.disabled);
                 } else {
-                    levelButton.setColor(0, 0, 1, 1);
+                    levelButton.setColor(1, 1, 1, 1);
                 }
                 levelButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                     if (level > highestUnlockedLevel) {
@@ -118,7 +120,7 @@ public class LevelsScreen implements Screen {
                 }));
                 table.add(levelButton).width(200).pad(5);
             }
-            table.row();
+            table.row().padTop(-10);
         }
 
         stage.addActor(table);
