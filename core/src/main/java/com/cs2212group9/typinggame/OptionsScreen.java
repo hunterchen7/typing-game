@@ -5,10 +5,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cs2212group9.typinggame.db.DBLevel;
+import com.cs2212group9.typinggame.db.DBScores;
+import com.cs2212group9.typinggame.utils.InputListenerFactory;
+
 /**
  * This class is mainly used to set various parameters of the game according to user needs.
  * @author Group 9 members
@@ -85,8 +91,14 @@ public class OptionsScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        Table table = new Table();
 
-        table.setFillParent(true);
+        TextButton returnButton = new TextButton("Return to Main Menu", skin);
+        returnButton.setPosition(5, 5);
+        returnButton.setWidth(200);
+        returnButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            dispose();
+            game.setScreen(new MainMenuScreen(game));
+        }));
+        stage.addActor(returnButton);
     }
 }
