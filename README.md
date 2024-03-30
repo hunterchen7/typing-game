@@ -1,6 +1,12 @@
 # typing-game-libgdx
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff).
+This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
+
+![demo](https://github.com/hunterchen7/typing-game/assets/34012681/e4e26360-b9cd-4c5e-bb79-2e155e04da0f)
+
+Users can play 30 levels of varying difficulty containing thousands of unique words, while competing for a spot on the leaderboard.
+
+User, level and score data are all stored in a SQLite database.
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
@@ -17,11 +23,16 @@ This project was generated with a template including simple application launcher
 - Run `./build.sh` to build the project with pre-existing user data
 - Run `./build.sh -f` to build the project with a fresh database
 - Both will build to `lwjgl3/build/libs/typing-game-libgdx-x.x.x.jar`
-- using `./gradlew lwjgl3:jar` will build the project, but will not copy the database so will not work
-- Python is NOT required to build
+- using `./gradlew lwjgl3:jar` will build the project, but will not copy the database, so it will not work
+- Python is NOT required to build the project, but is used for level generation, [Python 3.11](https://www.python.org/downloads/release/python-3112/) was used.
 
 ## Testing
 - Run tests by configuring `JUnit` in IntelliJ to run all in package `com.cs2212group9.typinggame`
+
+## Instructor Mode
+- To log in as an instructor/admin, use the username `admin`. The password is the same as the username.
+- As an instructor, you see the same scoreboard as everyone else, but you have an additional search function.
+- It allows you to search for users by username, and view their scores and number of attempts on each level.
 
 ## Platforms
 
