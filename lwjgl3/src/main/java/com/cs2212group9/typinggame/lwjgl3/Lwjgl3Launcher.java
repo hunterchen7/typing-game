@@ -14,6 +14,7 @@ public class Lwjgl3Launcher {
     private static Lwjgl3Application createApplication() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
         configuration.setTitle("Typing Game");
+        configuration.setResizable(false);
         configuration.setWindowedMode(1200, 800);
         configuration.setForegroundFPS(60);
         return new Lwjgl3Application(new TypingGame(), configuration);
