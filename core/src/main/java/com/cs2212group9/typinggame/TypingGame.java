@@ -21,11 +21,53 @@ public class TypingGame extends Game {
     BitmapFont font;
     Texture backgroundTexture;
     private String username;
+    private float sfxVolume = 1f;
+    private float musicVolume = 0.4f;
 
+    /**
+     * Changes the volume of sound effects.
+     * @param volume The new volume level for sound effects.
+     */
+    public void changeSFXVolume(float volume) {
+        sfxVolume = volume;
+    }
+
+    /**
+     * Changes the volume of the background music.
+     * @param volume The new volume level for background music.
+     */
+    public void changeMusicVolume(float volume) {
+        musicVolume = volume;
+    }
+
+    /**
+     * Returns the volume of sound effects.
+     * @return The volume level of sound effects.
+     */
+    public float getSFXVolume() {
+        return sfxVolume;
+    }
+
+    /**
+     * Returns the volume of background music.
+     * @return The volume level of background music.
+     */
+    public float getMusicVolume() {
+        return musicVolume;
+    }
+
+    /**
+     * Returns the username of the player.
+     * @return The username of the player.
+     */
     public String getUsername() {
         return username;
     }
 
+/**
+     * Sets the username of the player.
+     * @param username The username of the player.
+     */
     public void setUsername(String username) {
         this.username = username;
     }

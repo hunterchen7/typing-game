@@ -59,7 +59,7 @@ public class MainMenuScreen implements Screen {
 
     /**
      * Renders the game screen.
-     * 
+     *
      * @param delta The time in seconds since the last render.
      */
     @Override
@@ -89,7 +89,7 @@ public class MainMenuScreen implements Screen {
 
     /**
      * Called when the game window is resized.
-     * 
+     *
      * @param width  The new width of the game window
      * @param height The new height of the game window
      */
@@ -107,6 +107,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         music.play();
+        music.setVolume(game.getMusicVolume());
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -182,12 +183,20 @@ public class MainMenuScreen implements Screen {
             Gdx.app.exit();
         }));
 
+        TextButton tutorialButton = new TextButton("Tutorial", new Skin(Gdx.files.internal("ui/neon/neon-ui.json")));
+        tutorialButton.setPosition(1110, 5);
+        tutorialButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            dispose();
+            game.setScreen(new TutorialScreen(game, "MainMenu"));
+        }));
+        stage.addActor(tutorialButton);
+
         stage.addActor(table);
     }
 
     /**
      * Method called when hiding the game interface
-     */  
+     */
     @Override
     public void hide() {
     }
@@ -201,11 +210,11 @@ public class MainMenuScreen implements Screen {
 
     /**
      * Method called when resuming the game
-     */ 
+     */
     @Override
     public void resume() {
     }
-  
+
     /**
      * Methods to clean up resources and release memory
      */

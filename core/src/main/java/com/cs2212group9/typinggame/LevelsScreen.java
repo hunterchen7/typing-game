@@ -44,6 +44,7 @@ public class LevelsScreen implements Screen {
         camera.update();
 
         music.play();
+        music.setVolume(game.getMusicVolume());
         music.setLooping(true);
 
         stage = new Stage();

@@ -48,6 +48,7 @@ public class LoginScreen implements Screen {
         camera = new OrthographicCamera();
 
         music.play();
+        music.setVolume(game.getMusicVolume());
         music.setLooping(true);
 
         viewport = new FitViewport(1200, 800, camera);
@@ -207,8 +208,32 @@ public class LoginScreen implements Screen {
         table.add(errorLabel).colspan(2);
 
         stage.addActor(table);
+
+        TextButton tutorialButton = new TextButton("Tutorial", skin);
+        tutorialButton.setPosition(1110, 5);
+        tutorialButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            dispose();
+            game.setScreen(new TutorialScreen(game, "Login"));
+        }));
+        stage.addActor(tutorialButton);
+
+        TextButton exitButton = new TextButton("Quit", skin);
+        exitButton.setPosition(5, 5);
+        exitButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            dispose();
+            Gdx.app.exit();
+        }));
+        stage.addActor(exitButton);
     }
 
+    /**
+     * Add a row to the table with a label and a text field
+     * @param table - the table to add the row to
+     * @param labelText - the text of the label
+     * @param defaultValue - the default value of the text field
+     * @param labelWidth - the width of the label
+     * @return the text field that was added
+     */
     private TextField addTextFieldRow(final Table table, String labelText, String defaultValue, int labelWidth) {
         final Label label = new Label(labelText, skin);
         final TextField text = new TextField(defaultValue, skin, Objects.equals(labelText, "Username:") ? "login" : "password");
