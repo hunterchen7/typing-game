@@ -78,7 +78,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
 
         // Initialize words array and load words for the current level
-        words = new Array<>();
+        words = new Array<Rectangle>();
         waves = DBLevel.getLevelWaves(levelId);
         Array<String> wordsPool = DBLevel.getLevelWords(levelId);
         wordsList = new Array<>();

@@ -150,15 +150,25 @@ for level in levels:
     print(level, len(levels[level]))
 
 con = sqlite3.connect('../../typing-game.db')
-con.execute('DROP TABLE IF EXISTS levels')
-con.execute('CREATE TABLE IF NOT EXISTS levels (level_id INTEGER PRIMARY KEY, words TEXT, difficulty INTEGER, waves INTEGER, min_score INTEGER)')
+con_fresh = sqlite3.connect('../../typing-game-fresh.db')
+
+drop = 'DROP TABLE IF EXISTS levels'
+create = 'CREATE TABLE IF NOT EXISTS levels (level_id INTEGER PRIMARY KEY, words TEXT, difficulty INTEGER, waves INTEGER, min_score INTEGER)'
+con.execute(drop)
+con.execute(create)
+con_fresh.execute(drop)
+con_fresh.execute(create)
 
 # waves are the number of words that need to be typed to complete the level, it is equal to the level number * 5 + 5 (15, 20, 25, ...)
 
 # min_score is the minimum score required to unlock the next level, fairly arbitrary calculation but it should be harder to unlock higher levels
 for level, words in levels.items():
     waves = level * 5 + 5
-    con.execute('INSERT INTO levels (level_id, words, difficulty, waves, min_score) VALUES (?, ?, ?, ?, ?)', (level, ','.join(words), 1, waves, max(1, (level // 3)) * waves + 10))
+    sql, args = 'INSERT INTO levels (level_id, words, difficulty, waves, min_score) VALUES (?, ?, ?, ?, ?)', (level, ','.join(words), 1, waves, max(1, (level // 3)) * waves + 10)
+    con.execute(sql, args)
+    con_fresh.execute(sql, args)
 
 con.commit()
 con.close()
+con_fresh.commit()
+con_fresh.close()

@@ -206,7 +206,6 @@ public class TutorialScreen implements Screen {
         table.add(slideLabel).colspan(3).padTop(20);
     }
 
-
     /**
      * Hide the tutorial screen
      */
