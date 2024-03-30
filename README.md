@@ -4,7 +4,22 @@ A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://git
 
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
-Uses JDK 21
+## Development setup guide
+1. Install [JDK 21](https://www.oracle.com/ca-en/java/technologies/downloads/#java21)
+2. Clone repository
+3. Open project in IntelliJ
+4. Run/Debug `Lwjgl3Launcher.java`
+5. Alternatively configure as an application using OpenJDK 21, classpath = `group9.lwjgl3.main` and main method = `com.cs2212group9.typinggame.lwjgl3.Lwjgl3Launcher`
+- Most pages are configured with hot-reload: use `Ctrl + F9` to recompile and `Ctrl + Shift + F5` to reload the page
+- To modify level generation, Python is required
+
+## Build guide
+- Run `build.sh` to build the project with pre-existing user data
+- Run `build.sh -f` to build the project with a fresh database
+- using `./gradlew lwjgl3:jar` will build the project, but will not copy the database so will not work
+
+## Testing
+- Run tests by configuring `JUnit` in IntelliJ to run all in package `com.cs2212group9.typinggame`
 
 ## Platforms
 
@@ -34,5 +49,30 @@ Useful Gradle tasks and flags:
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
 
-## Running in IntelliJ
-Run/Debug `Lwjgl3Launcher.java`
+## Credits
+- Libraries used:
+  - [libGDX](https://libgdx.com/)
+  - [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc)
+  - [junit-jupiter-api](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api)
+  - [slf4j-api](https://mvnrepository.com/artifact/org.slf4j/slf4j-api)
+  - [slf4j-simple](https://mvnrepository.com/artifact/org.slf4j/slf4j-simple)
+  - [bouncycastle](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on)
+- Images:
+  - level and score screen background [freepik](https://www.freepik.com/free-photo/aerial-shot-beautiful-landscape-covered-with-snow-early-morning_11061964.htm#fromView=search&page=1&position=2&uuid=60e3e85d-534e-4371-a570-af27897804c6)
+  - login screen [freepik](https://www.freepik.com/free-ai-image/view-planet-earth-sunrise-from-space_43168360.htm#fromView=search&page=1&position=41&uuid=0bb51760-41eb-435b-a5ab-e5b905d36678)
+  - game screen [freepik](https://www.freepik.com/free-ai-image/exploration-majestic-galaxy-through-space-shuttle-technology-generated-by-ai_47596883.htm#fromView=search&page=3&position=23&uuid=64b6abd9-398f-)
+  - explosion(s) by [Sinestesia](https://opengameart.org/content/2d-explosion-animations-frame-)
+- Audio:
+  - sound effects (e.g. explosion sounds) from [Kenney](https://kenney.nl/)
+  - main menu music by [lasercheese](https://opengameart.org/content/space-orchestral)
+  - game music 1: mammoth by [congusbongus](https://opengameart.org/content/mammoth)
+  - game music 2: action synth track by [PetterTheSturgeon](https://opengameart.org/content/action-synth-track)
+  - game music 3: deus ex tempus by [Trevor Lentz](https://opengameart.org/content/deus-ex-tempus)
+  - game music 4: last knight of the cyberdeath [PetterTheSturgeon](https://opengameart.org/content/lastknightofthecyberdeath)
+  - game music 5: magic space by [CodeManu](https://opengameart.org/content/magic-space)
+  - level and score screen music: space echo by [Centurion_of_war](https://opengameart.org/content/space-echo)
+- Misc:
+  - libgdx-multiplayer-authentication-flow used with permission from [szsascha](https://github.com/szsascha/libgdx-multiplayer-authentication-flow/issues/1)
+  - explosion animation based off of [libgdx-2d-tutorial](https://github.com/hollowbit/libgdx-2d-tutorial)
+  - setup generated using [gdx-liftoff](https://github.com/libgdx/gdx-liftoff)
+  - English word list from [google-10000-english](https://github.com/first20hours/google-10000-english)
