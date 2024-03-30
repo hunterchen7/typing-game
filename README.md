@@ -14,9 +14,10 @@ This project was generated with a template including simple application launcher
 - To modify level generation, Python is required
 
 ## Build guide
-- Run `build.sh` to build the project with pre-existing user data
-- Run `build.sh -f` to build the project with a fresh database
+- Run `./build.sh` to build the project with pre-existing user data
+- Run `./build.sh -f` to build the project with a fresh database
 - using `./gradlew lwjgl3:jar` will build the project, but will not copy the database so will not work
+- Python is NOT required to build
 
 ## Testing
 - Run tests by configuring `JUnit` in IntelliJ to run all in package `com.cs2212group9.typinggame`
