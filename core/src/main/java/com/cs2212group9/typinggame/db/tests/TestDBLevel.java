@@ -6,7 +6,6 @@ import com.cs2212group9.typinggame.db.DBLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 
