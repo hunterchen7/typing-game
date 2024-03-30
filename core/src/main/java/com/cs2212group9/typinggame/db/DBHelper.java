@@ -1,7 +1,9 @@
 package com.cs2212group9.typinggame.db;
 
+import com.cs2212group9.typinggame.utils.UserAuthenticator;
 import org.junit.jupiter.api.Test;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class DBHelper {
@@ -28,7 +30,7 @@ public class DBHelper {
     }
 
     /**
-     * Create users, levels, and scores tables if they don't exist
+     * Create users, levels, and scores tables if they don't exist, also insert default admin user with "secret" password
      */
     public static void createNewTable() {
         String[] commands = {
@@ -63,6 +65,11 @@ public class DBHelper {
                     FOREIGN KEY (level) REFERENCES levels(level_id),
                     PRIMARY KEY (user, level, date_played)
                 );
+            """,
+            // insert default admin user, password is a secret :^)
+            """
+                INSERT INTO users (username, password, date_created, difficulty_modifier, is_admin, instant_death)
+                VALUES ('admin', 'c039c7c7331f0cdc357724dd3b1441765a283ac853be5f34adb6a87956b6ea14', datetime('now'), 0, TRUE, FALSE);
             """
         };
 

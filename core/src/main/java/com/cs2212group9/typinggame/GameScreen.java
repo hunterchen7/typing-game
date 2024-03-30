@@ -1,6 +1,7 @@
 package com.cs2212group9.typinggame;
 
 // Import necessary LibGDX and Java utilities
+import java.util.ArrayList;
 import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBLevel;
 import com.cs2212group9.typinggame.db.DBScores;
+import com.cs2212group9.typinggame.effects.Explosion;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 public class GameScreen implements Screen {
@@ -28,7 +30,7 @@ public class GameScreen implements Screen {
     final TypingGame game;
     Texture wordImage;
     Sound dropSound, explodeSound, otherExplodeSound;
-    Music rainMusic;
+    Music music;
     OrthographicCamera camera;
     Array<Rectangle> words;
     long lastDropTime;
@@ -46,6 +48,7 @@ public class GameScreen implements Screen {
     private final int levelId;
     private boolean scoreSet = false;
     private final Texture backgroundTexture;
+    ArrayList<Explosion> explosions;
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
@@ -57,17 +60,25 @@ public class GameScreen implements Screen {
         this.game = gam;
         // Load sound effects and music
         dropSound = Gdx.audio.newSound(Gdx.files.internal("audio/forceField_000.ogg"));
-        explodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/vine-boom.mp3"));
+        explodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/explosionCrunch_000.ogg"));
         otherExplodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/explosionCrunch_000.ogg"));
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/rpg-loop.wav"));
-        rainMusic.setLooping(true);
+        String[] musicFiles = {
+            "audio/mammoth.ogg",
+            "audio/notathing.mp3",
+            "audio/tempus.ogg",
+            "audio/cyberdeath.mp3",
+            "audio/magic-space.mp3"
+        };
+        music = Gdx.audio.newMusic(Gdx.files.internal(musicFiles[(int) (Math.random() * musicFiles.length)]));
+        music.setLooping(true);
+        music.setVolume(0.5f); // music is kinda loud
 
         // Set up the camera for 2D rendering
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
         // Initialize words array and load words for the current level
-        words = new Array<Rectangle>();
+        words = new Array<>();
         waves = DBLevel.getLevelWaves(levelId);
         Array<String> wordsPool = DBLevel.getLevelWords(levelId);
         wordsList = new Array<>();
@@ -81,6 +92,8 @@ public class GameScreen implements Screen {
         gameStartTime = TimeUtils.millis(); // Record the start time of the game
         this.levelId = levelId;
         backgroundTexture = new Texture(Gdx.files.internal("background_game_screen.png"));
+
+        explosions = new ArrayList<Explosion>();
     }
 
 
@@ -122,6 +135,7 @@ public class GameScreen implements Screen {
         if (state && indexOfWordToType >= 0 && indexOfWordToType < wordsList.size) {
             // skip word if space pressed
             if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+                dropSound.play();
                 words.removeIndex(indexOfWordToType);
                 wordsList.removeIndex(indexOfWordToType);
                 currentTypedWord = ""; // Reset the typed word
@@ -148,6 +162,9 @@ public class GameScreen implements Screen {
                             // Word completed
                             score += currentTypedWord.length();
                             wordsTyped++;
+                            Rectangle word = words.get(indexOfWordToType);
+                            float x = word.x;
+                            float y = word.y;
                             words.removeIndex(indexOfWordToType);
                             wordsList.removeIndex(indexOfWordToType);
                             currentTypedWord = ""; // Reset the typed word
@@ -157,6 +174,10 @@ public class GameScreen implements Screen {
                                 gameOver = true;
                                 gameEndTime = TimeUtils.millis();
                             }
+                            // add explosion animation
+                            explosions.add(new Explosion(x, y));
+                            // play explode sound
+                            explodeSound.play();
                         }
                     } // If the key pressed doesn't match the next character, do nothing
 
@@ -305,12 +326,26 @@ public class GameScreen implements Screen {
                 game.font.draw(game.batch, unmarkedLetters, startX + markedLayout.width, wordRectangle.y + wordRectangle.height / 2);
             }
 
-            game.batch.end();
+            ArrayList<Explosion> explosionsToRemove = new ArrayList<Explosion>();
+            for (Explosion explosion : explosions) {
+                explosion.update(delta);
+                explosion.render(game.batch);
+                if (explosion.remove) {
+                    explosionsToRemove.add(explosion);
+                }
+            }
+            explosions.removeAll(explosionsToRemove);
+
+            for (Explosion explosion : explosions) {
+                explosion.update(delta);
+                explosion.render(game.batch);
+            }
 
             Iterator<Rectangle> iter = words.iterator();
             while (iter.hasNext()) {
                 Rectangle wordRectangle = iter.next();
-                wordRectangle.y -= 65 * Gdx.graphics.getDeltaTime(); // move words down
+                // update position of words, i.e. move them down
+                wordRectangle.y -= 65 * Gdx.graphics.getDeltaTime();
                 if (wordRectangle.y < 64) {
                     int wordIndex = words.indexOf(wordRectangle, true);
                     if (indexOfWordToType == wordIndex) {
@@ -333,6 +368,8 @@ public class GameScreen implements Screen {
                     spawnWord();
                 }
             }
+
+            game.batch.end();
         } else {
             stage.act();
             stage.draw();
@@ -350,12 +387,12 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // Start the background music and ensure it loops
-        if (rainMusic == null) {
-            rainMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/rpg-loop.wav"));
-            rainMusic.setLooping(true);
+        if (music == null) {
+            music = Gdx.audio.newMusic(Gdx.files.internal("audio/rpg-loop.wav"));
+            music.setLooping(true);
         }
-        if (!rainMusic.isPlaying()) {
-            // rainMusic.play();
+        if (!music.isPlaying()) {
+            music.play();
         }
 
         // Set the input processor to handle UI interactions
@@ -384,7 +421,7 @@ public class GameScreen implements Screen {
 
         state = false;
         pauseStartTime = TimeUtils.millis(); // Capture the time at which the game is paused
-        rainMusic.pause();
+        music.pause();
 
         if (stage == null) stage = new Stage();
         stage.clear(); // Important to clear the stage to avoid stacking UI elements
@@ -441,21 +478,6 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(null); // Reset input processor or set it as needed for your game
         }
 
-        // Check if music and sound effects are initialized, otherwise, initialize them
-        if (rainMusic == null) {
-            rainMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/rpg-loop.wav"));
-            rainMusic.setLooping(true);
-        }
-        if (dropSound == null) {
-            dropSound = Gdx.audio.newSound(Gdx.files.internal("audio/forceField_000.ogg"));
-        }
-        if (explodeSound == null) {
-            explodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/vine-boom.mp3"));
-        }
-        if (otherExplodeSound == null) {
-            otherExplodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/explosionCrunch_000.ogg"));
-        }
-
         // If using a BitmapFont, consider reinitializing it if it was disposed
         if (game.font == null) {
             game.font = new BitmapFont(); // Or however you initialize your font
@@ -468,8 +490,8 @@ public class GameScreen implements Screen {
         }
 
         // Play music if it should be playing
-        if (!rainMusic.isPlaying()) {
-            // rainMusic.play();
+        if (!music.isPlaying()) {
+            music.play();
         }
     }
 
@@ -500,12 +522,12 @@ public class GameScreen implements Screen {
         }
 
         // Dispose of the music object if it's not null
-        if (rainMusic != null) {
-            if (rainMusic.isPlaying()) {
-                rainMusic.stop();
+        if (music != null) {
+            if (music.isPlaying()) {
+                music.stop();
             }
-            rainMusic.dispose();
-            rainMusic = null;
+            music.dispose();
+            music = null;
         }
 
         // Dispose of the stage if it's not null

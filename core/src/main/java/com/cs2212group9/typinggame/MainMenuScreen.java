@@ -23,7 +23,7 @@ public class MainMenuScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     // from https://opengameart.org/content/menu-music
-    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/awesomeness.wav"));
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space.ogg"));
     // all skins from https://github.com/czyzby/gdx-skins
     private final Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
     private final int nextLevel;
@@ -89,7 +89,7 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void show() {
-        // music.play();
+        music.play();
         Gdx.input.setInputProcessor(stage);
 
         Table table = new Table();
@@ -123,8 +123,8 @@ public class MainMenuScreen implements Screen {
         table.row().padTop(-15);
 
         Button optionsButton = new TextButton("Options", skin);
-        table.add(optionsButton).width(300);
-        table.row().padTop(-15);
+        // table.add(optionsButton).width(300);
+        // table.row().padTop(-15);
 
         Button logoutButton = new TextButton("Logout", skin);
         table.add(logoutButton).width(300);

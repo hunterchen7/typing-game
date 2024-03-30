@@ -3,6 +3,7 @@ package com.cs2212group9.typinggame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,6 +30,7 @@ public class ScoresScreen implements Screen {
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     private String selectedUser;
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
 
     /** Constructor for the OptionsScreen, initializes camera & viewport, and sets up button skins
      * @param gam - the game object
@@ -43,6 +45,9 @@ public class ScoresScreen implements Screen {
 
         camera.position.set(1200, 800, 0);
         camera.update();
+
+        music.play();
+        music.setLooping(true);
 
         stage = new Stage();
     }
@@ -101,6 +106,7 @@ public class ScoresScreen implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
         stage.clear();
         stage.dispose();
     }
