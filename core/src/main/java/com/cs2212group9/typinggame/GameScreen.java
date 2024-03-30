@@ -69,7 +69,7 @@ public class GameScreen implements Screen {
             "audio/cyberdeath.mp3",
             "audio/magic-space.mp3"
         };
-        music = Gdx.audio.newMusic(Gdx.files.internal(musicFiles[(int) (Math.random() * musicFiles.length)]));
+        music = Gdx.audio.newMusic(Gdx.files.internal(musicFiles[levelId % musicFiles.length]));
         music.setLooping(true);
         music.setVolume(0.5f); // music is kinda loud
 
@@ -355,6 +355,7 @@ public class GameScreen implements Screen {
                     if (wordIndex != -1) {
                         wordsList.removeIndex(wordIndex);
                         iter.remove();
+                        dropSound.play();
                     }
                 }
             }
