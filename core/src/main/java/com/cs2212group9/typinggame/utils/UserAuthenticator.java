@@ -14,7 +14,7 @@ public class UserAuthenticator {
     private final String password;
 
     // number of bytes in pepper
-    private final int pepperBytes = 2;
+    private static final int pepperBytes = 2;
 
     public UserAuthenticator(String username, String password) {
         this.username = username;
@@ -84,7 +84,7 @@ public class UserAuthenticator {
      * @param password - the password to be peppered and hashed
      * @return the peppered and hashed password
      */
-    private String pepperAndHash(String password) throws NoSuchAlgorithmException {
+    public static String pepperAndHash(String password) throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
 
         byte[] pepper = new byte[pepperBytes];
@@ -104,7 +104,7 @@ public class UserAuthenticator {
      * @param second - the second byte array
      * @return the combined byte array
      */
-    private byte[] combineArrays(byte[] first, byte[] second) {
+    private static byte[] combineArrays(byte[] first, byte[] second) {
         byte[] combined = new byte[first.length + second.length];
         System.arraycopy(first, 0, combined, 0, first.length);
         System.arraycopy(second, 0, combined, first.length, second.length);
@@ -116,7 +116,7 @@ public class UserAuthenticator {
      * @param bytes - the byte array to be converted
      * @return the string representation of the byte array
      */
-    private String hashBytesToString(byte[] bytes) throws NoSuchAlgorithmException {
+    private static String hashBytesToString(byte[] bytes) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         final byte[] hashbytes = digest.digest(bytes);
         return bytesToString(hashbytes);
@@ -127,7 +127,7 @@ public class UserAuthenticator {
      * @param bytes - the byte array to be converted
      * @return the string representation of the byte array
      */
-    private String bytesToString(byte[] bytes) {
+    private static String bytesToString(byte[] bytes) {
         return new String(Hex.encode(bytes));
     }
 
@@ -137,7 +137,7 @@ public class UserAuthenticator {
      * @return the hashed byte array
      * @throws NoSuchAlgorithmException - if the algorithm is not found
      */
-    private byte[] hashBytesToBytes(byte[] bytes) throws NoSuchAlgorithmException {
+    private static byte[] hashBytesToBytes(byte[] bytes) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         return digest.digest(bytes);
     }

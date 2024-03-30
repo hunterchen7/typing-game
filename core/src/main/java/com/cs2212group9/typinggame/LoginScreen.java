@@ -29,7 +29,7 @@ public class LoginScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
-    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/TownTheme.mp3"));
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space.ogg"));
     private boolean usernameReset = false;
     private final Texture backgroundTexture;
     private final Label errorLabel = new Label("", skin, "over");
@@ -46,6 +46,9 @@ public class LoginScreen implements Screen {
         game = gam;
 
         camera = new OrthographicCamera();
+
+        music.play();
+        music.setLooping(true);
 
         viewport = new FitViewport(1200, 800, camera);
         viewport.apply();

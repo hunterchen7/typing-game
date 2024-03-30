@@ -26,7 +26,7 @@ public class LevelsScreen implements Screen {
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     // from https://opengameart.org/content/woodland-fantasy
-    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/WoodlandFantasy.mp3"));
+    private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     /**
      * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
@@ -42,6 +42,9 @@ public class LevelsScreen implements Screen {
 
         camera.position.set(1200, 800, 0);
         camera.update();
+
+        music.play();
+        music.setLooping(true);
 
         stage = new Stage();
     }

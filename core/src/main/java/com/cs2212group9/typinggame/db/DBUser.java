@@ -33,7 +33,7 @@ public class DBUser {
      * @param username - the username of the user
      * @param password - the hashed password of the user
      */
-    public static void addUser(String username, String password) {
+    public static void addUser(String username, String password, Boolean isAdmin) {
         if (userExists(username)) {
             System.out.println("DBUser already exists");
             return;
@@ -42,16 +42,21 @@ public class DBUser {
         String sql = // default difficulty modifier is 0, date created is now
             """
                 INSERT INTO users (username, password, date_created, difficulty_modifier, is_admin, instant_death)
-                VALUES (?, ?, datetime('now'), 0, FALSE, FALSE);
+                VALUES (?, ?, datetime('now'), 0, ?, FALSE);
             """;
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, password);
+            pstmt.setBoolean(3, isAdmin);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void addUser(String username, String password) {
+        addUser(username, password, false);
     }
 
     /**
