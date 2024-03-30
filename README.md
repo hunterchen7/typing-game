@@ -89,3 +89,4 @@ For example, `core:clean` removes `build` folder only from the `core` project.
   - explosion animation based off of [libgdx-2d-tutorial](https://github.com/hollowbit/libgdx-2d-tutorial)
   - setup generated using [gdx-liftoff](https://github.com/libgdx/gdx-liftoff)
   - English word list from [google-10000-english](https://github.com/first20hours/google-10000-english)
+  - LibGDX skins from [czyzby](https://github.com/czyzby/gdx-skins)

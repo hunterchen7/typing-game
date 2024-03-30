@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
         };
         music = Gdx.audio.newMusic(Gdx.files.internal(musicFiles[levelId % musicFiles.length]));
         music.setLooping(true);
-        music.setVolume(0.5f); // music is kinda loud
+        music.setVolume(0.2f); // music is kinda loud
 
         // Set up the camera for 2D rendering
         camera = new OrthographicCamera();
@@ -394,6 +394,7 @@ public class GameScreen implements Screen {
         }
         if (!music.isPlaying()) {
             music.play();
+            music.setVolume(game.getMusicVolume());
         }
 
         // Set the input processor to handle UI interactions
@@ -493,6 +494,7 @@ public class GameScreen implements Screen {
         // Play music if it should be playing
         if (!music.isPlaying()) {
             music.play();
+            music.setVolume(game.getMusicVolume());
         }
     }
 

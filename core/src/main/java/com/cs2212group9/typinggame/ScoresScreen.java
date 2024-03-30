@@ -46,8 +46,11 @@ public class ScoresScreen implements Screen {
         camera.position.set(1200, 800, 0);
         camera.update();
 
-        music.play();
-        music.setLooping(true);
+        if (!music.isPlaying()) {
+            music.play();
+            music.setVolume(game.getMusicVolume());
+            music.setLooping(true);
+        }
 
         stage = new Stage();
     }
@@ -57,9 +60,12 @@ public class ScoresScreen implements Screen {
      * @param gam - the game object
      * @param user - the user to display scores for
      */
-    public ScoresScreen(final TypingGame gam, String user) {
+    public ScoresScreen(final TypingGame gam, String user, float musicPosition) {
         this(gam);
         selectedUser = user;
+        music.play();
+        System.out.println("music pos: " + musicPosition);
+        music.setPosition(musicPosition);
     }
 
 
@@ -77,8 +83,9 @@ public class ScoresScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
             && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            float position = music.getPosition();
             dispose();
-            game.setScreen(new ScoresScreen(game, selectedUser));
+            game.setScreen(new ScoresScreen(game, selectedUser, position));
         }
     }
 
@@ -167,9 +174,10 @@ public class ScoresScreen implements Screen {
             searchButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
                 // this.selectedUser = userField.getText();
                 System.out.println("Selected user: " + this.selectedUser);
+                float position = music.getPosition();
                 dispose();
                 // load new screen with selected user
-                game.setScreen(new ScoresScreen(game, userField.getText()));
+                game.setScreen(new ScoresScreen(game, userField.getText(), position));
             }));
             userField.setWidth(340);
             searchTable.add(userField);

@@ -60,6 +60,33 @@ public class DBUser {
     }
 
     /**
+     * updates the password of a user
+     * @param username - the username of the user
+     * @param password - the hashed password of the user
+     */
+    public static void changePassword(String username, String password) {
+        if (!userExists(username)) {
+            System.out.println("DBUser does not exist");
+            return;
+        }
+
+        String sql =
+            """
+                UPDATE users
+                SET password = ?
+                WHERE username = ?;
+            """;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, password);
+            pstmt.setString(2, username);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
      * @param username - the username of the user
      * @return the hashed password of the user
      */
