@@ -15,22 +15,28 @@ import com.cs2212group9.typinggame.utils.InputListenerFactory;
 /**
  * This class is mainly responsible for the main menu interface of the game.
  * @author Group 9 members
+ * @version 1.0
  */
 public class MainMenuScreen implements Screen {
-
+    /** Represents the main game class for the typing game */
     final TypingGame game;
+    /** Orthographic camera for 2D graphics rendering control */
     OrthographicCamera camera;
+    /** Stage object for managing the stage and actors */
     private final Stage stage;
+    /** Viewport object for specifying the stage display area */
     private final Viewport viewport;
-    // from https://opengameart.org/content/menu-music
+    /** Background music for the game menu */
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space.ogg"));
-    // all skins from https://github.com/czyzby/gdx-skins
+    /** Skin object for defining the appearance and behavior of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
-    private final int nextLevel;
+    /** Represents the index of the next level in the game progression */
+    private int nextLevel;
     private final Texture backgroundTexture;
 
     /**
      * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
+     *
      * @param gam - the game object
      */
     public MainMenuScreen(final TypingGame gam) {
@@ -51,6 +57,11 @@ public class MainMenuScreen implements Screen {
         backgroundTexture = new Texture(Gdx.files.internal("background.png")); // Ensure the file path is correct
     }
 
+    /**
+     * Renders the game screen.
+     * 
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
@@ -76,6 +87,12 @@ public class MainMenuScreen implements Screen {
         }
     }
 
+    /**
+     * Called when the game window is resized.
+     * 
+     * @param width  The new width of the game window
+     * @param height The new height of the game window
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -168,18 +185,30 @@ public class MainMenuScreen implements Screen {
         stage.addActor(table);
     }
 
+    /**
+     * Method called when hiding the game interface
+     */  
     @Override
     public void hide() {
     }
 
+    /**
+     * Method called when the game is paused.
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * Method called when resuming the game
+     */ 
     @Override
     public void resume() {
     }
-
+  
+    /**
+     * Methods to clean up resources and release memory
+     */
     @Override
     public void dispose() {
         // Dispose of the background texture when no longer needed

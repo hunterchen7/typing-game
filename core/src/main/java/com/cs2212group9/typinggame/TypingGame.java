@@ -10,12 +10,14 @@ import com.cs2212group9.typinggame.LoginScreen;
 /**
  * This class is responsible for starting and shutting down the game.
  * @author Group 9 members
+ * @version 1.0
  */
 
 
 public class TypingGame extends Game {
-
+    /** Rendering 2D images */
     SpriteBatch batch;
+    /** Rendering font */
     BitmapFont font;
     Texture backgroundTexture;
     private String username;
@@ -49,7 +51,7 @@ public class TypingGame extends Game {
     }
 
     /**
-     * Remember to clean up after yourself, don't leave everything for the gc :^)
+     * close the window
      */
     public void dispose() {
         // Dispose all the disposables
