@@ -74,7 +74,7 @@ For example, `core:clean` removes `build` folder only from the `core` project.
   - level and score screen background [freepik](https://www.freepik.com/free-photo/aerial-shot-beautiful-landscape-covered-with-snow-early-morning_11061964.htm#fromView=search&page=1&position=2&uuid=60e3e85d-534e-4371-a570-af27897804c6)
   - login screen [freepik](https://www.freepik.com/free-ai-image/view-planet-earth-sunrise-from-space_43168360.htm#fromView=search&page=1&position=41&uuid=0bb51760-41eb-435b-a5ab-e5b905d36678)
   - game screen [freepik](https://www.freepik.com/free-ai-image/exploration-majestic-galaxy-through-space-shuttle-technology-generated-by-ai_47596883.htm#fromView=search&page=3&position=23&uuid=64b6abd9-398f-)
-  - explosion(s) by [Sinestesia](https://opengameart.org/content/2d-explosion-animations-frame-)
+  - explosion(s) by [Sinestesia](https://opengameart.org/content/2d-explosion-animations-frame-by-frame)
 - Audio:
   - sound effects (e.g. explosion sounds) from [Kenney](https://kenney.nl/)
   - main menu music by [lasercheese](https://opengameart.org/content/space-orchestral)
