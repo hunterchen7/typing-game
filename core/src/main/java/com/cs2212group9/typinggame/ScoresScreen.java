@@ -192,6 +192,9 @@ public class ScoresScreen implements Screen {
                     "Total score for " + this.selectedUser + ":" + DBScores.getUserTotalScore(this.selectedUser)
                     : "User not found";
                 searchTable.add(new Label(score, skin)).colspan(3);
+            } else {
+                String score = "your total score: " + DBScores.getUserTotalScore(game.getUsername());
+                searchTable.add(new Label(score, skin)).colspan(3);
             }
             stage.addActor(searchTable);
         }
@@ -219,9 +222,11 @@ public class ScoresScreen implements Screen {
             }
             levelTable.row().padTop(10).padLeft(10).padRight(10);
         }
+        levelTable.row().padTop(10);
+        levelTable.add(new Label(DBUser.getNumberOfUsers() + " total players, " + DBScores.getGamesPlayed() + " levels played.", skin)).colspan(3);
+        
         stage.addActor(levelTable);
         stage.addActor(totalScoreTable);
-
 
         TextButton returnButton = new TextButton("Return to Main Menu", skin);
         returnButton.setPosition(5, 5);

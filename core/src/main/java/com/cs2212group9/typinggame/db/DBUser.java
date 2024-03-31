@@ -119,4 +119,24 @@ public class DBUser {
 
         return isAdmin;
     }
+
+    /**
+     * @return the number of users in the database
+     */
+    public static int getNumberOfUsers() {
+        int numberOfUsers = 0;
+        String sql = """
+            SELECT COUNT(*) AS number_of_users
+            FROM users;
+        """;
+
+        try (Statement stmt = conn.createStatement()) {
+            numberOfUsers = stmt.executeQuery(sql).getInt("number_of_users");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return numberOfUsers;
+    }
+
 }

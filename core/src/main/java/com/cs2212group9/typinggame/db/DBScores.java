@@ -234,4 +234,24 @@ public class DBScores {
         }
         return plays;
     }
+
+    /**
+     * Returns the number of games played by counting the number of rows in the scores table
+     * @return an integer that represents the number of games played
+     */
+    public static int getGamesPlayed() {
+        int gamesPlayed = 0;
+        String sql = """
+                    SELECT COUNT(*) AS games_played
+                    FROM scores;
+                    """;
+
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            gamesPlayed = rs.getInt("games_played");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return gamesPlayed;
+    }
 }
