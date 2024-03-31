@@ -383,11 +383,11 @@ public class GameScreen implements Screen {
                     32, 32, // Set originX and originY to 32 to rotate around the center
                     wordRectangle.width, wordRectangle.height, // width and height of the drawing area
                     1f, 1f, // scaleX and scaleY
-                    asciiSum(wordText) % 360, // rotation
+                    asciiSum(wordText) % 180 * 2, // pseudorandom rotation
                     0, 0, // srcX and srcY
                     asteroid.getWidth(), asteroid.getHeight(), // srcWidth and srcHeight
                     false, false); // flipX and flipY
-                */
+                 */
 
                 // draw a black background for the word for visibility
                 game.batch.draw(wordBgTexture(totalWidth + 12), startX - 6, wordRectangle.y + 17);

@@ -224,7 +224,7 @@ public class ScoresScreen implements Screen {
         }
         levelTable.row().padTop(10);
         levelTable.add(new Label(DBUser.getNumberOfUsers() + " total players, " + DBScores.getGamesPlayed() + " levels played.", skin)).colspan(3);
-        
+
         stage.addActor(levelTable);
         stage.addActor(totalScoreTable);
 
