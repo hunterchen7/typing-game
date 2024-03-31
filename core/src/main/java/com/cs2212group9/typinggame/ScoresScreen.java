@@ -32,7 +32,7 @@ public class ScoresScreen implements Screen {
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
 
-    /** Constructor for the OptionsScreen, initializes camera & viewport, and sets up button skins
+    /** Constructor for the OptionsScreen, initializes camera and viewport, and sets up button skins
      * @param gam - the game object
      */
     public ScoresScreen(final TypingGame gam) {
@@ -59,6 +59,7 @@ public class ScoresScreen implements Screen {
      * Constructor for the OptionsScreen, uses the default constructor and sets the selected user
      * @param gam - the game object
      * @param user - the user to display scores for
+     * @param musicPosition - the position in the music track, used for resuming music from the same position
      */
     public ScoresScreen(final TypingGame gam, String user, float musicPosition) {
         this(gam);
@@ -68,7 +69,10 @@ public class ScoresScreen implements Screen {
         music.setPosition(musicPosition);
     }
 
-
+    /**
+     * Render game screen
+     * @param delta rendering interval
+     */
     @Override
     public void render(float delta) {
         // Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -89,6 +93,11 @@ public class ScoresScreen implements Screen {
         }
     }
 
+    /**
+     * Resize the viewport to match the new width and height.
+     * @param width new viewport width
+     * @param height New viewport height
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -96,21 +105,33 @@ public class ScoresScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Pause the game
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Resume the game
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Hide the game interface
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Dispose of music and stage
+     */
     @Override
     public void dispose() {
         music.dispose();
@@ -118,6 +139,9 @@ public class ScoresScreen implements Screen {
         stage.dispose();
     }
 
+    /**
+     * Show the game interface
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);

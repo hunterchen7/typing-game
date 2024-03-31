@@ -29,7 +29,7 @@ public class LevelsScreen implements Screen {
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     /**
-     * Constructor for the LevelsScreen, initializes camera & viewport, and sets up button skins
+     * Constructor for the LevelsScreen, initializes camera and viewport, and sets up button skins
      * @param gam - the game object
      */
     public LevelsScreen(final TypingGame gam) {

@@ -38,7 +38,7 @@ public class TutorialScreen implements Screen {
     private int slide = 0;
 
     /**
-     * Constructor for the TutorialScreen, initializes camera & viewport, and sets up button skins
+     * Constructor for the TutorialScreen, initializes camera and viewport, and sets up button skins
      *
      * @param gam - the game object
      * @param prevScreen - a string representing the previous screen

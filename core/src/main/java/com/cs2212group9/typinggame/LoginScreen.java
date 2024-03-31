@@ -37,7 +37,7 @@ public class LoginScreen implements Screen {
     private final TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
     private final TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 155);
     /**
-     * Constructor for the LoginScreen, initializes camera & viewport, and sets up button skins
+     * Constructor for the LoginScreen, initializes camera and viewport, and sets up button skins
      *
      * @param gam - the game object
      */

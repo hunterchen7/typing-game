@@ -1,19 +1,15 @@
 package com.cs2212group9.typinggame;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.cs2212group9.typinggame.db.DBHelper;
 import com.badlogic.gdx.graphics.Texture;
-import com.cs2212group9.typinggame.LoginScreen;
+
 /**
  * This class is responsible for starting and shutting down the game.
  * @author Group 9 members
  * @version 1.0
  */
-
-
 public class TypingGame extends Game {
     /** Rendering 2D images */
     SpriteBatch batch;
@@ -23,6 +19,13 @@ public class TypingGame extends Game {
     private String username;
     private float sfxVolume = 1f;
     private float musicVolume = 0.4f;
+
+    /**
+     * default constructor for the TypingGame class.
+     */
+    public TypingGame() {
+        super();
+    }
 
     /**
      * Changes the volume of sound effects.
@@ -64,7 +67,7 @@ public class TypingGame extends Game {
         return username;
     }
 
-/**
+    /**
      * Sets the username of the player.
      * @param username The username of the player.
      */
@@ -75,7 +78,6 @@ public class TypingGame extends Game {
     /**
      * Create the game by initializing a login screen
      */
-
     public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();

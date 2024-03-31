@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Handles database operations for scores
+ */
 public class DBScores {
     static Connection conn = DBHelper.getConnection();
 

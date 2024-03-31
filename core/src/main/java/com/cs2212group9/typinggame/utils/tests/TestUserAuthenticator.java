@@ -8,6 +8,9 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the UserAuthenticator class
+ */
 public class TestUserAuthenticator {
     @BeforeAll
     static void setup() {

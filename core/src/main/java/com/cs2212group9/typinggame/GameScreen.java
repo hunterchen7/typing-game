@@ -29,6 +29,11 @@ import com.cs2212group9.typinggame.effects.Explosion;
 import com.cs2212group9.typinggame.effects.WordBackground;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
+/**
+ * This class is responsible for the main game screen, where the player types words to destroy them.
+ * It handles game logic, rendering, and player input, and displays the game over screen when needed.
+ * It also manages the spawning of words, scoring, and game state transitions.
+ */
 public class GameScreen implements Screen {
     // Declaration of all class member variables
     final TypingGame game;

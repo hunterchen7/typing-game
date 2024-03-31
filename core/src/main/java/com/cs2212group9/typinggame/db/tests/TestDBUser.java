@@ -13,8 +13,14 @@ import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the DBUser class
+ */
 @TestMethodOrder(org.junit.jupiter.api.MethodOrderer.OrderAnnotation.class)
 public class TestDBUser {
+    /**
+     * Set up the database by dropping and creating the users table and inserting some test data
+     */
     @BeforeAll
     static void setup() {
         Connection conn = DBHelper.getConnection();

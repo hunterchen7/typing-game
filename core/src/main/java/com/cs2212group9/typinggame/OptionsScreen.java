@@ -34,8 +34,8 @@ public class OptionsScreen implements Screen {
     /** Skin objects used to define the appearance and behavior of UI elements */
     private Skin skin;
 
-    /** 
-     * Constructor for the OptionsScreen, initializes camera & viewport, and sets up button skins
+    /**
+     * Constructor for the OptionsScreen, initializes camera and viewport, and sets up button skins
      *
      * @param gam - the game object
      */
@@ -103,7 +103,7 @@ public class OptionsScreen implements Screen {
 
     /**
      * Method called when resuming the game
-     */  
+     */
     @Override
     public void resume() {
 
@@ -111,12 +111,12 @@ public class OptionsScreen implements Screen {
 
     /**
      * Method called when hiding the game interface
-     */  
+     */
     @Override
     public void hide() {
 
     }
-  
+
     /**
      * Methods to clean up resources and release memory
      */

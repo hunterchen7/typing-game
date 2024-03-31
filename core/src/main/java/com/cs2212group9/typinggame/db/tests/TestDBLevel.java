@@ -8,10 +8,16 @@ import org.junit.jupiter.api.*;
 import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the DBLevel class
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestDBLevel {
     static final Connection db = DBHelper.getConnection();
 
+    /**
+     * Set up the database by dropping and creating the levels table and inserting some test data
+     */
     @BeforeAll
     public static void setup() {
         System.out.println("Setting up");
@@ -45,18 +51,27 @@ public class TestDBLevel {
         }
     }
 
+    /**
+     * Test getLevelDifficulty
+     */
     @Test
     @Order(1)
     public void testGetLevelDifficulty() {
         assertEquals(1, DBLevel.getLevelDifficulty(1));
     }
 
+    /**
+     * Test getLevelWaves
+     */
     @Test
     @Order(2)
     public void testGetLevelWaves() {
         assertEquals(3, DBLevel.getLevelWaves(1));
     }
 
+    /**
+     * Test getLevelDifficulty with invalid level ID
+     */
     @Test
     @Order(3)
     public void testInvalidLevelDifficulty() {
@@ -66,6 +81,9 @@ public class TestDBLevel {
         assertEquals(0, difficulty, "Difficulty for invalid level ID should be 0.");
     }
 
+    /**
+     * Test getLevelWaves with invalid level ID
+     */
     @Test
     @Order(4)
     public void testInvalidLevelWaves() {
@@ -75,18 +93,27 @@ public class TestDBLevel {
         assertEquals(0, waves, "Waves for invalid level ID should be 0.");
     }
 
+    /**
+     * Test getLevelCount
+     */
     @Test
     @Order(5)
     public void TestLevelCount() {
         assertEquals(2, DBLevel.getLevelCount());
     }
 
+    /**
+     * Test getLevelWords
+     */
     @Test
     @Order(6)
     public void TestGetLevelWords1() {
         assertEquals(3, DBLevel.getLevelWords(1).size);
     }
 
+    /**
+     * Test getLevelWords for level 2
+     */
     @Test
     @Order(7)
     public void TestGetLevelWords2() {

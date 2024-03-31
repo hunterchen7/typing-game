@@ -6,13 +6,16 @@ import org.junit.jupiter.api.Test;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
+/**
+ * Class to interact with the database
+ */
 public class DBHelper {
     private static Connection conn = null;
 
     // init db connection, singleton
     static {
         // tests run on core/typing-game.db and the main program runs on group9/typing-game.db
-        // tests create new items so I don't want them to interfere with each other
+        // tests create new items, so I don't want them to interfere with each other
         String url = "jdbc:sqlite:typing-game.db";
 
         try {
@@ -24,7 +27,10 @@ public class DBHelper {
         createNewTable();
     }
 
-    /** The connection to the database */
+    /**
+     * Get the connection to the database
+     * @return Connection object
+     */
     public static Connection getConnection() {
         return conn;
     }

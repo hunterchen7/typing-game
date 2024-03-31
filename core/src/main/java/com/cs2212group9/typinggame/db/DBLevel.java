@@ -8,13 +8,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-// class for retrieving level data
-// this class does not require setters, level data should be preset
+/**
+ * This class is used to interact with the levels table in the database.
+ */
 public class DBLevel {
     private static int levelCount;
     static Connection conn = DBHelper.getConnection();
 
-    /** @return the total number of levels */
+    /**
+     * Get the total number of levels in the database
+     * @return the total number of levels */
     public static int getLevelCount() {
         // if level count has already been set just return it
         // the value will not change mid-session so there is no need to re-run the SQL query

@@ -35,7 +35,7 @@ public class MainMenuScreen implements Screen {
     private final Texture backgroundTexture;
 
     /**
-     * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
+     * Constructor for the MainMenuScreen, initializes camera and viewport, and sets up button skins
      *
      * @param gam - the game object
      */
