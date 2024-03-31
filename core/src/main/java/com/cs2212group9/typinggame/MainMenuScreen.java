@@ -184,7 +184,7 @@ public class MainMenuScreen implements Screen {
         }));
 
         TextButton tutorialButton = new TextButton("Tutorial", skin);
-        tutorialButton.setPosition(1025, 5);
+        tutorialButton.setPosition(1015, -3);
         tutorialButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             dispose();
             game.setScreen(new TutorialScreen(game, "MainMenu"));

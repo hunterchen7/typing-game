@@ -22,8 +22,8 @@ This project was generated with a template including simple application launcher
 ## Build guide
 - Run `./build.sh` to build the project with pre-existing user data
 - Run `./build.sh -f` to build the project with a fresh database
-- Alternatively, use `./build.bat` if you don't have bash
-- Both will build to `lwjgl3/build/libs/typing-game-libgdx-x.x.x.jar`
+- Alternatively, use `./build.bat` if bash not available
+- Both will build to `lwjgl3/build/libs/`, run the game with `typing-game-libgdx-x.x.x.jar`
 - using `./gradlew lwjgl3:jar` will build the project, but will not copy the database, so it will not work
 - Python is NOT required to build the project, but is used for level generation, [Python 3.11](https://www.python.org/downloads/release/python-3112/) was used.
 

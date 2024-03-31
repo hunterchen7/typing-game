@@ -210,7 +210,7 @@ public class LoginScreen implements Screen {
         stage.addActor(table);
 
         TextButton tutorialButton = new TextButton("Tutorial", new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json")));
-        tutorialButton.setPosition(1025, 5);
+        tutorialButton.setPosition(1015, -3);
         tutorialButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             dispose();
             game.setScreen(new TutorialScreen(game, "Login"));

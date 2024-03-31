@@ -1,6 +1,8 @@
 package com.cs2212group9.typinggame.db.tests;
 
 import com.cs2212group9.typinggame.db.DBHelper;
+import com.cs2212group9.typinggame.db.DBLevel;
+import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.db.DBUser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,12 +42,6 @@ public class TestDBUser {
         // it's NOT hashed here, but we're testing that input = output
         DBUser.addUser("test", "test");
         assertEquals("test", DBUser.getUserPasswordHashed("test"));
-    }
-
-    @Test
-    void testUserNextLevel() {
-        DBUser.addUser("test", "test");
-        assertEquals(1, DBUser.getNextLevel("test"));
     }
 
     @Test

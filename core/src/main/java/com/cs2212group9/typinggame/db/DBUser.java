@@ -103,23 +103,6 @@ public class DBUser {
     }
 
     /**
-     * @param username - the username of the user
-     * @return the next unlocked level of the user
-     */
-    public static int getNextLevel(String username) {
-        String sql = "SELECT level FROM scores WHERE user = '" + username + "' ORDER BY date_played DESC LIMIT 1;";
-        int level = 1;
-
-        try (Statement stmt = conn.createStatement()) {
-            level = Math.max(stmt.executeQuery(sql).getInt("level"), level);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return level;
-    }
-
-    /**
      * return if a user is an admin
      * @param username - the username of the user
      * @return true if the user is an admin, false otherwise
