@@ -326,6 +326,7 @@ public class GameScreen implements Screen {
                 game.font.draw(game.batch, unmarkedLetters, startX + markedLayout.width, wordRectangle.y + wordRectangle.height / 2);
             }
 
+            // find all explosion animations to remove
             ArrayList<Explosion> explosionsToRemove = new ArrayList<Explosion>();
             for (Explosion explosion : explosions) {
                 explosion.update(delta);
@@ -334,8 +335,10 @@ public class GameScreen implements Screen {
                     explosionsToRemove.add(explosion);
                 }
             }
+            // remove all finished explosions
             explosions.removeAll(explosionsToRemove);
 
+            // render remaining explosions
             for (Explosion explosion : explosions) {
                 explosion.update(delta);
                 explosion.render(game.batch);
@@ -360,6 +363,7 @@ public class GameScreen implements Screen {
                 }
             }
 
+            // not more words -> game end
             if (wordsList.size <= 0) {
                 gameOver = true;
                 gameEndTime = TimeUtils.millis();

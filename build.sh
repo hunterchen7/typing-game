@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Delete build folder
+rm -rf lwjgl3/build
+
 # Build command
 ./gradlew lwjgl:jar
 
