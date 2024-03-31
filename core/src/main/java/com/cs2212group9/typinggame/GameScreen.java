@@ -52,6 +52,7 @@ public class GameScreen implements Screen {
     private boolean scoreSet = false;
     private final Texture backgroundTexture;
     ArrayList<Explosion> explosions;
+    private final int levelCount = DBLevel.getLevelCount();
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
@@ -225,6 +226,7 @@ public class GameScreen implements Screen {
 
     /**
      * Returns the sum of the ASCII values of the characters in a given word.
+     * used for pseudo random selection of asteroid background for words
      *
      * @param word The word to calculate the ASCII sum for.
      * @return The sum of the ASCII values of the characters in the word.
@@ -232,11 +234,17 @@ public class GameScreen implements Screen {
     private int asciiSum(String word) {
         int sum = 0;
         for (int i = 0; i < word.length(); i++) {
-            sum += (int) word.charAt(i);
+            sum += word.charAt(i);
         }
         return sum;
     }
 
+    /**
+     * Creates a texture with a black background for the word to improve visibility.
+     *
+     * @param width The width of the texture to create.
+     * @return The texture with a black background.
+     */
     private Texture wordBgTexture(float width) {
         Pixmap pixmap = new Pixmap((int) width, 18, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, 0.75f);
@@ -263,7 +271,7 @@ public class GameScreen implements Screen {
         String nextLevel = "";
         int levelMinScore = DBLevel.getMinScores().get(levelId);
         boolean passed = score >= levelMinScore;
-        if (passed && levelId < DBLevel.getLevelCount()) {
+        if (passed && levelId < levelCount) {
             gameOverText = "Congratulations, You completed the level!";
             nextLevel = "You have unlocked level " + (levelId + 1) + "!";
         } else if (passed) {
@@ -279,7 +287,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "Time Consumed: " + totalTimeInSeconds + " seconds", 320, 200);
         game.font.draw(game.batch, "Click anywhere to return to the main menu", 280, 175);
         game.font.draw(game.batch, "Press enter to " +
-            (passed && !(levelId >= DBLevel.getLevelCount()) ? " go to the next level" : "retry level"), 280, 150);
+            (passed && !(levelId >= levelCount) ? " go to the next level" : "retry level"), 280, 150);
         game.batch.end();
 
         // Add the score to the database, make sure it's only added once
@@ -297,7 +305,7 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             dispose();
-            int nextLevelId = Math.max(this.levelId + (passed ? 1 : 0), DBLevel.getLevelCount());
+            int nextLevelId = Math.min(this.levelId + (passed ? 1 : 0), levelCount);
             game.setScreen(new GameScreen(game, nextLevelId));
         }
     }
@@ -366,6 +374,7 @@ public class GameScreen implements Screen {
                 float totalWidth = markedLayout.width + unmarkedLayout.width;
                 float startX = wordRectangle.x + (wordRectangle.width / 2) - (totalWidth / 2);
 
+                /*
                 // draw a asteroid as a background for the word
                 String astPath = "sprites/asteroids/asteroidR" + (asciiSum(wordText) % 13 + 1) + ".png";
                 Texture asteroid = new Texture(Gdx.files.internal(astPath));
@@ -378,9 +387,10 @@ public class GameScreen implements Screen {
                     0, 0, // srcX and srcY
                     asteroid.getWidth(), asteroid.getHeight(), // srcWidth and srcHeight
                     false, false); // flipX and flipY
+                */
 
                 // draw a black background for the word for visibility
-                game.batch.draw(wordBgTexture(totalWidth + 4), startX, wordRectangle.y + 17);
+                game.batch.draw(wordBgTexture(totalWidth + 12), startX - 6, wordRectangle.y + 17);
 
                 game.font.setColor(0, 1, 0, 1); // Green for marked letters
                 game.font.draw(game.batch, markedLetters, startX, wordRectangle.y + wordRectangle.height / 2);
@@ -506,9 +516,9 @@ public class GameScreen implements Screen {
         TextButton returnButton = new TextButton("Return to main menu", skin);
 
         // Add listeners to buttons
-        resumeButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            resume();
-        }));
+        resumeButton.addListener(InputListenerFactory.createClickListener((event, x, y) ->
+            resume()
+        ));
 
         returnButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             game.setScreen(new MainMenuScreen(game));

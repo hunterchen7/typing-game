@@ -23,16 +23,15 @@ public class DBLevel {
         }
 
         String sql = "SELECT COUNT(*) FROM levels;";
-        int count = 0;
 
         try (Statement stmt = conn.createStatement()) {
-            count = stmt.executeQuery(sql).getInt(1);
-            System.out.println("count: " + count);
+            levelCount = stmt.executeQuery(sql).getInt(1);
+            System.out.println("count: " + levelCount);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return count;
+        return levelCount;
     }
 
     // returns the words of a level
