@@ -17,24 +17,34 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.UserAuthenticator;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
  * This is the tutorial screen
  * @author Group 9 members
+ * @version 1.0
  */
 public class TutorialScreen implements Screen {
+    /** The instance of the TypingGame class that controls the game logic */
     final TypingGame game;
+    /** The camera used to manage the view of the game */
     OrthographicCamera camera;
+    /** The stage where UI elements are placed for rendering and handling input */
     private final Stage stage;
+    /** The viewport defining the area of the stage visible on the screen */
     private final Viewport viewport;
+    /** The skin defining the style of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
+    /** The texture used for the background of the game screen */
     private final Texture backgroundTexture;
+    /** The table used to organize UI elements */
     private final Table table = new Table();
+    /** The identifier of the previous screen */
     private final String prevScreen;
+    /** An array containing the file paths of tutorial slides */
     private final String[] slides = {"tutorial/slide1.png", "tutorial/slide2.png", "tutorial/slide3.png", "tutorial/slide4.png", "tutorial/slide5.png"};
+    /** The index of the current slide being displayed in the tutorial */
     private int slide = 0;
 
     /**
@@ -43,7 +53,6 @@ public class TutorialScreen implements Screen {
      * @param gam - the game object
      * @param prevScreen - a string representing the previous screen
      */
-
     public TutorialScreen(final TypingGame gam, String prevScreen) {
         game = gam;
 

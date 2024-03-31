@@ -19,17 +19,26 @@ import com.cs2212group9.typinggame.utils.ScoreEntry;
 import java.util.List;
 
 /**
- * This class is mainly used to set various parameters of the game according to user needs.
+ * This class is mainly used to show the high scores.
  * @author Group 9 members
+ * @version 1.0
  */
 public class ScoresScreen implements Screen {
+    /** The instance of the TypingGame class that controls the game logic */
     final TypingGame game;
+    /** The camera used to manage the view of the game */
     OrthographicCamera camera;
+    /** The stage where UI elements are placed for rendering and handling input */
     private final Stage stage;
+    /** The viewport defining the area of the stage visible on the screen */
     private final Viewport viewport;
+    /** The skin defining the style of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
+    /** The selected user for the current session */
     private String selectedUser;
+    /** The texture used for the background of the game screen */
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
+    /** The music played in the background during the game */
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
 
     /** Constructor for the OptionsScreen, initializes camera and viewport, and sets up button skins

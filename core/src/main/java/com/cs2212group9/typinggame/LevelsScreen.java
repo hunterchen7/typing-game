@@ -18,15 +18,23 @@ import com.cs2212group9.typinggame.db.DBLevel;
 /**
  * This class is mainly responsible for the level selection interface of the game.
  * @author Group 9 members
+ * @version 1.0
  */
 public class LevelsScreen implements Screen {
+    /** Represents the instance of the TypingGame class that controls the game logic */
     final TypingGame game;
+    /** Represents the camera used to manage the view of the game */
     OrthographicCamera camera;
+    /** Represents the stage where UI elements are placed for rendering and handling input */
     private final Stage stage;
+    /** Represents the viewport defining the area of the stage visible on the screen */
     private final Viewport viewport;
+    /** Represents the skin defining the style of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     // from https://opengameart.org/content/woodland-fantasy
+    /** Represents the background music played during the game */
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
+    /** Represents the texture used for the background of the levels screen */
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     /**
      * Constructor for the LevelsScreen, initializes camera and viewport, and sets up button skins
@@ -50,6 +58,10 @@ public class LevelsScreen implements Screen {
         stage = new Stage();
     }
 
+    /**
+     * Renders the screen
+     * @param delta The time in seconds since the last render
+     */
     @Override
     public void render(float delta) {
         // Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -70,7 +82,11 @@ public class LevelsScreen implements Screen {
             game.setScreen(new LevelsScreen(game));
         }
     }
-
+    /**
+     * resize window
+     * @param width The width of window
+     * @param height The height of window
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -139,18 +155,30 @@ public class LevelsScreen implements Screen {
         stage.addActor(returnButton);
     }
 
+    /**
+     * hide the window
+     */
     @Override
     public void hide() {
     }
 
+    /**
+     * pause the window
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     * resume the window
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * close the window
+     */
     @Override
     public void dispose() {
         if (backgroundTexture != null) backgroundTexture.dispose();
