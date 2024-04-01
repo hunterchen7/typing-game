@@ -131,7 +131,7 @@ public class GameScreen implements Screen {
         }
         wordsList = new Array<>();
         for (int i = 0; i < waves; i++) {
-            String random = wordsPool.get(i);
+            String random = wordsPool.random();
             if (wordsPool.size > waves) {
                 wordsPool.removeValue(random, false);
             }
