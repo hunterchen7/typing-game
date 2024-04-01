@@ -79,7 +79,7 @@ public class DBScores {
             }
         }
 
-        return highest;
+        return Math.min(highest, DBLevel.getLevelCount());
     }
 
     /**

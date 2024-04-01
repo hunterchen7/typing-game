@@ -17,6 +17,7 @@ import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.ScoreEntry;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class is mainly used to set various parameters of the game according to user needs.
@@ -28,7 +29,7 @@ public class ScoresScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
-    private String selectedUser;
+    private String selectedUser = "";
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
 
@@ -65,7 +66,7 @@ public class ScoresScreen implements Screen {
         this(gam);
         selectedUser = user;
         music.play();
-        System.out.println("music pos: " + musicPosition);
+        System.out.println("selected user: " + selectedUser);
         music.setPosition(musicPosition);
     }
 
@@ -184,7 +185,7 @@ public class ScoresScreen implements Screen {
             System.out.println((i) + ". -");
         }
 
-        boolean userExists = false;
+        boolean userExists = DBUser.userExists(this.selectedUser);
 
         // displayed only for admin to search for specific users
         if (DBUser.isAdmin(game.getUsername())) {
@@ -209,9 +210,7 @@ public class ScoresScreen implements Screen {
             // display total score for selected user
             if (this.selectedUser != null && !this.selectedUser.isBlank()) {
                 System.out.println("Selected user: " + this.selectedUser);
-                if (DBUser.userExists(this.selectedUser)) {
-                    userExists = true;
-                }
+
                 String score = userExists ?
                     "Total score for " + this.selectedUser + ":" + DBScores.getUserTotalScore(this.selectedUser)
                     : "User not found";
@@ -221,6 +220,21 @@ public class ScoresScreen implements Screen {
                 searchTable.add(new Label(score, skin)).colspan(3);
             }
             stage.addActor(searchTable);
+        } else {
+            // add a button to toggle between global high scores and self high scores
+            Table selfScoresTable = new Table(skin);
+            TextButton selfScoresButton = new TextButton(selectedUser == null || selectedUser.isEmpty() ? "show your own scores" : "show all scores", skin);
+            selfScoresButton.setWidth(100);
+            selfScoresTable.add(selfScoresButton).row();
+            selfScoresTable.setFillParent(true);
+            selfScoresTable.top();
+            selfScoresTable.padTop(225);
+            selfScoresButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+                float position = music.getPosition();
+                dispose();
+                game.setScreen(new ScoresScreen(game, Objects.equals(selectedUser, "") ? game.getUsername() : "", position));
+            }));
+            stage.addActor(selfScoresTable);
         }
 
         // display top scores for each level
@@ -234,7 +248,9 @@ public class ScoresScreen implements Screen {
                 String topScore;
                 // display top score for selected user if it exists
                 if (this.selectedUser != null && !this.selectedUser.isBlank()) {
+                    System.out.println("user is selected: " + this.selectedUser);
                     if (!userExists) continue; // skip if user does not exist
+                    System.out.println("and user exists");
                     ScoreEntry topLevelScore = DBScores.getUserTopLevelScore(this.selectedUser, level);
                     topScore = topLevelScore != null ? topLevelScore.getScore() + ", played " + DBScores.getUserLevelPlays(selectedUser, level) + " times" : "No scores yet";
                 } else {

@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -73,6 +75,16 @@ public class LoginScreen implements Screen {
         game.batch.begin();
         // Draw the background texture. Adjust the positioning and sizing as needed.
         game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        GlyphLayout errLayout = new GlyphLayout(game.font, errorLabel.getText());
+        int errWidth = (int) (errLayout.width * 1.62f);
+        Pixmap pixmap = new Pixmap(errWidth, 20, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0, 0, 0, 0.7f);
+        pixmap.fillRectangle(0, 0, errWidth, 20);
+        Texture errBgTexture = new Texture(pixmap);
+        pixmap.dispose();
+
+        game.batch.draw(errBgTexture, 600 - (float) errWidth / 2, 255);
         game.batch.end();
 
         // Call stage.act() and stage.draw() after drawing the background
@@ -187,9 +199,9 @@ public class LoginScreen implements Screen {
             UserAuthenticator user = new UserAuthenticator(username, password);
 
             if (username.isBlank()) {
-                errorLabel.setText("Username cannot be blank");
+                errorLabel.setText("username cannot be blank");
             } else if (username.length() > 20) {
-                errorLabel.setText("Username cannot be longer than 20 characters");
+                errorLabel.setText("username cannot be longer than 20 characters");
             } else if (user.register()) {
                 game.setUsername(username);
                 // pop up to say registered successfully
@@ -198,7 +210,7 @@ public class LoginScreen implements Screen {
                 dispose();
             } else {
                 System.out.println("failed to register user: " + username);
-                errorLabel.setText("Username already exists");
+                errorLabel.setText("username already exists");
             }
         }));
 
