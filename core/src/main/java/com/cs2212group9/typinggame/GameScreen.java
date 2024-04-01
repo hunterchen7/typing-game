@@ -1,6 +1,9 @@
 package com.cs2212group9.typinggame;
 
 // Import necessary LibGDX and Java utilities
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
@@ -116,12 +119,20 @@ public class GameScreen implements Screen {
         words = new Array<Rectangle>();
         waves = DBLevel.getLevelWaves(levelId);
         Array<String> wordsPool = DBLevel.getLevelWords(levelId);
+        // this way of generating words almost guarantees that no consecutive words are the same
+        // also guarantees that the distance between the same words are on average pretty far away
+        // both are 100% guaranteed if the wordPool is by default > waves
+        // most noticeable on low levels where the wordPools are small
+        // first start by repeatedly adding shuffled level words until there are enough
+        // then select the next word from pool until exhausted
+        while (wordsPool.size < waves) {
+            Array<String> moreWords = DBLevel.getLevelWords(levelId);
+            moreWords.shuffle();
+            wordsPool.addAll(moreWords);
+        }
         wordsList = new Array<>();
         for (int i = 0; i < waves; i++) {
-            String random = wordsPool.random();
-            // try not to allow duplicates
-            // based on benchmarks not removed -> removed, 1st load: ~1.5 ms -> ~3 ms, 2nd+ loads ~0.3 ms -> ~0.5 ms
-            // totally acceptable performance hit, with improved user experience
+            String random = wordsPool.get(i);
             if (wordsPool.size > waves) {
                 wordsPool.removeValue(random, false);
             }
@@ -189,6 +200,7 @@ public class GameScreen implements Screen {
                     gameOver = true;
                     gameEndTime = TimeUtils.millis();
                 }
+                return; // don't handle other inputs simultaneously or will crash
             }
 
             // handle typed letters and backspace only if the game is not paused
@@ -280,6 +292,24 @@ public class GameScreen implements Screen {
         Texture texture = new Texture(pixmap);
         pixmap.dispose();
         return texture;
+    }
+
+    /**
+     * Generates a random angle based on the MD5 hash of a given word.
+     * This is used to rotate the asteroid background for each word, and make sure the same word has the same rotation.
+     *
+     * @param word The word to generate the angle for.
+     * @return The angle in degrees based on the MD5 hash of the word.
+     */
+    private int generateAngle(String word) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(word.getBytes());
+            BigInteger number = new BigInteger(1, hash);
+            return number.mod(BigInteger.valueOf(361)).intValue();
+        } catch (NoSuchAlgorithmException e) {
+            return 0;
+        }
     }
 
     /**
@@ -403,7 +433,7 @@ public class GameScreen implements Screen {
                 float totalWidth = markedLayout.width + unmarkedLayout.width;
                 float startX = wordRectangle.x + (wordRectangle.width / 2) - (totalWidth / 2);
 
-                /*
+
                 // draw a asteroid as a background for the word
                 String astPath = "sprites/asteroids/asteroidR" + (asciiSum(wordText) % 13 + 1) + ".png";
                 Texture asteroid = new Texture(Gdx.files.internal(astPath));
@@ -412,11 +442,11 @@ public class GameScreen implements Screen {
                     32, 32, // Set originX and originY to 32 to rotate around the center
                     wordRectangle.width, wordRectangle.height, // width and height of the drawing area
                     1f, 1f, // scaleX and scaleY
-                    asciiSum(wordText) % 180 * 2, // pseudorandom rotation
+                    generateAngle(wordText), // pseudorandom rotation
                     0, 0, // srcX and srcY
                     asteroid.getWidth(), asteroid.getHeight(), // srcWidth and srcHeight
                     false, false); // flipX and flipY
-                 */
+
 
                 // draw a black background for the word for visibility
                 game.batch.draw(wordBgTexture(totalWidth + 12), startX - 6, wordRectangle.y + 17);

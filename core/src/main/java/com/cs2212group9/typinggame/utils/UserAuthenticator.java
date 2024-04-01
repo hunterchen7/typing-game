@@ -36,6 +36,7 @@ public class UserAuthenticator {
      * @return true if the entered password matches the stored password, false otherwise
      */
     private boolean passwordMatches(String entered, String stored) throws NoSuchAlgorithmException {
+        long startTime = System.currentTimeMillis();
         byte[] hashedPassword = hashBytesToBytes(entered.getBytes(StandardCharsets.UTF_8));
         for (int i = 0; i < Math.pow(2, 8 * pepperBytes); i++) { // 2^(n * 8), loops through all possible peppers
             // all strings of byte values
@@ -45,9 +46,11 @@ public class UserAuthenticator {
             }
             byte[] combined = combineArrays(hashedPassword, pepper);
             if (hashBytesToString(combined).equals(stored)) {
+                System.out.println("authenticated in " + (System.currentTimeMillis() - startTime) + "ms");
                 return true; // match found
             }
         }
+        System.out.println("incorrect password in " + (System.currentTimeMillis() - startTime) + "ms");
         return false; // no match found for all possible peppers
     }
 
@@ -87,6 +90,8 @@ public class UserAuthenticator {
     // hash password, add pepper, hash again
     /**
      * Hashes the password with a pepper using SHA3-256.
+     * The pepper is a random byte array of length pepperBytes.
+     * The password is hashed first, then the pepper is added to the hash, and the combined byte array is hashed again.
      * @param password - the password to be peppered and hashed
      * @return the peppered and hashed password
      * @throws NoSuchAlgorithmException - if the hashing algorithm (SHA3-256) is not found
