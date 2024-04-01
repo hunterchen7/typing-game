@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -118,27 +119,32 @@ public class GameScreen implements Screen {
         words = new Array<Rectangle>();
         waves = DBLevel.getLevelWaves(levelId);
         Array<String> wordsPool = DBLevel.getLevelWords(levelId);
+        System.out.println("more words has size: " + wordsPool.size);
+        // pseudo maximize unique words per play
         // this way of generating words almost guarantees that no consecutive words are the same
         // also guarantees that the distance between the same words are on average pretty far away
-        // both are 100% guaranteed if the wordPool is by default > waves
+        // both are 100% guaranteed if the wordPool is by default > waves, which is currently level 4+
         // most noticeable on low levels where the wordPools are small
         // first start by repeatedly adding shuffled level words until there are enough
         // then select the next word from pool until exhausted
+        // the hashset is only kept to print to console the number of unique words
         while (wordsPool.size < waves) {
-            Array<String> moreWords = DBLevel.getLevelWords(levelId);
-            moreWords.shuffle();
-            wordsPool.addAll(moreWords);
+            wordsPool.add(wordsPool.random());
         }
+        HashSet<String> nonDuplicateWords = new HashSet<>();
         wordsList = new Array<>();
         for (int i = 0; i < waves; i++) {
-            String random = wordsPool.random();
+            String random = wordsPool.get(i);
             if (wordsPool.size > waves) {
-                wordsPool.removeValue(random, false);
+                wordsPool.removeValue(random, true);
             }
             wordsList.add(random);
+            nonDuplicateWords.add(random);
         }
+        wordsList.shuffle();
 
         System.out.println("Time to load words: " + (System.nanoTime() - startTime) / 1_000_000f + " ms");
+        System.out.println("Word list size: " + wordsList.size + ", with " + nonDuplicateWords.size() + " unique words");
         spawnWord();
 
         // Initialize the stage for UI elements
