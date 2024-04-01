@@ -8,6 +8,8 @@ Users can play 30 levels of varying difficulty containing thousands of unique wo
 
 User, level and score data are all stored in a SQLite database.
 
+Demo video: https://www.youtube.com/watch?v=1PN8l_tNcNQ
+
 This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
 ## Development setup guide
