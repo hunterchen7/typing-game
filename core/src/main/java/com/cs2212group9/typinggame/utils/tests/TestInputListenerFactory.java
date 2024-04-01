@@ -5,7 +5,13 @@ import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests for the InputListenerFactory class
+ */
 public class TestInputListenerFactory {
+    /**
+     * Test creating a ClickListener
+     */
     @Test
     void testCreateClickListener() {
         var ref = new Object() { // anon object to hold a mutable int

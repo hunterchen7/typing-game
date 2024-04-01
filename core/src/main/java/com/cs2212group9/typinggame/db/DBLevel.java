@@ -8,32 +8,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-// class for retrieving level data
-// this class does not require setters, level data should be preset
+/**
+ * This class is used to interact with the levels table in the database.
+ */
 public class DBLevel {
+    private static int levelCount;
     static Connection conn = DBHelper.getConnection();
 
-    /** @return the total number of levels */
+    /**
+     * Get the total number of levels in the database
+     * @return the total number of levels */
     public static int getLevelCount() {
+        // if level count has already been set just return it
+        // the value will not change mid-session so there is no need to re-run the SQL query
+        if (levelCount != 0) {
+            return levelCount;
+        }
+
         String sql = "SELECT COUNT(*) FROM levels;";
-        int count = 0;
 
         try (Statement stmt = conn.createStatement()) {
-            count = stmt.executeQuery(sql).getInt(1);
-            System.out.println("count: " + count);
+            levelCount = stmt.executeQuery(sql).getInt(1);
+            System.out.println("count: " + levelCount);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return count;
+        return levelCount;
     }
 
     // returns the words of a level
 
     /**
-     * Return a list of words that belongs to a level
+     * Queries the db for the words of a level, data is stored as a csv string. it is split and returned.
      * @param level - the level to get the words from
-     * @return an array of words that belongs to a level
+     * @return an LibGDX array of words that belongs to a level
      */
     public static Array<String> getLevelWords(int level) {
         System.out.println("getting words for level " + level);
@@ -47,8 +56,7 @@ public class DBLevel {
         }
 
         assert words != null;
-        Array<String> wordPool = new Array<>(words.split(","));
-        return wordPool;
+        return new Array<>(words.split(","));
     }
 
     // returns the difficulty of a level

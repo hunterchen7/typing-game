@@ -1,6 +1,9 @@
 package com.cs2212group9.typinggame;
 
 // Import necessary LibGDX and Java utilities
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
@@ -8,10 +11,13 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,12 +29,17 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBLevel;
 import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.effects.Explosion;
+import com.cs2212group9.typinggame.effects.WordBackground;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
+/**
+ * This class is responsible for the main game screen, where the player types words to destroy them.
+ * It handles game logic, rendering, and player input, and displays the game over screen when needed.
+ * It also manages the spawning of words, scoring, and game state transitions.
+ */
 public class GameScreen implements Screen {
     // Declaration of all class member variables
     final TypingGame game;
-    Texture wordImage;
     Sound dropSound, explodeSound, otherExplodeSound;
     Music music;
     OrthographicCamera camera;
@@ -49,6 +60,7 @@ public class GameScreen implements Screen {
     private boolean scoreSet = false;
     private final Texture backgroundTexture;
     ArrayList<Explosion> explosions;
+    private final int levelCount = DBLevel.getLevelCount();
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
@@ -57,7 +69,8 @@ public class GameScreen implements Screen {
      */
 
     public GameScreen(final TypingGame gam, final int levelId) {
-        this.game = gam;
+        game = gam;
+
         // Load sound effects and music
         dropSound = Gdx.audio.newSound(Gdx.files.internal("audio/forceField_000.ogg"));
         explodeSound = Gdx.audio.newSound(Gdx.files.internal("audio/explosionCrunch_000.ogg"));
@@ -77,14 +90,33 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
+        long startTime = System.nanoTime();
+
         // Initialize words array and load words for the current level
         words = new Array<Rectangle>();
         waves = DBLevel.getLevelWaves(levelId);
         Array<String> wordsPool = DBLevel.getLevelWords(levelId);
+        // this way of generating words almost guarantees that no consecutive words are the same
+        // also guarantees that the distance between the same words are on average pretty far away
+        // both are 100% guaranteed if the wordPool is by default > waves
+        // most noticeable on low levels where the wordPools are small
+        // first start by repeatedly adding shuffled level words until there are enough
+        // then select the next word from pool until exhausted
+        while (wordsPool.size < waves) {
+            Array<String> moreWords = DBLevel.getLevelWords(levelId);
+            moreWords.shuffle();
+            wordsPool.addAll(moreWords);
+        }
         wordsList = new Array<>();
         for (int i = 0; i < waves; i++) {
-            wordsList.add(wordsPool.random());
+            String random = wordsPool.get(i);
+            if (wordsPool.size > waves) {
+                wordsPool.removeValue(random, false);
+            }
+            wordsList.add(random);
         }
+
+        System.out.println("Time to load words: " + (System.nanoTime() - startTime) / 1_000_000f + " ms");
         spawnWord();
 
         // Initialize the stage for UI elements
@@ -145,6 +177,7 @@ public class GameScreen implements Screen {
                     gameOver = true;
                     gameEndTime = TimeUtils.millis();
                 }
+                return; // don't handle other inputs simultaneously or will crash
             }
 
             // handle typed letters and backspace only if the game is not paused
@@ -209,6 +242,54 @@ public class GameScreen implements Screen {
     }
 
     /**
+     * Returns the sum of the ASCII values of the characters in a given word.
+     * used for pseudo random selection of asteroid background for words
+     *
+     * @param word The word to calculate the ASCII sum for.
+     * @return The sum of the ASCII values of the characters in the word.
+     */
+    private int asciiSum(String word) {
+        int sum = 0;
+        for (int i = 0; i < word.length(); i++) {
+            sum += word.charAt(i);
+        }
+        return sum;
+    }
+
+    /**
+     * Creates a texture with a black background for the word to improve visibility.
+     *
+     * @param width The width of the texture to create.
+     * @return The texture with a black background.
+     */
+    private Texture wordBgTexture(float width) {
+        Pixmap pixmap = new Pixmap((int) width, 18, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0, 0, 0, 0.75f);
+        pixmap.fillRectangle(0, 0, (int) width, 18);
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
+    }
+
+    /**
+     * Generates a random angle based on the MD5 hash of a given word.
+     * This is used to rotate the asteroid background for each word, and make sure the same word has the same rotation.
+     *
+     * @param word The word to generate the angle for.
+     * @return The angle in degrees based on the MD5 hash of the word.
+     */
+    private int generateAngle(String word) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(word.getBytes());
+            BigInteger number = new BigInteger(1, hash);
+            return number.mod(BigInteger.valueOf(361)).intValue();
+        } catch (NoSuchAlgorithmException e) {
+            return 0;
+        }
+    }
+
+    /**
      * Displays the game over screen with the player's final score and the total time taken.
      * It allows the player to restart or exit to the main menu.
      */
@@ -225,9 +306,12 @@ public class GameScreen implements Screen {
         String nextLevel = "";
         int levelMinScore = DBLevel.getMinScores().get(levelId);
         boolean passed = score >= levelMinScore;
-        if (passed) {
+        if (passed && levelId < levelCount) {
             gameOverText = "Congratulations, You completed the level!";
             nextLevel = "You have unlocked level " + (levelId + 1) + "!";
+        } else if (passed) {
+            gameOverText = "Congratulations, You beat the game!";
+            nextLevel = "You have unlocked all levels!";
         } else {
             gameOverText = "You lose! You need at least " + levelMinScore + " points to pass this level.";
         }
@@ -238,7 +322,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "Time Consumed: " + totalTimeInSeconds + " seconds", 320, 200);
         game.font.draw(game.batch, "Click anywhere to return to the main menu", 280, 175);
         game.font.draw(game.batch, "Press enter to " +
-            (passed ? " go to the next level" : "retry level"), 280, 150);
+            (passed && !(levelId >= levelCount) ? " go to the next level" : "retry level"), 280, 150);
         game.batch.end();
 
         // Add the score to the database, make sure it's only added once
@@ -256,7 +340,8 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
             dispose();
-            game.setScreen(new GameScreen(game, this.levelId + (passed ? 1 : 0))); // Return to main menu
+            int nextLevelId = Math.min(this.levelId + (passed ? 1 : 0), levelCount);
+            game.setScreen(new GameScreen(game, nextLevelId));
         }
     }
 
@@ -275,20 +360,24 @@ public class GameScreen implements Screen {
         // Draw the background texture first
         game.batch.draw(backgroundTexture, 0, 0, 800, 480);
         game.batch.end();
+
+        // check if the game is over to set game over condition and end game timer
         if (wordsList.size <= 0 && !gameOver) {
             gameOver = true;
             gameEndTime = TimeUtils.millis();
         }
+
+        // display game over screen and skip rest of rendering if game is over
         if (gameOver) {
             displayGameOverScreen();
-
             return; // Skip the rest of the render method
         }
 
+        // call method to handle user inputs (keyboard & mouse)
         handleInput();
 
+        // state == true -> game not paused
         if (state) {
-            // ScreenUtils.clear(0, 0, 0, 1);
             camera.update();
             game.batch.setProjectionMatrix(camera.combined);
 
@@ -303,11 +392,12 @@ public class GameScreen implements Screen {
 
             // check which part of the word is typed and which isn't, and render accordingly
             for (Rectangle wordRectangle : words) {
-                String wordText = wordsList.get(words.indexOf(wordRectangle, true));
+                int index = words.indexOf(wordRectangle, true);
+                String wordText = wordsList.get(index);
                 String markedLetters = "";
                 String unmarkedLetters = wordText;
 
-                if (indexOfWordToType == words.indexOf(wordRectangle, true)) {
+                if (indexOfWordToType == index) {
                     int correctChars = Math.min(currentTypedWord.length(), wordText.length());
                     markedLetters = wordText.substring(0, correctChars);
                     unmarkedLetters = wordText.substring(correctChars);
@@ -318,6 +408,24 @@ public class GameScreen implements Screen {
 
                 float totalWidth = markedLayout.width + unmarkedLayout.width;
                 float startX = wordRectangle.x + (wordRectangle.width / 2) - (totalWidth / 2);
+
+
+                // draw a asteroid as a background for the word
+                String astPath = "sprites/asteroids/asteroidR" + (asciiSum(wordText) % 13 + 1) + ".png";
+                Texture asteroid = new Texture(Gdx.files.internal(astPath));
+                // using this ugly method because it allows for rotation
+                game.batch.draw(asteroid, wordRectangle.x, wordRectangle.y - 10,
+                    32, 32, // Set originX and originY to 32 to rotate around the center
+                    wordRectangle.width, wordRectangle.height, // width and height of the drawing area
+                    1f, 1f, // scaleX and scaleY
+                    generateAngle(wordText), // pseudorandom rotation
+                    0, 0, // srcX and srcY
+                    asteroid.getWidth(), asteroid.getHeight(), // srcWidth and srcHeight
+                    false, false); // flipX and flipY
+
+
+                // draw a black background for the word for visibility
+                game.batch.draw(wordBgTexture(totalWidth + 12), startX - 6, wordRectangle.y + 17);
 
                 game.font.setColor(0, 1, 0, 1); // Green for marked letters
                 game.font.draw(game.batch, markedLetters, startX, wordRectangle.y + wordRectangle.height / 2);
@@ -349,7 +457,7 @@ public class GameScreen implements Screen {
                 Rectangle wordRectangle = iter.next();
                 // update position of words, i.e. move them down
                 wordRectangle.y -= 65 * Gdx.graphics.getDeltaTime();
-                if (wordRectangle.y < 64) {
+                if (wordRectangle.y < 32) {
                     int wordIndex = words.indexOf(wordRectangle, true);
                     if (indexOfWordToType == wordIndex) {
                         currentTypedWord = "";
@@ -443,9 +551,9 @@ public class GameScreen implements Screen {
         TextButton returnButton = new TextButton("Return to main menu", skin);
 
         // Add listeners to buttons
-        resumeButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            resume();
-        }));
+        resumeButton.addListener(InputListenerFactory.createClickListener((event, x, y) ->
+            resume()
+        ));
 
         returnButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             game.setScreen(new MainMenuScreen(game));
@@ -508,12 +616,6 @@ public class GameScreen implements Screen {
      */
     @Override
     public void dispose() {
-        // Dispose of the texture if it's not null and not used elsewhere
-        if (wordImage != null) {
-            wordImage.dispose();
-            wordImage = null; // Nullify the reference to avoid reuse.
-        }
-
         // Dispose of sound objects if they are not null
         if (dropSound != null) {
             dropSound.dispose();

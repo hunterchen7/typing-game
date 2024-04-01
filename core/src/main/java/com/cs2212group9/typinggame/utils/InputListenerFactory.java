@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Factory class to create input listeners for buttons
+ */
 // from https://github.com/szsascha/libgdx-multiplayer-authentication-flow
 public class InputListenerFactory {
     /**

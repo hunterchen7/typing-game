@@ -17,6 +17,7 @@ import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.ScoreEntry;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class is mainly used to set various parameters of the game according to user needs.
@@ -28,11 +29,11 @@ public class ScoresScreen implements Screen {
     private final Stage stage;
     private final Viewport viewport;
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
-    private String selectedUser;
+    private String selectedUser = "";
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space_echo.ogg"));
 
-    /** Constructor for the OptionsScreen, initializes camera & viewport, and sets up button skins
+    /** Constructor for the OptionsScreen, initializes camera and viewport, and sets up button skins
      * @param gam - the game object
      */
     public ScoresScreen(final TypingGame gam) {
@@ -59,16 +60,20 @@ public class ScoresScreen implements Screen {
      * Constructor for the OptionsScreen, uses the default constructor and sets the selected user
      * @param gam - the game object
      * @param user - the user to display scores for
+     * @param musicPosition - the position in the music track, used for resuming music from the same position
      */
     public ScoresScreen(final TypingGame gam, String user, float musicPosition) {
         this(gam);
         selectedUser = user;
         music.play();
-        System.out.println("music pos: " + musicPosition);
+        System.out.println("selected user: " + selectedUser);
         music.setPosition(musicPosition);
     }
 
-
+    /**
+     * Render game screen
+     * @param delta rendering interval
+     */
     @Override
     public void render(float delta) {
         // Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -89,6 +94,11 @@ public class ScoresScreen implements Screen {
         }
     }
 
+    /**
+     * Resize the viewport to match the new width and height.
+     * @param width new viewport width
+     * @param height New viewport height
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -96,21 +106,33 @@ public class ScoresScreen implements Screen {
         camera.update();
     }
 
+    /**
+     * Pause the game
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Resume the game
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Hide the game interface
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Dispose of music and stage
+     */
     @Override
     public void dispose() {
         music.dispose();
@@ -118,6 +140,9 @@ public class ScoresScreen implements Screen {
         stage.dispose();
     }
 
+    /**
+     * Show the game interface
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -160,7 +185,7 @@ public class ScoresScreen implements Screen {
             System.out.println((i) + ". -");
         }
 
-        boolean userExists = false;
+        boolean userExists = DBUser.userExists(this.selectedUser);
 
         // displayed only for admin to search for specific users
         if (DBUser.isAdmin(game.getUsername())) {
@@ -185,15 +210,31 @@ public class ScoresScreen implements Screen {
             // display total score for selected user
             if (this.selectedUser != null && !this.selectedUser.isBlank()) {
                 System.out.println("Selected user: " + this.selectedUser);
-                if (DBUser.userExists(this.selectedUser)) {
-                    userExists = true;
-                }
+
                 String score = userExists ?
                     "Total score for " + this.selectedUser + ":" + DBScores.getUserTotalScore(this.selectedUser)
                     : "User not found";
                 searchTable.add(new Label(score, skin)).colspan(3);
+            } else {
+                String score = "your total score: " + DBScores.getUserTotalScore(game.getUsername());
+                searchTable.add(new Label(score, skin)).colspan(3);
             }
             stage.addActor(searchTable);
+        } else {
+            // add a button to toggle between global high scores and self high scores
+            Table selfScoresTable = new Table(skin);
+            TextButton selfScoresButton = new TextButton(selectedUser == null || selectedUser.isEmpty() ? "show your own scores" : "show all scores", skin);
+            selfScoresButton.setWidth(100);
+            selfScoresTable.add(selfScoresButton).row();
+            selfScoresTable.setFillParent(true);
+            selfScoresTable.top();
+            selfScoresTable.padTop(225);
+            selfScoresButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+                float position = music.getPosition();
+                dispose();
+                game.setScreen(new ScoresScreen(game, Objects.equals(selectedUser, "") ? game.getUsername() : "", position));
+            }));
+            stage.addActor(selfScoresTable);
         }
 
         // display top scores for each level
@@ -207,7 +248,9 @@ public class ScoresScreen implements Screen {
                 String topScore;
                 // display top score for selected user if it exists
                 if (this.selectedUser != null && !this.selectedUser.isBlank()) {
+                    System.out.println("user is selected: " + this.selectedUser);
                     if (!userExists) continue; // skip if user does not exist
+                    System.out.println("and user exists");
                     ScoreEntry topLevelScore = DBScores.getUserTopLevelScore(this.selectedUser, level);
                     topScore = topLevelScore != null ? topLevelScore.getScore() + ", played " + DBScores.getUserLevelPlays(selectedUser, level) + " times" : "No scores yet";
                 } else {
@@ -219,9 +262,11 @@ public class ScoresScreen implements Screen {
             }
             levelTable.row().padTop(10).padLeft(10).padRight(10);
         }
+        levelTable.row().padTop(10);
+        levelTable.add(new Label(DBUser.getNumberOfUsers() + " total players, " + DBScores.getGamesPlayed() + " levels played.", skin)).colspan(3);
+
         stage.addActor(levelTable);
         stage.addActor(totalScoreTable);
-
 
         TextButton returnButton = new TextButton("Return to Main Menu", skin);
         returnButton.setPosition(5, 5);

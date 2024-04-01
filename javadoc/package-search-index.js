@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.cs2212group9.typinggame"},{"l":"com.cs2212group9.typinggame.db"},{"l":"com.cs2212group9.typinggame.db.tests"},{"l":"com.cs2212group9.typinggame.effects"},{"l":"com.cs2212group9.typinggame.utils"},{"l":"com.cs2212group9.typinggame.utils.tests"}];updateSearchResults();

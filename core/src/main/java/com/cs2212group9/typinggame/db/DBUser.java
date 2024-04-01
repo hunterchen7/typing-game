@@ -5,11 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * This class is used to interact with the users table in the database.
+ */
 public class DBUser {
     /** The connection to the database */
     static Connection conn = DBHelper.getConnection();
 
     /**
+     * checks if a user exists in the database
      * @param username - the username of the user
      * @return true if the user exists, false otherwise
      */
@@ -30,8 +34,10 @@ public class DBUser {
 
     // adds a user to the database
     /**
+     * adds a user to the database
      * @param username - the username of the user
      * @param password - the hashed password of the user
+     * @param isAdmin - true if the user is an admin, false otherwise
      */
     public static void addUser(String username, String password, Boolean isAdmin) {
         if (userExists(username)) {
@@ -55,6 +61,11 @@ public class DBUser {
         }
     }
 
+    /**
+     * adds a user to the database
+     * @param username - the username of the user
+     * @param password - the hashed password of the user
+     */
     public static void addUser(String username, String password) {
         addUser(username, password, false);
     }
@@ -87,6 +98,7 @@ public class DBUser {
     }
 
     /**
+     * queries the database to return the user's stored password hash
      * @param username - the username of the user
      * @return the hashed password of the user
      */
@@ -100,23 +112,6 @@ public class DBUser {
             System.out.println(e.getMessage());
         }
         return password;
-    }
-
-    /**
-     * @param username - the username of the user
-     * @return the next unlocked level of the user
-     */
-    public static int getNextLevel(String username) {
-        String sql = "SELECT level FROM scores WHERE user = '" + username + "' ORDER BY date_played DESC LIMIT 1;";
-        int level = 1;
-
-        try (Statement stmt = conn.createStatement()) {
-            level = Math.max(stmt.executeQuery(sql).getInt("level"), level);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return level;
     }
 
     /**
@@ -136,4 +131,25 @@ public class DBUser {
 
         return isAdmin;
     }
+
+    /**
+     * returns the number of users in the database
+     * @return the number of users in the database
+     */
+    public static int getNumberOfUsers() {
+        int numberOfUsers = 0;
+        String sql = """
+            SELECT COUNT(*) AS number_of_users
+            FROM users;
+        """;
+
+        try (Statement stmt = conn.createStatement()) {
+            numberOfUsers = stmt.executeQuery(sql).getInt("number_of_users");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return numberOfUsers;
+    }
+
 }

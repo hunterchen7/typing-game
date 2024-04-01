@@ -31,11 +31,11 @@ public class MainMenuScreen implements Screen {
     /** Skin object for defining the appearance and behavior of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
     /** Represents the index of the next level in the game progression */
-    private int nextLevel;
+    private final int nextLevel;
     private final Texture backgroundTexture;
 
     /**
-     * Constructor for the MainMenuScreen, initializes camera & viewport, and sets up button skins
+     * Constructor for the MainMenuScreen, initializes camera and viewport, and sets up button skins
      *
      * @param gam - the game object
      */
@@ -183,8 +183,8 @@ public class MainMenuScreen implements Screen {
             Gdx.app.exit();
         }));
 
-        TextButton tutorialButton = new TextButton("Tutorial", new Skin(Gdx.files.internal("ui/neon/neon-ui.json")));
-        tutorialButton.setPosition(1110, 5);
+        TextButton tutorialButton = new TextButton("Tutorial", skin);
+        tutorialButton.setPosition(1015, -3);
         tutorialButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
             dispose();
             game.setScreen(new TutorialScreen(game, "MainMenu"));
