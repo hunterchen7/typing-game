@@ -1,6 +1,6 @@
 # typing-game-libgdx
 
-This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
+This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21.0.2](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
 
 ![demo](https://github.com/hunterchen7/hunterchen7/assets/34012681/93987f2d-32e5-4712-b144-23ce174d9fe4)
 
@@ -67,12 +67,12 @@ For example, `core:clean` removes `build` folder only from the `core` project.
 
 ## Credits
 - Libraries used:
-  - [libGDX](https://libgdx.com/)
-  - [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc)
-  - [junit-jupiter-api](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api)
-  - [slf4j-api](https://mvnrepository.com/artifact/org.slf4j/slf4j-api)
-  - [slf4j-simple](https://mvnrepository.com/artifact/org.slf4j/slf4j-simple)
-  - [bouncycastle](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on)
+  - [libGDX](https://libgdx.com/) 1.12.1
+  - [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc) 3.45.1.0
+  - [junit-jupiter-api](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api) 5.10.2
+  - [slf4j-api](https://mvnrepository.com/artifact/org.slf4j/slf4j-api) 2.0.12
+  - [slf4j-simple](https://mvnrepository.com/artifact/org.slf4j/slf4j-simple) 2.0.12
+  - [bouncycastle](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on) 1.77
 - Images:
   - level and score screen background [freepik](https://www.freepik.com/free-photo/aerial-shot-beautiful-landscape-covered-with-snow-early-morning_11061964.htm#fromView=search&page=1&position=2&uuid=60e3e85d-534e-4371-a570-af27897804c6)
   - login screen [freepik](https://www.freepik.com/free-ai-image/view-planet-earth-sunrise-from-space_43168360.htm#fromView=search&page=1&position=41&uuid=0bb51760-41eb-435b-a5ab-e5b905d36678)
