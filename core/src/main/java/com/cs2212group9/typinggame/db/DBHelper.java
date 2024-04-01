@@ -1,9 +1,5 @@
 package com.cs2212group9.typinggame.db;
 
-import com.cs2212group9.typinggame.utils.UserAuthenticator;
-import org.junit.jupiter.api.Test;
-
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 /**

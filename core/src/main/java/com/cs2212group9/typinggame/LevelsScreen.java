@@ -181,7 +181,7 @@ public class LevelsScreen implements Screen {
      */
     @Override
     public void dispose() {
-        if (backgroundTexture != null) backgroundTexture.dispose();
+        backgroundTexture.dispose();
         // Dispose other resources...
         stage.dispose();
         skin.dispose();

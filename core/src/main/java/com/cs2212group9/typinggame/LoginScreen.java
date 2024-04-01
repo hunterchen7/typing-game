@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
@@ -50,7 +49,7 @@ public class LoginScreen implements Screen {
     private final TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
     /** The text field for entering the password */
     private final TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 155);
-    
+
     /**
      * Constructor for the LoginScreen, initializes camera and viewport, and sets up button skins
      *
@@ -75,11 +74,8 @@ public class LoginScreen implements Screen {
 
         backgroundTexture = new Texture(Gdx.files.internal("background.png"));
         errorLabel.setColor(1, 0, 0, 1);
-
-        // errorLabel.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
-        // errorLabel.setColor(1, 0, 0, 1);
     }
-   
+
     /**
      *Renders the login screen
      * @param delta The time in seconds since the last frame
@@ -124,7 +120,7 @@ public class LoginScreen implements Screen {
 
     /**
      *Try to log in
-     * 
+     *
      * @param username The username entered by the user.
      * @param password The password entered by the user.
      * @throws NoSuchAlgorithmException If the specified cryptographic algorithm is not available in the environment.
@@ -210,9 +206,7 @@ public class LoginScreen implements Screen {
         table.add(registerButton).width(200).colspan(2);
 
         // login button onclick
-        loginButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            tryLogin(usernameField.getText(), passwordField.getText());
-        }));
+        loginButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> tryLogin(usernameField.getText(), passwordField.getText())));
 
         // register button onclick
         // TODO: make it go to a registration screen

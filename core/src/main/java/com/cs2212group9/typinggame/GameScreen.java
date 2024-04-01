@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
     private String currentTypedWord = "";
     /** store score */
     private int score = 0;
-    /** store wordstyped */
+    /** store number of words typed */
     private int wordsTyped = 0;
     /** store index of word typed*/
     private int indexOfWordToType = -1;
@@ -83,14 +83,13 @@ public class GameScreen implements Screen {
     ArrayList<Explosion> explosions;
     /** The total number of levels */
     private final int levelCount = DBLevel.getLevelCount();
-    
+
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
      * @param gam The main game object, providing access to shared resources.
      * @param levelId The level ID to load specific level settings and words.
      */
-
     public GameScreen(final TypingGame gam, final int levelId) {
         game = gam;
 
@@ -372,7 +371,7 @@ public class GameScreen implements Screen {
      * The main game loop method called by the LibGDX framework. It clears the screen,
      * updates the camera, handles input, updates game objects, and draws the current
      * game state to the screen. It also checks for game over conditions.
-     * @param time for rerender
+     * @param delta time for rerender
      */
     @Override
     public void render(float delta) {

@@ -76,11 +76,6 @@ public class MainMenuScreen implements Screen {
         stage.act();
         stage.draw();
 
-        /*if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
-            dispose();
-        }
-         */
         if (Gdx.input.isKeyPressed(Input.Keys.F5) && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)
             && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
             dispose();

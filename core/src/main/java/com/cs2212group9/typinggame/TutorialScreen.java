@@ -3,21 +3,15 @@ package com.cs2212group9.typinggame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
-import com.cs2212group9.typinggame.utils.UserAuthenticator;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
@@ -202,13 +196,9 @@ public class TutorialScreen implements Screen {
         table.add(nextButton);
         table.row();
 
-        prevButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            prevSlide();
-        }));
+        prevButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> prevSlide()));
 
-        nextButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
-            nextSlide();
-        }));
+        nextButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> nextSlide()));
 
         Label slideLabel = new Label("Slide: " + (this.slide + 1) + " / " + (slides.length), skin);
         slideLabel.setFontScale(1.5f);

@@ -35,8 +35,8 @@ public class ScoresScreen implements Screen {
     private final Viewport viewport;
     /** The skin defining the style of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
-    /** The selected user for the current session */
-    private String selectedUser;
+    /** The selected user for search, empty string means search on users */
+    private String selectedUser = "";
     /** The texture used for the background of the game screen */
     private final Texture backgroundTexture = new Texture(Gdx.files.internal("levels_background.png"));
     /** The music played in the background during the game */

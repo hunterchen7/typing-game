@@ -6,15 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.cs2212group9.typinggame.db.DBLevel;
-import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 /**
@@ -32,7 +29,7 @@ public class OptionsScreen implements Screen {
     /** Viewport object used to specify the stage display area */
     private final Viewport viewport;
     /** Skin objects used to define the appearance and behavior of UI elements */
-    private Skin skin;
+    private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
 
     /**
      * Constructor for the OptionsScreen, initializes camera and viewport, and sets up button skins
@@ -51,7 +48,6 @@ public class OptionsScreen implements Screen {
         camera.update();
 
         stage = new Stage();
-        skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
     }
 
     /**

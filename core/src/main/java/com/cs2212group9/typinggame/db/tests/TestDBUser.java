@@ -1,8 +1,6 @@
 package com.cs2212group9.typinggame.db.tests;
 
 import com.cs2212group9.typinggame.db.DBHelper;
-import com.cs2212group9.typinggame.db.DBLevel;
-import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.db.DBUser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
