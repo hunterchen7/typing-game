@@ -1,6 +1,6 @@
 # typing-game-libgdx
 
-This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
+This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21.0.2](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
 
 ![demo](https://github.com/hunterchen7/hunterchen7/assets/34012681/93987f2d-32e5-4712-b144-23ce174d9fe4)
 
@@ -67,32 +67,32 @@ For example, `core:clean` removes `build` folder only from the `core` project.
 
 ## Credits
 - Libraries used:
-  - [libGDX](https://libgdx.com/)
-  - [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc)
-  - [junit-jupiter-api](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api)
-  - [slf4j-api](https://mvnrepository.com/artifact/org.slf4j/slf4j-api)
-  - [slf4j-simple](https://mvnrepository.com/artifact/org.slf4j/slf4j-simple)
-  - [bouncycastle](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on)
+    - [libGDX](https://libgdx.com/) 1.12.1
+    - [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc) 3.45.1.0
+    - [junit-jupiter-api](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api) 5.10.2
+    - [slf4j-api](https://mvnrepository.com/artifact/org.slf4j/slf4j-api) 2.0.12
+    - [slf4j-simple](https://mvnrepository.com/artifact/org.slf4j/slf4j-simple) 2.0.12
+    - [bouncycastle](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on) 1.77
 - Images:
-  - level and score screen background [freepik](https://www.freepik.com/free-photo/aerial-shot-beautiful-landscape-covered-with-snow-early-morning_11061964.htm#fromView=search&page=1&position=2&uuid=60e3e85d-534e-4371-a570-af27897804c6)
-  - login screen [freepik](https://www.freepik.com/free-ai-image/view-planet-earth-sunrise-from-space_43168360.htm#fromView=search&page=1&position=41&uuid=0bb51760-41eb-435b-a5ab-e5b905d36678)
-  - game screen [freepik](https://www.freepik.com/free-ai-image/exploration-majestic-galaxy-through-space-shuttle-technology-generated-by-ai_47596883.htm#fromView=search&page=3&position=23&uuid=64b6abd9-398f-)
-  - explosion(s) by [Sinestesia](https://opengameart.org/content/2d-explosion-animations-frame-by-frame)
-  - asteroids by [Wenrexa](https://opengameart.org/content/asteroids-pack-n01)
-  - app icon from [opengameart](https://opengameart.org/content/dino-spaceship-flying-character)
+    - level and score screen background [freepik](https://www.freepik.com/free-photo/aerial-shot-beautiful-landscape-covered-with-snow-early-morning_11061964.htm#fromView=search&page=1&position=2&uuid=60e3e85d-534e-4371-a570-af27897804c6)
+    - login screen [freepik](https://www.freepik.com/free-ai-image/view-planet-earth-sunrise-from-space_43168360.htm#fromView=search&page=1&position=41&uuid=0bb51760-41eb-435b-a5ab-e5b905d36678)
+    - game screen [freepik](https://www.freepik.com/free-ai-image/exploration-majestic-galaxy-through-space-shuttle-technology-generated-by-ai_47596883.htm#fromView=search&page=3&position=23&uuid=64b6abd9-398f-)
+    - explosion(s) by [Sinestesia](https://opengameart.org/content/2d-explosion-animations-frame-by-frame)
+    - asteroids by [Wenrexa](https://opengameart.org/content/asteroids-pack-n01)
+    - app icon from [opengameart](https://opengameart.org/content/dino-spaceship-flying-character)
 - Audio:
-  - sound effects (e.g. explosion sounds) from [Kenney](https://kenney.nl/)
-  - main menu music by [lasercheese](https://opengameart.org/content/space-orchestral)
-  - game music 1: mammoth by [congusbongus](https://opengameart.org/content/mammoth)
-  - game music 2: action synth track by [PetterTheSturgeon](https://opengameart.org/content/action-synth-track)
-  - game music 3: deus ex tempus by [Trevor Lentz](https://opengameart.org/content/deus-ex-tempus)
-  - game music 4: last knight of the cyberdeath [PetterTheSturgeon](https://opengameart.org/content/lastknightofthecyberdeath)
-  - game music 5: magic space by [CodeManu](https://opengameart.org/content/magic-space)
-  - level and score screen music: space echo by [Centurion_of_war](https://opengameart.org/content/space-echo)
+    - sound effects (e.g. explosion sounds) from [Kenney](https://kenney.nl/)
+    - main menu music by [lasercheese](https://opengameart.org/content/space-orchestral)
+    - game music 1: mammoth by [congusbongus](https://opengameart.org/content/mammoth)
+    - game music 2: action synth track by [PetterTheSturgeon](https://opengameart.org/content/action-synth-track)
+    - game music 3: deus ex tempus by [Trevor Lentz](https://opengameart.org/content/deus-ex-tempus)
+    - game music 4: last knight of the cyberdeath [PetterTheSturgeon](https://opengameart.org/content/lastknightofthecyberdeath)
+    - game music 5: magic space by [CodeManu](https://opengameart.org/content/magic-space)
+    - level and score screen music: space echo by [Centurion_of_war](https://opengameart.org/content/space-echo)
 - Misc:
-  - libgdx-multiplayer-authentication-flow used with permission from [szsascha](https://github.com/szsascha/libgdx-multiplayer-authentication-flow/issues/1)
-  - explosion animation based off of [libgdx-2d-tutorial](https://github.com/hollowbit/libgdx-2d-tutorial)
-  - setup generated using [gdx-liftoff](https://github.com/libgdx/gdx-liftoff)
-  - English word list from [google-10000-english](https://github.com/first20hours/google-10000-english)
-  - Some additional words generated by ChatGPT, see the Python file for more details
-  - LibGDX skins from [czyzby](https://github.com/czyzby/gdx-skins)
+    - libgdx-multiplayer-authentication-flow used with permission from [szsascha](https://github.com/szsascha/libgdx-multiplayer-authentication-flow/issues/1)
+    - explosion animation based off of [libgdx-2d-tutorial](https://github.com/hollowbit/libgdx-2d-tutorial)
+    - setup generated using [gdx-liftoff](https://github.com/libgdx/gdx-liftoff)
+    - English word list from [google-10000-english](https://github.com/first20hours/google-10000-english)
+    - Some additional words generated by ChatGPT, see the Python file for more details
+    - LibGDX skins from [czyzby](https://github.com/czyzby/gdx-skins)
