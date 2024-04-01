@@ -9,14 +9,17 @@ import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests for the DBLevel class
+ * Provides a set of unit tests for the {@link DBLevel} class to verify its functionality in managing
+ * game levels within the database. It includes tests for level properties retrieval and handling of invalid data.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestDBLevel {
+    /** Establishes a database connection for test execution. */
     static final Connection db = DBHelper.getConnection();
 
     /**
-     * Set up the database by dropping and creating the levels table and inserting some test data
+     * Prepares the testing environment by setting up the levels table in the database and inserting initial test data.
+     * This method is run once before all test methods to ensure a consistent starting state.
      */
     @BeforeAll
     public static void setup() {
@@ -52,7 +55,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelDifficulty
+     * Verifies the correct retrieval of a level's difficulty setting from the database.
      */
     @Test
     @Order(1)
@@ -61,7 +64,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelWaves
+     * Confirms accurate retrieval of the number of waves for a given level.
      */
     @Test
     @Order(2)
@@ -70,7 +73,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelDifficulty with invalid level ID
+     * Validates handling of invalid level IDs when querying level difficulty, expecting a default or error value.
      */
     @Test
     @Order(3)
@@ -82,7 +85,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelWaves with invalid level ID
+     * Checks the behavior of querying waves for non-existent levels, expecting a default or error response.
      */
     @Test
     @Order(4)
@@ -94,7 +97,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelCount
+     * Tests the accurate count of levels available in the database.
      */
     @Test
     @Order(5)
@@ -103,7 +106,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelWords
+     * Ensures the correct number of words are returned for a specified level, validating the words retrieval process.
      */
     @Test
     @Order(6)
@@ -112,7 +115,7 @@ public class TestDBLevel {
     }
 
     /**
-     * Test getLevelWords for level 2
+     * Similar to the previous test but for a different level, ensuring consistency in words retrieval functionality.
      */
     @Test
     @Order(7)

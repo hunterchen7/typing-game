@@ -13,15 +13,17 @@ import java.sql.Connection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests for the DBScores class
+ * This class conducts unit tests for the {@link DBScores} class, focusing on validating
+ * the functionality related to managing and querying game scores in the database.
  */
 @TestMethodOrder(OrderAnnotation.class)
 public class TestDBScores {
-    /** Database connection */
+    /** Establishes a database connection through the DBHelper utility class. */
     static final Connection db = DBHelper.getConnection();
 
     /**
-     * Set up the database by dropping and creating the scores table and inserting some test data
+     * Prepares the testing environment by reinitializing the scores table and populating it with initial test data.
+     * This setup method is executed once before all test methods.
      */
     @BeforeAll
     static void setup() {
@@ -47,12 +49,14 @@ public class TestDBScores {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        // Insert an initial score to facilitate testing.
         DBScores.addScore("user", 1, 12);
     }
 
     /**
-     * Test getLevelMaxScore with a timeout of 1 second to not break primary key constraint
-     * @throws InterruptedException - if the timeout is interrupted
+     * Tests the retrieval of the maximum score achieved by a user on a specific level.
+     * Ensures the functionality accounts for multiple score submissions for the same level.
+     * @throws InterruptedException if the test execution is unexpectedly interrupted.
      */
     @Test
     @Order(1)
@@ -63,7 +67,8 @@ public class TestDBScores {
     }
 
     /**
-     * Test highestUnlockedLevel
+     * Verifies the correct calculation of the highest level unlocked by a user,
+     * based on the scores recorded in the database.
      */
     @Test
     @Order(2)
@@ -72,7 +77,8 @@ public class TestDBScores {
     }
 
     /**
-     * Test getTopScores
+     * Checks the functionality for fetching the top scores for a specific level.
+     * Validates that the scores are correctly ordered and retrieved.
      */
     @Test
     @Order(3)
@@ -81,7 +87,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getUserTotalScore
+     * Tests the calculation of a user's total score across all levels.
      */
     @Test
     @Order(4)
@@ -90,7 +96,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getUserTotalScore
+     * Validates the update of a user's total score upon the addition of new scores for different levels.
      */
     @Test
     @Order(5)
@@ -100,7 +106,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getTopLevelScore
+     * Tests the retrieval of the highest score achieved across all users for a given level.
      */
     @Test
     @Order(6)
@@ -109,7 +115,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getUserTopLevelScore
+     * Assesses the functionality for fetching the highest score achieved by a specific user on a given level.
      */
     @Test
     @Order(7)
@@ -118,7 +124,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getUserLevelPlays
+     * Evaluates the count of attempts a user has made on a specific level.
      */
     @Test
     @Order(8)
@@ -127,7 +133,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getUserLevelPlays
+     * Further tests the attempt count functionality by examining plays on another level.
      */
     @Test
     @Order(9)
@@ -136,7 +142,7 @@ public class TestDBScores {
     }
 
     /**
-     * Test getGamesPlayed
+     * Verifies the correct calculation of the total number of games played by all users.
      */
     @Test
     @Order(10)
