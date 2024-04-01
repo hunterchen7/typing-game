@@ -1,4 +1,5 @@
 package com.cs2212group9.typinggame;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,9 +16,13 @@ public class TypingGame extends Game {
     SpriteBatch batch;
     /** Rendering font */
     BitmapFont font;
+    /** Represents the background texture used in the application */
     Texture backgroundTexture;
+    /** Stores the username of the current user */
     private String username;
+    /** Represents the volume level for sound effects */
     private float sfxVolume = 1f;
+    /** Represents the volume level for music */
     private float musicVolume = 0.4f;
 
     /**

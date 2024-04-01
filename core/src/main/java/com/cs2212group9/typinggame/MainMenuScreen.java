@@ -32,6 +32,7 @@ public class MainMenuScreen implements Screen {
     private final Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
     /** Represents the index of the next level in the game progression */
     private final int nextLevel;
+    /** Represents the background Texture */
     private final Texture backgroundTexture;
 
     /**

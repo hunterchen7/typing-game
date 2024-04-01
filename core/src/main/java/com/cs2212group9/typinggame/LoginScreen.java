@@ -17,33 +17,45 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 import com.cs2212group9.typinggame.utils.UserAuthenticator;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
  * This class is mainly responsible for the login interface of the game.
  * @author Group 9 members
+ * @version 1.0
  */
 public class LoginScreen implements Screen {
+    /** The instance of the TypingGame class that controls the game logic */
     final TypingGame game;
+    /** The camera used to manage the view of the game */
     OrthographicCamera camera;
+    /** The stage where UI elements are placed for rendering and handling input */
     private final Stage stage;
+    /** The viewport defining the area of the stage visible on the screen */
     private final Viewport viewport;
+    /** The skin defining the style of UI elements */
     private final Skin skin = new Skin(Gdx.files.internal("ui/neon/neon-ui.json"));
+    /** The background music played during the game */
     private final Music music = Gdx.audio.newMusic(Gdx.files.internal("audio/space.ogg"));
+    /** Indicates whether the username has been reset */
     private boolean usernameReset = false;
+    /** The texture used for the background of the game screen */
     private final Texture backgroundTexture;
+    /** The label used to display error messages */
     private final Label errorLabel = new Label("", skin, "over");
+    /** The table used to organize UI elements */
     private final Table table = new Table();
+    /** The text field for entering the username */
     private final TextField usernameField = addTextFieldRow(table, "Username:", "user", 10);
+    /** The text field for entering the password */
     private final TextField passwordField = addTextFieldRow(table, "Password (optional):", "", 155);
+    
     /**
      * Constructor for the LoginScreen, initializes camera and viewport, and sets up button skins
      *
      * @param gam - the game object
      */
-
     public LoginScreen(final TypingGame gam) {
         game = gam;
 
@@ -67,7 +79,11 @@ public class LoginScreen implements Screen {
         // errorLabel.getStyle().background = skin.newDrawable("white", 0, 0, 0, 0.5f);
         // errorLabel.setColor(1, 0, 0, 1);
     }
-
+   
+    /**
+     *Renders the login screen
+     * @param delta The time in seconds since the last frame
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
@@ -106,6 +122,13 @@ public class LoginScreen implements Screen {
         }
     }
 
+    /**
+     *Try to log in
+     * 
+     * @param username The username entered by the user.
+     * @param password The password entered by the user.
+     * @throws NoSuchAlgorithmException If the specified cryptographic algorithm is not available in the environment.
+     */
     private void tryLogin(String username, String password) throws NoSuchAlgorithmException {
         // log in logic
         // check if username and password match
@@ -124,7 +147,11 @@ public class LoginScreen implements Screen {
         }
     }
 
-
+    /**
+     * resize window
+     * @param width  The new width of the window.
+     * @param height The new height of the window.
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -258,18 +285,30 @@ public class LoginScreen implements Screen {
         return text;
     }
 
+    /**
+     *  hide window
+     */
     @Override
     public void hide() {
     }
 
+    /**
+     *  pause window
+     */
     @Override
     public void pause() {
     }
 
+    /**
+     *  resume window
+     */
     @Override
     public void resume() {
     }
 
+    /**
+     * for close window
+     */
     @Override
     public void dispose() {
         stage.dispose();

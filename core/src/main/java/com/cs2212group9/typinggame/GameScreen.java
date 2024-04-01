@@ -36,31 +36,54 @@ import com.cs2212group9.typinggame.utils.InputListenerFactory;
  * This class is responsible for the main game screen, where the player types words to destroy them.
  * It handles game logic, rendering, and player input, and displays the game over screen when needed.
  * It also manages the spawning of words, scoring, and game state transitions.
+ * @author Group 9 members
+ * @version 1.0
  */
 public class GameScreen implements Screen {
     // Declaration of all class member variables
+    /** The instance of the TypingGame class that controls the game logic */
     final TypingGame game;
+    /** Represents the sound of the TypingGame class*/
     Sound dropSound, explodeSound, otherExplodeSound;
+    /** Represents the music of the TypingGame class*/
     Music music;
+    /** Represents the camera used to manage the view of the game */
     OrthographicCamera camera;
+    /** Represents the words array to give user words */
     Array<Rectangle> words;
+    /** Represents the time in the game that word fall down */
     long lastDropTime;
+    /** Represents the skin defining the style of UI elements */
     Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
+    /** The number of waves in the game */
     private Stage stage;
+    /** An array containing the list of words */
     private int waves;
     Array<String> wordsList;
+    /** store currentTypedWord */
     private String currentTypedWord = "";
+    /** store score */
     private int score = 0;
+    /** store wordstyped */
     private int wordsTyped = 0;
+    /** store index of word typed*/
     private int indexOfWordToType = -1;
+    /** store game time */
     private long gameStartTime, gameEndTime;
+    /** store pause start time */
     private long pauseStartTime;
+    /** store whether game over */
     private boolean gameOver = false;
+    /** store level id */
     private final int levelId;
+    /** store score set */
     private boolean scoreSet = false;
+    /** the variable of background */
     private final Texture backgroundTexture;
     ArrayList<Explosion> explosions;
+    /** The total number of levels */
     private final int levelCount = DBLevel.getLevelCount();
+    
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
      *
@@ -349,6 +372,7 @@ public class GameScreen implements Screen {
      * The main game loop method called by the LibGDX framework. It clears the screen,
      * updates the camera, handles input, updates game objects, and draws the current
      * game state to the screen. It also checks for game over conditions.
+     * @param time for rerender
      */
     @Override
     public void render(float delta) {
@@ -489,6 +513,11 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * resize window
+     * @param width the width of window
+     * @param height the height of window
+     */
     @Override
     public void resize(int width, int height) {
     }
