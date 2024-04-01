@@ -250,6 +250,14 @@ public class LoginScreen implements Screen {
         }));
         stage.addActor(tutorialButton);
 
+        TextButton creditsButton = new TextButton("?", new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json")));
+        creditsButton.setPosition(1140, 750);
+        creditsButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
+            dispose();
+            game.setScreen(new CreditsScreen(game));
+        }));
+        stage.addActor(creditsButton);
+
         TextButton exitButton = new TextButton("Quit", skin);
         exitButton.setPosition(5, 5);
         exitButton.addListener(InputListenerFactory.createClickListener((event, x, y) -> {
