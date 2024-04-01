@@ -40,11 +40,17 @@ public class GameScreen implements Screen {
     // Declaration of all class member variables
     /** The instance of the TypingGame class that controls the game logic */
     final TypingGame game;
+    /** Represents the sound of the TypingGame class*/
     Sound dropSound, explodeSound, otherExplodeSound;
+    /** Represents the music of the TypingGame class*/
     Music music;
+    /** Represents the camera used to manage the view of the game */
     OrthographicCamera camera;
+    /** Represents the words array to give user words */
     Array<Rectangle> words;
+    /** Represents the time in the game that word fall down */
     long lastDropTime;
+    /** Represents the skin defining the style of UI elements */
     Skin skin = new Skin(Gdx.files.internal("ui/star-soldier/star-soldier-ui.json"));
     /** The number of waves in the game */
     private Stage stage;
