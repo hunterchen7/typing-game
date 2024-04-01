@@ -79,6 +79,7 @@ For example, `core:clean` removes `build` folder only from the `core` project.
   - game screen [freepik](https://www.freepik.com/free-ai-image/exploration-majestic-galaxy-through-space-shuttle-technology-generated-by-ai_47596883.htm#fromView=search&page=3&position=23&uuid=64b6abd9-398f-)
   - explosion(s) by [Sinestesia](https://opengameart.org/content/2d-explosion-animations-frame-by-frame)
   - asteroids by [Wenrexa](https://opengameart.org/content/asteroids-pack-n01)
+  - app icon from [opengameart](https://opengameart.org/content/dino-spaceship-flying-character)
 - Audio:
   - sound effects (e.g. explosion sounds) from [Kenney](https://kenney.nl/)
   - main menu music by [lasercheese](https://opengameart.org/content/space-orchestral)
