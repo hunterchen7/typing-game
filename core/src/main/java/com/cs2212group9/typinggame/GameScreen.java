@@ -12,13 +12,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,7 +28,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.cs2212group9.typinggame.db.DBLevel;
 import com.cs2212group9.typinggame.db.DBScores;
 import com.cs2212group9.typinggame.effects.Explosion;
-import com.cs2212group9.typinggame.effects.WordBackground;
 import com.cs2212group9.typinggame.utils.InputListenerFactory;
 
 /**
@@ -84,6 +81,7 @@ public class GameScreen implements Screen {
     ArrayList<Explosion> explosions;
     /** The total number of levels */
     private final int levelCount = DBLevel.getLevelCount();
+    private final Texture[] asteroidTextures = new Texture[13];
 
     /**
      * Constructs the game screen with necessary settings and initializes game objects.
@@ -108,6 +106,11 @@ public class GameScreen implements Screen {
         music = Gdx.audio.newMusic(Gdx.files.internal(musicFiles[levelId % musicFiles.length]));
         music.setLooping(true);
         music.setVolume(0.2f); // music is kinda loud
+
+        // initialize asteroids
+        for (int i = 0; i < 13; i++) {
+            asteroidTextures[i] = new Texture(Gdx.files.internal("sprites/asteroids/asteroidR" + (i + 1) + ".png"));
+        }
 
         // Set up the camera for 2D rendering
         camera = new OrthographicCamera();
@@ -438,10 +441,8 @@ public class GameScreen implements Screen {
                 float totalWidth = markedLayout.width + unmarkedLayout.width;
                 float startX = wordRectangle.x + (wordRectangle.width / 2) - (totalWidth / 2);
 
-
-                // draw a asteroid as a background for the word
-                String astPath = "sprites/asteroids/asteroidR" + (asciiSum(wordText) % 13 + 1) + ".png";
-                Texture asteroid = new Texture(Gdx.files.internal(astPath));
+                // draw an asteroid as a background for the word
+                Texture asteroid = asteroidTextures[asciiSum(wordText) % 13];
                 // using this ugly method because it allows for rotation
                 game.batch.draw(asteroid, wordRectangle.x, wordRectangle.y - 10,
                     32, 32, // Set originX and originY to 32 to rotate around the center
@@ -451,7 +452,6 @@ public class GameScreen implements Screen {
                     0, 0, // srcX and srcY
                     asteroid.getWidth(), asteroid.getHeight(), // srcWidth and srcHeight
                     false, false); // flipX and flipY
-
 
                 // draw a black background for the word for visibility
                 game.batch.draw(wordBgTexture(totalWidth + 12), startX - 6, wordRectangle.y + 17);
@@ -650,6 +650,8 @@ public class GameScreen implements Screen {
      */
     @Override
     public void dispose() {
+        words.clear();
+        wordsList.clear();
         // Dispose of sound objects if they are not null
         if (dropSound != null) {
             dropSound.dispose();
