@@ -2,7 +2,7 @@
 
 This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21.0.2](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
 
-![demo](https://github.com/hunterchen7/hunterchen7/assets/34012681/93987f2d-32e5-4712-b144-23ce174d9fe4)
+![demo](https://raw.githubusercontent.com/hunterchen7/typing-game/main/assets/demo.gif)
 
 Users can play 30 levels of varying difficulty containing thousands of unique words, while competing for a spot on the leaderboard.
 
