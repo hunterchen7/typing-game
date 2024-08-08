@@ -1,5 +1,5 @@
 # typing-game-libgdx
-
+ 
 This is a typing game built with [LibGDX](https://libgdx.com/), generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff) using [OpenJDK 21.0.2](https://www.oracle.com/ca-en/java/technologies/downloads/#java21).
 
 ![demo](https://raw.githubusercontent.com/hunterchen7/typing-game/main/assets/demo.gif)
